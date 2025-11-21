@@ -17,7 +17,7 @@ app = FastAPI(root_path="", title="My API")
 # 허용할 origin 목록
 origins = [
     "https://localhost:5173",  # 개발용
-    # "https://www.pomopopo.com",  # 배포용 메인 도메인
+     "https://www.enerlog.kr",  # 배포용 메인 도메인
     # "https://pomopopo.com",      # 배포용 www 없는 도메인
     # "https://pomopopo-git-feature-auth-songyes-projects-cb766be0.vercel.app",  # Vercel 테스트용
 ]
