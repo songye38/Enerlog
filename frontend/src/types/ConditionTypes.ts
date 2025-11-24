@@ -1,6 +1,21 @@
 import type { ColorSecondary } from "./Colors";
 export type ConditionType = "recentEnergy" | "recoveryIndex" | "actRage";
 
+export interface TagData {
+  label: string;
+  count?: number;
+}
+
+export interface ConditionSection {
+  title: string;       // ex: "나의 신체상태는?"
+  tags: TagData[];     // ex: [{label: "...", count: 12}, ...]
+}
+
+export interface ConditionListPayload {
+  description?: string;         // 전체를 설명하는 문구 (optional)
+  sections: ConditionSection[]; // 여러 개의 섹션
+}
+
 export interface ConditionInfo {
   title: string;
   description: string;

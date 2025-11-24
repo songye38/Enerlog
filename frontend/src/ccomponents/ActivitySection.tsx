@@ -1,0 +1,166 @@
+
+import type { ActivityFeed } from "../types/ActivityFeed";
+import arrowIcon from '/icons/14X14/arrow-narrow-up-right.png'
+import menuIcon from '/icons/20X20/dots-horizontal.png'
+import heartIcon from '/icons/16X16/heart.png'
+
+interface ActivitySectionProps {
+  activity: ActivityFeed;
+}
+
+export default function ActivitySection({ activity }: ActivitySectionProps) {
+  return (
+    <div
+      style={{
+        width: 390,
+        padding: "20px 16px 24px 16px",
+        background: "#ECEFF9",
+        borderRadius: 12,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 24,
+      }}
+    >
+      {/* 상단 에너지 레벨 및 상태 아이콘 */}
+      <div
+        style={{
+          alignSelf: "stretch",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 8,
+        }}
+      >
+        <div
+          style={{
+            padding: "6px 8px",
+            background: "#455CC5",
+            borderRadius: 6,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 4,
+          }}
+        >
+          <img src={arrowIcon} alt="Arrow Icon" style={{ width: 14, height: 14 }} />
+          <div
+            style={{
+              color: "#ECEFF9",
+              fontSize: 15,
+              fontFamily: "Pretendard",
+              fontWeight: 600,
+              wordWrap: "break-word",
+            }}
+          >
+            에너지 레벨 : {activity.level}
+          </div>
+        </div>
+        <div style={{ flex: "1 1 0", height: 8 }} />
+        {/* 여기에 아이콘 예시 */}
+        <img src={heartIcon} alt="Heart Icon" style={{ width: 16, height: 16 }} />
+        <img src={menuIcon} alt="Menu Icon" style={{ width: 20, height: 20 }} />
+      </div>
+
+      {/* 활동 내용 */}
+      <div
+        style={{
+          alignSelf: "stretch",
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        {/* 상단 태그 */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 7,
+            flexDirection: "column",
+          }}
+        >
+          <div
+            style={{
+              padding: "5px 8px",
+              background: "black",
+              borderRadius: 4,
+              display: "inline-flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
+            <div
+              style={{
+                color: "white",
+                fontSize: 12,
+                fontFamily: "Pretendard",
+                fontWeight: 600,
+                wordWrap: "break-word",
+              }}
+            >
+              #{activity.count}회 수행
+            </div>
+          </div>
+
+          {/* 제목 */}
+          <div style={{ alignSelf: "stretch", display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                color: "black",
+                fontSize: 19,
+                fontFamily: "Pretendard",
+                fontWeight: 400,
+                lineHeight: "24px",
+                textAlign: "center",
+              }}
+            >
+              {activity.title}
+            </div>
+          </div>
+        </div>
+
+        {/* 설명 및 태그 */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
+          <div style={{ textAlign: "center", color: "black", fontSize: 15, lineHeight: '22px' }}>
+            {activity.description.split("\n").map((line, i) => (
+              <span key={i}>
+                {line}
+                <br />
+              </span>
+            ))}
+          </div>
+
+          {/* 해시태그 */}
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center" }}>
+            {activity.tags.map((tag, i) => (
+              <div
+                key={i}
+                style={{
+                  borderRadius: 4,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "2px 6px",
+                }}
+              >
+                <div
+                  style={{
+                    color: "black",
+                    fontSize: 10,
+                    fontFamily: "Pretendard",
+                    fontWeight: 600,
+                  }}
+                >
+                  #{tag}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
