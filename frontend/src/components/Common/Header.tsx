@@ -2,10 +2,12 @@ import { useState, useRef, useEffect } from "react";
 import menuIcon from "/icons/24X24/menu.png";
 import HomeMenu from "../Menu/HomeMenu";
 import LogoIcon from "/common/logo.png"
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
 
     // 메뉴 외부 클릭 시 닫기
     useEffect(() => {
@@ -40,7 +42,12 @@ export default function Header() {
                 }}
             >
                 {/* 로고 */}
-                <img src={LogoIcon} alt="로고" style={{width:132}} />
+                <img
+                    src={LogoIcon}
+                    alt="로고"
+                    style={{ width: 132, cursor: "pointer" }}
+                    onClick={() => navigate("/")}  // 클릭 시 메인페이지로 이동
+                />
 
 
                 {/* 메뉴 영역 */}

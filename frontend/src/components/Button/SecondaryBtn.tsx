@@ -10,6 +10,7 @@ export default function SecondaryBtn({ label, onClick }: SecondaryBtnProps) {
   return (
     <div
       style={{
+        width:'100%',
         alignSelf: 'stretch',
         padding: '9px 21px',
         background: '#D2D8F1',

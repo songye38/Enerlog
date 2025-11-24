@@ -13,7 +13,7 @@ export default function EnergySelectorBtn({ data }: EnergySelectorBtnProps) {
     <div
       style={{
         width: 172,
-        height: 'auto',
+        height: '100%',
         padding: 16,
         background: COLORS.primary[50],
         borderRadius: 16,
