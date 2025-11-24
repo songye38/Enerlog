@@ -64,7 +64,7 @@
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
-import { ActivityPage, ArchivePage, DashboardPage, EnergyPage, HomePage, LogInPage, ProfilePage, ProgramPage, SignUpPage } from './pages';
+import { ActivityPage, ArchivePage, DashboardPage, EnergyPage, HomePage, LogInPage, ProfilePage, ProgramPage, SignUpPage,AddEnergyPage } from './pages';
 import Header from "./components/Common/Header";
 
 function AppContent() {
@@ -72,6 +72,7 @@ function AppContent() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LogInPage />} />
+      <Route path="/add" element={<AddEnergyPage />} />
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/acts" element={<ActivityPage />} />
       <Route path="/energy" element={<EnergyPage />} />
