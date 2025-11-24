@@ -43,7 +43,7 @@ export default function ConditionDetailBtn({ type, value }: ConditionDetailBtnPr
                             color: "black",
                             fontSize: 12,
                             fontFamily: "Pretendard, sans-serif",
-                            fontWeight: 500,
+                            fontWeight: 600,
                         }}
                     >
                         {description}
@@ -58,7 +58,7 @@ export default function ConditionDetailBtn({ type, value }: ConditionDetailBtnPr
                             color: "black",
                             fontSize: 13,
                             fontFamily: "Pretendard, sans-serif",
-                            fontWeight: 500,
+                            fontWeight: 600,
                         }}
                     >
                         대시보드에서 더 자세히 보기

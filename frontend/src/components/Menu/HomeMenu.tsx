@@ -78,7 +78,7 @@ export default function HomeMenu() {
                                 color: '#595959',
                                 fontSize: 15,
                                 fontFamily: 'Pretendard, sans-serif',
-                                fontWeight: 500,
+                                fontWeight: 600,
                                 wordWrap: 'break-word',
                             }}
                         >
@@ -124,7 +124,7 @@ export default function HomeMenu() {
                                 color: '#595959',
                                 fontSize: 15,
                                 fontFamily: 'Pretendard, sans-serif',
-                                fontWeight: 500,
+                                fontWeight: 600,
                                 wordWrap: 'break-word',
                             }}
                         >
@@ -159,7 +159,7 @@ export default function HomeMenu() {
                                 color: '#595959',
                                 fontSize: 15,
                                 fontFamily: 'Pretendard, sans-serif',
-                                fontWeight: 500,
+                                fontWeight: 600,
                                 wordWrap: 'break-word',
                             }}
                         >

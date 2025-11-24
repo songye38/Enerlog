@@ -11,7 +11,7 @@ export interface EnergyLevelInfo {
 
 export const ENERGY_LEVELS: Record<EnergyLevel, EnergyLevelInfo> = {
   0: { level: 0, title: "완전 방전 ", emoji : '🫥', description: "몸이 완전히 굳은 느낌이고, 일어나는 것도 벅찰 정도로 에너지가 바닥났어." },
-  1: { level: 1, title: "생존모드", emoji : '😶‍🌫️', description: "몸이 진짜 무겁고, 움직이는 것 자체가 너무 힘들어." },
+  1: { level: 1, title: "생존모드", emoji : '😶‍🌫️', description: "몸이 너무너무 무겁고, 움직이는 것 자체가 너무 힘들어." },
   2: { level: 2, title: "무기력",  emoji : '🥀',description: "몸이 전반적으로 처져 있고 힘이 없지만, 움직이려면 할 수는 있는 정도야." },
   3: { level: 3, title: "느린 회복",  emoji : '🌫️',description: "몸이 조금씩 풀리긴 하는데 여전히 피곤해서 오래 집중하긴 어려워." },
   4: { level: 4, title: "기본 유지",  emoji : '🙂',description: "피곤하긴 한데 “아 오늘은 그래도 움직일 순 있겠다” 싶은 정도." },

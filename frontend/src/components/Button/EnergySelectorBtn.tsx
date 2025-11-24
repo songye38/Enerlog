@@ -31,7 +31,7 @@ export default function EnergySelectorBtn({ data }: EnergySelectorBtnProps) {
           flexDirection: "column",
           justifyContent: "flex-start",
           alignItems: "flex-start",
-          gap: 4,
+          gap: 8,
           display: "flex",
         }}
       >
@@ -54,8 +54,8 @@ export default function EnergySelectorBtn({ data }: EnergySelectorBtnProps) {
             color: "black",
             fontSize: 14,
             fontFamily: "Pretendard",
-            fontWeight: 400,
-            lineHeight: "17px",
+            fontWeight: 600,
+            lineHeight: "17.5px",
             wordWrap: "break-word",
           }}
           dangerouslySetInnerHTML={{ __html: data.description }}
@@ -73,10 +73,10 @@ export default function EnergySelectorBtn({ data }: EnergySelectorBtnProps) {
       >
         <div
           style={{
-            color: "black",
-            fontSize: 15,
+            color: COLORS.primary[700],
+            fontSize: 16,
             fontFamily: "Pretendard",
-            fontWeight: 500,
+            fontWeight: 700,
             wordWrap: "break-word",
           }}
         >

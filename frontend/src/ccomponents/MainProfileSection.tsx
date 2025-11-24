@@ -37,7 +37,7 @@ export default function MainProfileSection({ name, imageUrl }: MainProfileSectio
             color: "black",
             fontSize: 17,
             fontFamily: "Pretendard, sans-serif",
-            fontWeight: 500,
+            fontWeight: 600,
             lineHeight: '27px',
             wordWrap: "break-word",
           }}

@@ -61,9 +61,9 @@ export default function LetterSection({
                         width: 'auto',
                         textAlign: "center",
                         color: "#31418C",
-                        fontSize: 14,
+                        fontSize: 16,
                         fontFamily: "Pretendard, sans-serif",
-                        fontWeight: 400,
+                        fontWeight: 600,
                         lineHeight: '23px',
                         wordWrap: "break-word",
                     }}

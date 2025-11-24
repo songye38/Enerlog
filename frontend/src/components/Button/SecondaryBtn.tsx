@@ -41,7 +41,7 @@ export default function SecondaryBtn({ label, onClick }: SecondaryBtnProps) {
             color: '#31418C',
             fontSize: 13,
             fontFamily: 'Pretendard, sans-serif',
-            fontWeight: 500,
+            fontWeight: 600,
             wordWrap: 'break-word',
           }}
         >
