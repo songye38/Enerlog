@@ -29,8 +29,8 @@ export default function TodayEnergySection({ dateTime, message }: TodayEnergySec
           style={{
             color: "#455CC5",
             fontSize: 10,
-            fontFamily: "WAGURI, sans-serif",
-            fontWeight: 400,
+            fontFamily: "Pretendard",
+            fontWeight: 700,
             wordWrap: "break-word",
           }}
         >
@@ -42,8 +42,8 @@ export default function TodayEnergySection({ dateTime, message }: TodayEnergySec
           style={{
             color: "#455CC5",
             fontSize: 20,
-            fontFamily: "WAGURI, sans-serif",
-            fontWeight: 400,
+            fontFamily: "Pretendard",
+            fontWeight: 900,
             lineHeight: "43px",
             wordWrap: "break-word",
           }}

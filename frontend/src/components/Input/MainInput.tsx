@@ -19,9 +19,10 @@ export default function MainInput({
     return (
         <div
             style={{
+                width: "100%",
                 alignSelf: "stretch",
                 padding: "12px 12px 4px 12px",
-                backgroundColor: COLORS.primary[200],
+                backgroundColor: COLORS.primary[100],
                 borderRadius: 8,
                 display: "flex",
                 flexDirection: "column",
@@ -56,7 +57,7 @@ export default function MainInput({
                     fontWeight: 400,
                     lineHeight: "21px",
                     color: type === "password" ? "black" : "black",
-                    backgroundColor: COLORS.primary[200],
+                    backgroundColor: COLORS.primary[100],
                     borderRadius: 6,
                     width: "100%",
                     boxSizing: "border-box",

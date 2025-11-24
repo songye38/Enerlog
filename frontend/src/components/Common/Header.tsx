@@ -46,7 +46,10 @@ export default function Header() {
                     src={LogoIcon}
                     alt="로고"
                     style={{ width: 132, cursor: "pointer" }}
-                    onClick={() => navigate("/")}  // 클릭 시 메인페이지로 이동
+                    onClick={() => {
+                        setMenuOpen(false);  // 메뉴 닫기
+                        navigate("/");       // 페이지 이동
+                    }}
                 />
 
 
@@ -136,7 +139,14 @@ export default function Header() {
                         background: "white",
                     }}
                 >
-                    <HomeMenu />
+                    {menuOpen && (
+                        <div ref={menuRef} style={{ position: 'absolute', top: '100%', right: 0, zIndex: 1000 }}>
+                            <HomeMenu onNavigate={(path) => {
+                                setMenuOpen(false);  // 메뉴 닫기
+                                navigate(path);       // 페이지 이동
+                            }} />
+                        </div>
+                    )}
                 </div>
             )}
         </div>

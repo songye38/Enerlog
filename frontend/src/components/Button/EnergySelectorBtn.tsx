@@ -47,7 +47,7 @@ export default function EnergySelectorBtn({ data }: EnergySelectorBtnProps) {
                         alignSelf: "stretch",
                         color: "black",
                         fontSize: 20,
-                        fontFamily: "Pretendard",
+                        fontFamily: "SchoolSafeDictation, sans-serif",
                         fontWeight: 400,
                         lineHeight: "16px",
                         wordWrap: "break-word",
@@ -59,10 +59,10 @@ export default function EnergySelectorBtn({ data }: EnergySelectorBtnProps) {
                     style={{
                         alignSelf: "stretch",
                         color: "black",
-                        fontSize: 14,
-                        fontFamily: "Pretendard",
+                        fontSize: 17,
+                        fontFamily: "IsYun, sans-serif",
                         fontWeight: 600,
-                        lineHeight: "17.5px",
+                        lineHeight: "18.2px",
                         wordWrap: "break-word",
                     }}
                     dangerouslySetInnerHTML={{ __html: data.description }}
