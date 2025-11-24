@@ -41,8 +41,8 @@ export default function TodayEnergySection({ dateTime, message }: TodayEnergySec
         <div
           style={{
             color: "#455CC5",
-            fontSize: 20,
-            fontFamily: "Pretendard",
+            fontSize: 22,
+            fontFamily: "Godo",
             fontWeight: 900,
             lineHeight: "43px",
             wordWrap: "break-word",

@@ -31,6 +31,33 @@ export default function EnergySelectorBtn({ data }: EnergySelectorBtnProps) {
                 display: "inline-flex",
             }}
         >
+
+            {/* 하단 레벨 표시 */}
+            <div
+                style={{
+                    alignSelf: "stretch",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    display: "inline-flex",
+                }}
+            >
+                <div
+                    style={{
+                        color: COLORS.primary[700],
+                        fontSize: 23,
+                        fontFamily: "IsYun, sans-serif",
+                        fontWeight: 700,
+                        wordWrap: "break-word",
+                    }}
+                >
+                    {data.level} : {data.title}
+                </div>
+
+                <div style={{ flex: "1 1 0", height: 8 }} />
+                <img src={arrow} alt="로고" style={{ width: 24 }} />
+
+
+            </div>
             {/* 상단 콘텐츠 */}
             <div
                 style={{
@@ -42,19 +69,19 @@ export default function EnergySelectorBtn({ data }: EnergySelectorBtnProps) {
                     display: "flex",
                 }}
             >
-                <div
+                {/* <div
                     style={{
                         alignSelf: "stretch",
                         color: "black",
                         fontSize: 20,
-                        fontFamily: "SchoolSafeDictation, sans-serif",
+                        fontFamily: "IsYun, sans-serif",
                         fontWeight: 400,
                         lineHeight: "16px",
                         wordWrap: "break-word",
                     }}
                 >
                     {data.emoji}
-                </div>
+                </div> */}
                 <div
                     style={{
                         alignSelf: "stretch",
@@ -69,32 +96,7 @@ export default function EnergySelectorBtn({ data }: EnergySelectorBtnProps) {
                 />
             </div>
 
-            {/* 하단 레벨 표시 */}
-            <div
-                style={{
-                    alignSelf: "stretch",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    display: "inline-flex",
-                }}
-            >
-                <div
-                    style={{
-                        color: COLORS.primary[700],
-                        fontSize: 16,
-                        fontFamily: "Pretendard",
-                        fontWeight: 700,
-                        wordWrap: "break-word",
-                    }}
-                >
-                    {data.level} : {data.title}
-                </div>
 
-                <div style={{ flex: "1 1 0", height: 8 }} />
-                <img src={arrow} alt="로고" style={{ width: 24 }} />
-
-
-            </div>
         </div>
     );
 }
