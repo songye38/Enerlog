@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import RecommendActivitySection from "../ccomponents/RecommendedActivitySection";
+import MakeMyActivitySection from "../ccomponents/MakeMyActivitySection"; // 추가
 import type { ActivityFeed } from "../types/ActivityFeed";
 
 const mockActivities: ActivityFeed[] = [
@@ -42,29 +43,19 @@ const mockActivities: ActivityFeed[] = [
 const RecordPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const totalSlides = mockActivities.length + 1; // +1: MakeMyActivitySection
+
   const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => setCurrentIndex((prev) => Math.min(prev + 1, mockActivities.length - 1)),
+    onSwipedLeft: () => setCurrentIndex((prev) => Math.min(prev + 1, totalSlides - 1)),
     onSwipedRight: () => setCurrentIndex((prev) => Math.max(prev - 1, 0)),
-    trackMouse: true, // 마우스로도 테스트 가능
+    trackMouse: true,
   });
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 24 }}>
       {/* 슬라이드 영역 */}
-      <div
-        {...swipeHandlers}
-        style={{
-          overflow: "hidden",
-          width: 390,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            transition: "transform 0.3s ease",
-            transform: `translateX(-${currentIndex * 390}px)`,
-          }}
-        >
+      <div {...swipeHandlers} style={{ overflow: "hidden", width: 390 }}>
+        <div style={{ display: "flex", transition: "transform 0.3s ease", transform: `translateX(-${currentIndex * 390}px)` }}>
           {mockActivities.map((activity, index) => (
             <RecommendActivitySection
               key={index}
@@ -74,12 +65,13 @@ const RecordPage = () => {
               onDoLater={() => console.log("나중에 클릭!", index)}
             />
           ))}
+          <MakeMyActivitySection key="make-my" /> {/* 새 컴포넌트 추가 */}
         </div>
       </div>
 
       {/* 인디케이터 */}
       <div style={{ display: "flex", justifyContent: "center", gap: 5 }}>
-        {mockActivities.map((_, index) => (
+        {Array.from({ length: totalSlides }).map((_, index) => (
           <div
             key={index}
             onClick={() => setCurrentIndex(index)}
