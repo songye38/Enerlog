@@ -1,8 +1,8 @@
-// import MainBtn from "../components/Button/MainBtn";
 import MainProfileSection from "../ccomponents/MainProfileSection";
 import LetterSection from "../ccomponents/LeterSection";
 import TodayEnergySection from "../ccomponents/TodayEnergySection";
 import ActRecordSection from "../ccomponents/ActRecordSection";
+import ConditionSection from "../ccomponents/ConditionSection";
 
 
 const HomePage = () => {
@@ -26,9 +26,9 @@ const HomePage = () => {
             />
 
             <ActRecordSection />
+            <ConditionSection />
+            
 
-
-            {/* <MainBtn>회원가입</MainBtn> */}
         </div>
     );
 };
