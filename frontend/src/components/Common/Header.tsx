@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import menuIcon from "/icons/24X24/menu.png";
 import HomeMenu from "../Menu/HomeMenu";
 
