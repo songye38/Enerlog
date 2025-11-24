@@ -13,8 +13,7 @@ export default function TodayEnergySection({ dateTime, message }: TodayEnergySec
       <div
         style={{
           width: "100%",
-          paddingTop: 20,
-          paddingBottom: 12,
+          paddingTop: 2,
           paddingLeft: 12,
           flexDirection: "column",
           justifyContent: "center",
@@ -41,10 +40,10 @@ export default function TodayEnergySection({ dateTime, message }: TodayEnergySec
         <div
           style={{
             color: "#455CC5",
-            fontSize: 22,
-            fontFamily: "Godo",
+            fontSize: 25,
+            fontFamily: "IsYun, sans-serif",
             fontWeight: 900,
-            lineHeight: "43px",
+            lineHeight: "auto",
             wordWrap: "break-word",
           }}
         >

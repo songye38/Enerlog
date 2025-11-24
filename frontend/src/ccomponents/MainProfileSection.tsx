@@ -35,8 +35,8 @@ export default function MainProfileSection({ name, imageUrl }: MainProfileSectio
         <div
           style={{
             color: "black",
-            fontSize: 17,
-            fontFamily: "Pretendard, sans-serif",
+            fontSize: 20,
+            fontFamily: "IsYun, sans-serif",
             fontWeight: 600,
             lineHeight: '27px',
             wordWrap: "break-word",

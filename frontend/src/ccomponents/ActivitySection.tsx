@@ -110,8 +110,8 @@ export default function ActivitySection({ activity }: ActivitySectionProps) {
             <div
               style={{
                 color: "black",
-                fontSize: 19,
-                fontFamily: "Pretendard",
+                fontSize: 25,
+                fontFamily: "IsYun, sans-serif",
                 fontWeight: 400,
                 lineHeight: "24px",
                 textAlign: "center",

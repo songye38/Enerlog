@@ -81,7 +81,7 @@ export default function ActRecordBtn({ activity, serverTime, onClick }: ActRecor
             style={{
               color: 'white',
               fontSize: 17,
-              fontFamily: 'Pretendard, sans-serif',
+              fontFamily: "IsYun, sans-serif",
               fontWeight: 600,
               wordWrap: 'break-word'
             }}
