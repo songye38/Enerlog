@@ -4,6 +4,8 @@ import type { ConditionListPayload } from "../types/ConditionTypes";
 import MainInput from "../components/Input/MainInput";
 import { useState } from "react";
 import MainBtn from "../components/Button/MainBtn";
+import GoToMainBtn from "../components/Button/GoToMainBtn";
+
 
 
 
@@ -33,6 +35,7 @@ const AddEnergyPage = () => {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+            <GoToMainBtn />
             <div style={{ textAlign: 'center', color: 'black', fontSize: 18, fontFamily: 'Pretendard', fontWeight: '600', wordWrap: 'break-word' }}>나의 에너지 레벨 기록하기</div>
             <div>
                 <ConditionListSection
