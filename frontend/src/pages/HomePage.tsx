@@ -6,6 +6,7 @@ import ActRecordBtn from "../components/Button/ActRecordBtn";
 import { useNavigate } from 'react-router-dom';
 import SecondaryBtn from "../components/Button/SecondaryBtn";
 
+
 const HomePage = () => {
 
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ const HomePage = () => {
             메인페이지
 
             <MainBtn>회원가입</MainBtn>
-
+            
             {/* EnergySelectorBtn에 실제 데이터 넘기기 */}
             <EnergySelectorBtn data={ENERGY_LEVELS[0]} />
             <EnergySelectorBtn data={ENERGY_LEVELS[5]} />
