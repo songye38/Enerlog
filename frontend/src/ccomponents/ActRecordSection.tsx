@@ -13,7 +13,7 @@ export default function ActRecordSection() {
     };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', marginTop: 24,}}>
+        <div style={{ display: 'flex', flexDirection: 'column', marginTop: 60,}}>
             <div style={{ color: 'black', fontSize: 15, fontFamily: 'Pretendard', fontWeight: '600', wordWrap: 'break-word' }}>아직 기록하지 않은 행동이 있어</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 12 }}>
                 <ActRecordBtn activity={activity} serverTime="10:08:08" />

@@ -17,7 +17,7 @@ const HomePage = () => {
             <LetterSection
                 date="25.11.16"
                 title="오늘의 편지"
-                content="안녕, 레나야! 오늘 너한테 필요한 건 거창한 변화가 아니라 ‘작은 회복’ 같아. 따뜻한 물 한 잔 마시기로 시작해보는 건 어떨까?"
+                content="안녕, 레나야! </br> 오늘 너한테 필요한 건 </br>거창한 변화가 아니라 ‘작은 회복’ 같아.</br> 따뜻한 물 한 잔 마시기로 시작해보는 건 어떨까?"
             />
 
             <TodayEnergySection
@@ -27,7 +27,7 @@ const HomePage = () => {
 
             <ActRecordSection />
             <ConditionSection />
-            
+
 
         </div>
     );
