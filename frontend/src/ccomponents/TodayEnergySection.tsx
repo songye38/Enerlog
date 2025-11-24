@@ -8,7 +8,7 @@ interface TodayEnergySectionProps {
 
 export default function TodayEnergySection({ dateTime, message }: TodayEnergySectionProps) {
   return (
-    <div style={{width:'100wv'}}>
+    <div style={{width:'390px'}}>
       {/* 제목 부분 */}
       <div
         style={{
