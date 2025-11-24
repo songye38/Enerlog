@@ -16,7 +16,11 @@ export default function HomeMenu() {
         { label: "기록", path: "/archive", icon: archiveIcon },
         { label: "프로그램", path: "/program", icon: programIcon },
         { label: "정보 수정", path: "/profile", icon: profileIcon },
-        { label: "에너지 레벨", path: "/energy", icon: energyIcon },
+    ];
+
+    // 메뉴 항목 + 이동할 경로
+    const archiveItems = [
+        { label: "에너지 레벨 관리", path: "/energy", icon: energyIcon },
         { label: "활동 관리", path: "/acts", icon: actsIcon },
     ];
 
@@ -53,6 +57,52 @@ export default function HomeMenu() {
                 }}
             >
                 {menuItems.map((item, idx) => (
+                    <div
+                        key={idx}
+                        onClick={() => navigate(item.path)}
+                        style={{
+                            alignSelf: 'stretch',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            gap: 6,
+                            display: 'inline-flex',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        {/* 아이콘 */}
+                        <img src={item.icon} alt={item.label} style={{ width: 12, height: 12 }} />
+
+                        {/* 텍스트 */}
+                        <div
+                            style={{
+                                color: '#595959',
+                                fontSize: 15,
+                                fontFamily: 'Pretendard, sans-serif',
+                                fontWeight: 500,
+                                wordWrap: 'break-word',
+                            }}
+                        >
+                            {item.label}
+                        </div>
+                    </div>
+                ))}
+
+            </div>
+
+            {/* 아카이브 항목 */}
+            <div
+                style={{
+                    width: '100%',
+                    paddingBottom: 20,
+                    borderBottom: '1px #D9D9D9 solid',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-start',
+                    alignItems: 'flex-start',
+                    gap: 16,
+                    display: 'flex',
+                }}
+            >
+                {archiveItems.map((item, idx) => (
                     <div
                         key={idx}
                         onClick={() => navigate(item.path)}
