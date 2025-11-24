@@ -82,7 +82,7 @@ export default function ActRecordBtn({ activity, serverTime, onClick }: ActRecor
               color: 'white',
               fontSize: 17,
               fontFamily: "IsYun, sans-serif",
-              fontWeight: 600,
+              fontWeight: 500,
               wordWrap: 'break-word'
             }}
           >
@@ -92,7 +92,7 @@ export default function ActRecordBtn({ activity, serverTime, onClick }: ActRecor
         <div
           style={{
             color: 'black',
-            fontSize: 17,
+            fontSize: 15,
             fontFamily: 'Pretendard, sans-serif',
             fontWeight: 600,
             wordWrap: 'break-word'

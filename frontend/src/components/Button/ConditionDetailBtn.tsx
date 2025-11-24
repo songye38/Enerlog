@@ -73,7 +73,7 @@ export default function ConditionDetailBtn({ type, value }: ConditionDetailBtnPr
                     color: "black",
                     fontSize: 61,
                     fontFamily: "Outfit, sans-serif",
-                    fontWeight: 700,
+                    fontWeight: 500,
                 }}
             >
                 {value}

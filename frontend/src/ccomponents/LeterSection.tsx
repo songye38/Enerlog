@@ -60,11 +60,11 @@ export default function LetterSection({
                     style={{
                         width: 'auto',
                         textAlign: "center",
-                        color: "#31418C",
-                        fontSize: 21,
+                        color: "black",
+                        fontSize: 23,
                         fontFamily: "IncheonEducation, sans-serif",
                         fontWeight: 600,
-                        lineHeight: '23px',
+                        lineHeight: '28px',
                         wordWrap: "break-word",
                     }}
                     dangerouslySetInnerHTML={{ __html: content }}
