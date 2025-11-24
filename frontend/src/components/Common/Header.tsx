@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import menuIcon from "/icons/24X24/menu.png";
 import HomeMenu from "../Menu/HomeMenu";
+import LogoIcon from "/common/logo.png"
 
 export default function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -39,18 +40,8 @@ export default function Header() {
                 }}
             >
                 {/* 로고 */}
-                <div
-                    style={{
-                        color: "#455CC5",
-                        fontSize: 64,
-                        fontFamily: "WagleWagle, sans-serif",
-                        fontWeight: 400,
-                        lineHeight: "64px",
-                        wordWrap: "break-word",
-                    }}
-                >
-                    Enerlog
-                </div>
+                <img src={LogoIcon} alt="로고" style={{width:132}} />
+
 
                 {/* 메뉴 영역 */}
                 <div
