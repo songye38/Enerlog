@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import {ActivityPage,ArchivePage,DashboardPage,EnergyPage,HomePage,LogInPage,ProfilePage,ProgramPage,SignUpPage} from './pages'
-
+import Header from "./components/Common/Header";
 
 
 function AppContent() {
@@ -48,6 +48,10 @@ function App() {
   return (
     // <AuthProvider>
       <div>
+        {/* 공통 Header */}
+        <Header />
+
+        {/* 나머지 페이지 내용 */}
         <AppContent />
       </div>
     // </AuthProvider>
