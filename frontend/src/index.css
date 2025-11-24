@@ -17,6 +17,15 @@
   box-sizing: border-box;
 }
 
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px #D2D8F1 inset !important; /* 원하는 배경색 */
+    -webkit-text-fill-color: #000 !important; /* 글자 색 */
+}
+
 a {
   font-weight: 500;
   color: #646cff;
