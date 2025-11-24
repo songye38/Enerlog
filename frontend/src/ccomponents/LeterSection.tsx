@@ -31,6 +31,7 @@ export default function LetterSection({
                 alignItems: "center",
                 gap: 20,
                 display: "inline-flex",
+                
             }}
         >
             {/* 편지 제목 + 내용 */}

@@ -21,6 +21,7 @@ export default function TodayEnergySection({ dateTime, message }: TodayEnergySec
           alignItems: "flex-start",
           display: "inline-flex",
           boxSizing: "border-box",
+          marginTop: 24
         }}
       >
         {/* 날짜/시간 */}

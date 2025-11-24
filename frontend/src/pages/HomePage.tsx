@@ -1,22 +1,12 @@
-import MainBtn from "../components/Button/MainBtn";
-import type { ActivityFeed } from "../types/ActivityFeed";
-import ActRecordBtn from "../components/Button/ActRecordBtn";
+// import MainBtn from "../components/Button/MainBtn";
 import MainProfileSection from "../ccomponents/MainProfileSection";
 import LetterSection from "../ccomponents/LeterSection";
 import TodayEnergySection from "../ccomponents/TodayEnergySection";
+import ActRecordSection from "../ccomponents/ActRecordSection";
 
 
 const HomePage = () => {
 
-    const activity: ActivityFeed = {
-        level: 3,
-        isHearted: false,
-        title: "가벼운 산책",
-        description: "짧은 산책으로 기분 전환",
-        tags: ["걷기", "운동"],
-        count: 0,
-        durationMinutes: 20
-    };
     return (
         <div>
             <MainProfileSection
@@ -35,9 +25,10 @@ const HomePage = () => {
                 message="레나야, 지금 너의 에너지는 어때?"
             />
 
-            <ActRecordBtn activity={activity} serverTime="10:08:08" />
+            <ActRecordSection />
 
-            <MainBtn>회원가입</MainBtn>
+
+            {/* <MainBtn>회원가입</MainBtn> */}
         </div>
     );
 };

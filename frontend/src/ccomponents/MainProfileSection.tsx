@@ -15,6 +15,7 @@ export default function MainProfileSection({ name, imageUrl }: MainProfileSectio
         alignItems: "center",
         gap: 6,
         display: "inline-flex",
+        marginTop: 32
       }}
     >
       {/* 프로필 사진 + 이름 */}
