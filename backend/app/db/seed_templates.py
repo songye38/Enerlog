@@ -4,7 +4,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import uuid
 from app.db.database import SessionLocal
-from app.db.models import SessionType
 
 
 
