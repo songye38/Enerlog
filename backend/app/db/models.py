@@ -26,6 +26,22 @@ class TagTypeEnum(str, enum.Enum):
     mental = "mental"
 
 # -----------------------
+# energy Level Enum
+# -----------------------
+class EnergyLevelEnum(int, enum.Enum):
+    level_0 = 0
+    level_1 = 1
+    level_2 = 2
+    level_3 = 3
+    level_4 = 4
+    level_5 = 5
+    level_6 = 6
+    level_7 = 7
+    level_8 = 8
+    level_9 = 9
+    level_10 = 10
+
+# -----------------------
 # Phase Enum
 # -----------------------
 class PhaseEnum(str, enum.Enum):
@@ -83,6 +99,7 @@ class Activity(Base):
 # -----------------------
 # Activity Templates
 # -----------------------
+# ActivityTemplate 예시
 class ActivityTemplate(Base):
     __tablename__ = "activity_templates"
 
@@ -93,10 +110,8 @@ class ActivityTemplate(Base):
     good_point = Column(Text)
     insight = Column(Text)
 
-    # 에너지 레벨 FK
-    energy_level_id = Column(UUID(as_uuid=True), ForeignKey("energy_levels.id"), nullable=False)
-    energy_level = relationship("EnergyLevel")
-
+    # 공용 에너지 레벨 0~10
+    energy_level = Column(Enum(EnergyLevelEnum), nullable=False)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

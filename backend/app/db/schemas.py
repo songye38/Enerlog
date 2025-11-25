@@ -3,6 +3,7 @@ from typing import List, Optional
 from pydantic import BaseModel, EmailStr
 from uuid import UUID
 from enum import Enum
+from app.db.models import EnergyLevelEnum
 
 # -----------------------
 # Enums
@@ -87,7 +88,8 @@ class ActivityTemplateCreate(BaseModel):
     duration_minutes: Optional[int] = None
     good_point: Optional[str] = None
     insight: Optional[str] = None
-    energy_level_id: UUID  # 필수
+    energy_level: EnergyLevelEnum  # 0~10 숫자 레벨 Enum
+
 
 class ActivityTemplateOut(BaseModel):
     id: UUID
@@ -98,10 +100,11 @@ class ActivityTemplateOut(BaseModel):
     insight: Optional[str]
     created_at: datetime
     updated_at: datetime
-    energy_level: EnergyLevelMiniOut  # 관계 객체 포함
+    energy_level: EnergyLevelEnum  # Enum 값 그대로
 
     class Config:
         orm_mode = True
+
 
 # -----------------------
 # EnergyLevel Schemas
