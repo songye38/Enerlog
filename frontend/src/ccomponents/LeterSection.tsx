@@ -61,10 +61,10 @@ export default function LetterSection({
                         width: 'auto',
                         textAlign: "center",
                         color: "black",
-                        fontSize: 23,
-                        fontFamily: "IncheonEducation, sans-serif",
+                        fontSize: 18,
+                        fontFamily: "IsYun, sans-serif",
                         fontWeight: 600,
-                        lineHeight: '28px',
+                        lineHeight: '22px',
                         wordWrap: "break-word",
                     }}
                     dangerouslySetInnerHTML={{ __html: content }}
