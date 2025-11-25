@@ -63,7 +63,6 @@ class User(Base):
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
     activities = relationship("Activity", back_populates="user")
-    energy_levels = relationship("EnergyLevel", back_populates="user")
     user_tags = relationship("UserTag", back_populates="user")
     behaves = relationship("Behave", back_populates="user")
     letters = relationship("Letter", back_populates="user")
@@ -110,11 +109,13 @@ class ActivityTemplate(Base):
     good_point = Column(Text)
     insight = Column(Text)
 
-    # 공용 에너지 레벨 0~10
-    energy_level = Column(Enum(EnergyLevelEnum), nullable=False)
+    # 에너지 레벨 FK
+    energy_level_id = Column(UUID(as_uuid=True), ForeignKey("energy_levels.id"), nullable=False)
+    energy_level = relationship("EnergyLevel")  # 관계 연결
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
 
 # -----------------------
 # Energy Levels
@@ -123,14 +124,13 @@ class EnergyLevel(Base):
     __tablename__ = "energy_levels"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     title = Column(String(255), nullable=False)
+    energy_level = Column(Enum(EnergyLevelEnum), nullable=False)
     value = Column(Integer)
     description = Column(Text)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
-    user = relationship("User", back_populates="energy_levels")
 
 # -----------------------
 # Tags
@@ -151,7 +151,11 @@ class PresetTag(Base):
     __tablename__ = "preset_tags"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    energy_level_id = Column(UUID(as_uuid=True), ForeignKey("energy_levels.id"))
+        # 에너지 레벨 FK
+    energy_level_id = Column(UUID(as_uuid=True), ForeignKey("energy_levels.id"), nullable=False)
+    energy_level = relationship("EnergyLevel", backref="preset_tags")
+
+
     type = Column(String(50), nullable=False)  # 'body' / 'mental'
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

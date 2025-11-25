@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from app.db.database import engine
 from app.db.models import Base
-from app.db.seed_templates import seed_templates
+#from app.db.seed_templates import seed_templates
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
-seed_templates()
+#seed_templates()
 
 app = FastAPI(root_path="", title="My API")
 
