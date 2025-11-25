@@ -66,6 +66,12 @@ class Activity(Base):
     duration_minutes = Column(Integer)
     good_point = Column(Text)
     insight = Column(Text)
+
+    # 에너지 레벨 FK
+    energy_level_id = Column(UUID(as_uuid=True), ForeignKey("energy_levels.id"), nullable=False)
+    energy_level = relationship("EnergyLevel")
+
+
     is_deleted = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
@@ -86,6 +92,12 @@ class ActivityTemplate(Base):
     duration_minutes = Column(Integer)
     good_point = Column(Text)
     insight = Column(Text)
+
+    # 에너지 레벨 FK
+    energy_level_id = Column(UUID(as_uuid=True), ForeignKey("energy_levels.id"), nullable=False)
+    energy_level = relationship("EnergyLevel")
+
+
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 

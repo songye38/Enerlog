@@ -40,7 +40,7 @@ class UserOut(BaseModel):
         orm_mode = True
 
 # -----------------------
-# Activity Schemas
+# Activity Schemas (Energy Level 포함)
 # -----------------------
 class ActivityCreate(BaseModel):
     user_id: UUID
@@ -50,6 +50,16 @@ class ActivityCreate(BaseModel):
     duration_minutes: Optional[int] = None
     good_point: Optional[str] = None
     insight: Optional[str] = None
+    energy_level_id: UUID  # 필수
+
+
+class EnergyLevelMiniOut(BaseModel):
+    id: UUID
+    title: str
+    value: Optional[int]
+
+    class Config:
+        orm_mode = True
 
 class ActivityOut(BaseModel):
     id: UUID
@@ -63,6 +73,7 @@ class ActivityOut(BaseModel):
     is_deleted: bool
     created_at: datetime
     updated_at: datetime
+    energy_level: EnergyLevelMiniOut  # 관계 객체 포함
 
     class Config:
         orm_mode = True
@@ -76,6 +87,7 @@ class ActivityTemplateCreate(BaseModel):
     duration_minutes: Optional[int] = None
     good_point: Optional[str] = None
     insight: Optional[str] = None
+    energy_level_id: UUID  # 필수
 
 class ActivityTemplateOut(BaseModel):
     id: UUID
@@ -86,6 +98,7 @@ class ActivityTemplateOut(BaseModel):
     insight: Optional[str]
     created_at: datetime
     updated_at: datetime
+    energy_level: EnergyLevelMiniOut  # 관계 객체 포함
 
     class Config:
         orm_mode = True
@@ -110,6 +123,9 @@ class EnergyLevelOut(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+
 
 # -----------------------
 # Tag Schemas
