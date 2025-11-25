@@ -1,13 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-# from app.db.models import Base
+from app.db.database import engine
+from app.db.models import Base
 
 
 
 app = FastAPI()
 
-#Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
