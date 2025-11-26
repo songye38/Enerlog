@@ -13,11 +13,12 @@ router = APIRouter(prefix="/activities", tags=["Activities"])
 # -----------------------
 @router.post("/", response_model=ActivityOut)
 def create_activity(activity_in: ActivityCreate, db: Session = Depends(get_db)):
-    # 에너지 레벨 확인
-    energy = db.query(EnergyLevel).filter(EnergyLevel.id == activity_in.energy_level_id).first()
+    # EnergyLevel 조회
+    energy = db.query(EnergyLevel).filter(EnergyLevel.value == activity_in.energy_level.value).first()
     if not energy:
         raise HTTPException(status_code=404, detail="Energy level not found")
 
+    # Activity 생성
     activity = Activity(
         user_id=activity_in.user_id,
         title=activity_in.title,
@@ -27,10 +28,18 @@ def create_activity(activity_in: ActivityCreate, db: Session = Depends(get_db)):
         insight=activity_in.insight,
         energy_level_id=energy.id
     )
-    db.add(activity)
-    db.commit()
-    db.refresh(activity)
+
+    # 트랜잭션 처리
+    try:
+        db.add(activity)
+        db.commit()
+        db.refresh(activity)
+    except Exception as e:
+        db.rollback()  # 실패 시 롤백
+        raise HTTPException(status_code=500, detail=f"Failed to create activity: {e}")
+
     return activity
+
 
 # @router.get("/", response_model=List[ActivityOut])
 # def list_activities(db: Session = Depends(get_db)):

@@ -56,7 +56,11 @@ class ActivityCreate(BaseModel):
     duration_minutes: Optional[int] = None
     good_point: Optional[str] = None
     insight: Optional[str] = None
-    energy_level_id: UUID  # 필수
+    energy_level: EnergyLevelEnum  
+
+
+    ## 내부적으로 energy_level값을 찾아서 넣도록 함
+    #energy_level_id: UUID  
 
 
 class EnergyLevelMiniOut(BaseModel):

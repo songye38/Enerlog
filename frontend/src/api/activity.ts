@@ -22,8 +22,7 @@ export interface ActivityCreatePayload {
     duration_minutes? : number;
     good_point? : string;
     insight? : string;
-    energy_level_id : string;
-
+    energy_level: EnergyLevel; // 0~10 숫자 타입
 }
 
 // class ActivityCreate(BaseModel):
@@ -34,7 +33,7 @@ export interface ActivityCreatePayload {
 //     duration_minutes: Optional[int] = None
 //     good_point: Optional[str] = None
 //     insight: Optional[str] = None
-//     energy_level_id: UUID  # 필수
+//         energy_level: EnergyLevelEnum  
 
 /*----------------------------------------------
  * ✅ ActivityTemplate 리스트 가져오기
