@@ -25,9 +25,11 @@ router = APIRouter(prefix="/users", tags=["users"])
 # -----------------------
 @router.post("/register", response_model=UserOut)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
+
     existing = db.query(models.User).filter(models.User.email == user.email).first()
     if existing:
         raise HTTPException(status_code=400, detail="이미 가입된 이메일이에요.")
+    print("password to hash:", user.hashed_password, len(user.hashed_password))
     new_user = create_user(db, email=user.email, password=user.hashed_password, name=user.nickname)
     return new_user
 
