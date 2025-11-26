@@ -45,7 +45,7 @@ export async function fetchActivityTemplates(): Promise<ActivityTemplateOut[]> {
 export async function createActivity(payload: Omit<ActivityCreatePayload, "user_id">) {
     console.log("사용자가 만든 활동 저장 payload 데이터:",payload); // 🔹 여기에 찍기
   try {
-    const res = await Api.post("/activities", payload, {
+    const res = await Api.post("/activities/", payload, {
       withCredentials: true, // ⚡ 인증 쿠키 자동 포함
     });
     return res.data;
