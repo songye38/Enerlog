@@ -95,6 +95,8 @@ class ActivityTemplateCreate(BaseModel):
     energy_level: EnergyLevelEnum  # 0~10 숫자 레벨 Enum
 
 
+from pydantic import BaseModel, field_validator, model_validator
+
 class ActivityTemplateOut(BaseModel):
     id: UUID
     title: str
@@ -104,9 +106,19 @@ class ActivityTemplateOut(BaseModel):
     insight: Optional[str]
     created_at: datetime
     updated_at: datetime
-    energy_level: EnergyLevelEnum  # Enum 값
-    class Config:
-        from_attributes = True  # orm_mode 대신
+    energy_level: int
+
+    model_config = {
+        "from_attributes": True  # orm_mode 대체
+    }
+
+    @model_validator(mode='before')
+    def convert_enum(cls, values):
+        if 'energy_level' in values and hasattr(values['energy_level'], 'value'):
+            values['energy_level'] = values['energy_level'].value
+        return values
+
+
 
 
 # -----------------------
