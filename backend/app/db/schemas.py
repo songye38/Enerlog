@@ -104,10 +104,9 @@ class ActivityTemplateOut(BaseModel):
     insight: Optional[str]
     created_at: datetime
     updated_at: datetime
-    energy_level: EnergyLevelEnum  # Enum 값 그대로
-
+    energy_level: EnergyLevelEnum  # Enum 값
     class Config:
-        orm_mode = True
+        from_attributes = True  # orm_mode 대신
 
 
 # -----------------------
