@@ -4,6 +4,7 @@ import arrowIcon from '/icons/14X14/arrow-narrow-up-right.png'
 import EnergyLevelSelectSlider from "../components/Slide/EnergyLevelSelectSlider";
 import MainBtn from "../components/Button/MainBtn";
 import { createActivity } from "../api/activity";
+import { toast } from "react-toastify";
 //import { ClipLoader } from "react-spinners";
 
 
@@ -36,8 +37,9 @@ export default function MakeMyActivitySectionS() {
             energy_level: energyLevel!
         };
 
-        const newActivity = await createActivity(payload);
-        console.log("활동 생성 성공:", newActivity);
+        const _newActivity = await createActivity(payload);
+        toast.success("활동이 저장되었습니다.")
+        
 
         // 성공 후 UX 흐름 (예: 페이지 이동 또는 상태 초기화)
         setTitle("");
@@ -48,7 +50,7 @@ export default function MakeMyActivitySectionS() {
 
     } catch (error) {
         console.error("활동 생성 실패:", error);
-        alert("활동 생성 실패: " + (error as Error).message);
+        toast.error("활동 저장 실패")
     } finally {
         _setLoading(false); // 🔹 로딩 상태 끝
     }

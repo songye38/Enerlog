@@ -59,10 +59,6 @@ class ActivityCreate(BaseModel):
     energy_level: EnergyLevelEnum  
 
 
-    ## 내부적으로 energy_level값을 찾아서 넣도록 함
-    #energy_level_id: UUID  
-
-
 class EnergyLevelMiniOut(BaseModel):
     id: UUID
     title: str
