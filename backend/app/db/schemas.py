@@ -40,6 +40,10 @@ class UserOut(BaseModel):
     class Config:
         orm_mode = True
 
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
 # -----------------------
 # Activity Schemas (Energy Level 포함)
 # -----------------------
