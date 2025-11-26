@@ -14,7 +14,7 @@ const mockActivities: ActivityFeed[] = [
     count: 4,
     goodPoint: "집중력 회복과 피로 회복에 도움",
     insight: "같은 정도로 에너지가 낮았던 사람들 중 70%가 이 활동 후 조금 기운이 나서 다른 일도 시도할 수 있었다",
-    durationMinutes: 3,
+    durationMinutes: "3분",
   },
   {
     level: 2,
@@ -25,7 +25,7 @@ const mockActivities: ActivityFeed[] = [
     count: 2,
     goodPoint: "스트레스 감소 및 심신 안정",
     insight: "짧은 명상으로도 마음의 안정과 집중력 향상 효과를 경험",
-    durationMinutes: 5,
+    durationMinutes: "5분",
   },
   {
     level: 6,
@@ -36,7 +36,7 @@ const mockActivities: ActivityFeed[] = [
     count: 5,
     goodPoint: "체력 회복과 기분 전환에 도움",
     insight: "활동 후 기분이 좋아지고 작은 운동으로 에너지 회복 가능",
-    durationMinutes: 10,
+    durationMinutes: "10분",
   },
 ];
 
