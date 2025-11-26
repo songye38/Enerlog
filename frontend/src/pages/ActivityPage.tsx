@@ -51,6 +51,7 @@ const ActivityPage = () => {
                 onChange={(selected) => console.log("선택된 탭:", selected)}
             />
             <ActivityTab myActivitiesCount={5} />
+            <MakeMyActivitySectionS />
             <div style={{ marginTop: 24 }}>
                 {loading ? (
                     <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
@@ -64,7 +65,7 @@ const ActivityPage = () => {
                     </div>
                 )}
             </div>
-            <MakeMyActivitySectionS />
+            
         </div>
     );
 };
