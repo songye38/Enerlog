@@ -38,7 +38,6 @@ const ActivityPage = () => {
                     durationMinutes: tpl.duration_minutes || "",
                 }));
                 setActivities(mapped);
-                console.log("전체 활동 목록",activities)
             } catch (err) {
                 console.error("추천 활동 불러오기 실패:", err);
             }
@@ -56,7 +55,7 @@ const ActivityPage = () => {
                     count: 0,
                     durationMinutes: tpl.duration_minutes || "",
                 }));
-                console.log("사용자 전체 활동 목록",userActivities)
+                
                 setUserActivities(mapped);
             } catch (err) {
                 console.error("내 활동 불러오기 실패:", err);
@@ -67,6 +66,8 @@ const ActivityPage = () => {
 
         loadActivities();
         loadUserActivities();
+        console.log("전체 활동 목록",activities)
+        console.log("사용자 전체 활동 목록",userActivities)
     }, []);
 
     // 1️⃣ 첫 번째 필터 적용
