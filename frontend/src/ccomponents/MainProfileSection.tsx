@@ -1,4 +1,5 @@
 import BellIcon from "/icons/20X20/bell.png";
+import { useAuth } from "../hooks/useAuth";
 
 interface MainProfileSectionProps {
   name: string;
@@ -6,6 +7,8 @@ interface MainProfileSectionProps {
 }
 
 export default function MainProfileSection({ name, imageUrl }: MainProfileSectionProps) {
+
+  const { user } = useAuth();
   return (
     <div
       style={{
@@ -42,7 +45,7 @@ export default function MainProfileSection({ name, imageUrl }: MainProfileSectio
             wordWrap: "break-word",
           }}
         >
-          {name}
+          {user}
         </div>
       </div>
 
