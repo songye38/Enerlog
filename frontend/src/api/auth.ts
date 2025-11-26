@@ -3,11 +3,11 @@ import Api from "./Api";
 import type { AxiosError } from "axios";
 
 
-export interface RegisterPayload {
-  nickname: string;
+export type RegisterPayload = {
   email: string;
-  password: string;
-}
+  hashed_password: string;
+  nickname?: string;
+};
 
 export interface LoginPayload {
   email: string;

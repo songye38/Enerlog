@@ -37,7 +37,7 @@ export default function SignupFormSection() {
             await registerUser({
                 nickname,
                 email,
-                password,
+                hashed_password : password,
             });
             setSuccess("회원가입 성공! 환영해 🎉");
             toast.success("회원가입 성공! 환영해 🎉");
