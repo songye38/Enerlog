@@ -3,9 +3,12 @@ import LetterSection from "../ccomponents/LeterSection";
 import TodayEnergySection from "../ccomponents/TodayEnergySection";
 import ActRecordSection from "../ccomponents/ActRecordSection";
 import ConditionSection from "../ccomponents/ConditionSection";
+import { useAuth } from "../hooks/useAuth";
+
 
 
 const HomePage = () => {
+    const { user } = useAuth();
 
     return (
         <div>
@@ -22,7 +25,7 @@ const HomePage = () => {
 
             <TodayEnergySection
                 dateTime="25.11.20 20:47:20"
-                message="레나야, 지금 너의 에너지는 어때?"
+                message={`${user || "사용자"}야, 지금 너의 에너지는 어때?`}
             />
 
             <ActRecordSection />
