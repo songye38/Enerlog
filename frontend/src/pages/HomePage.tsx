@@ -24,7 +24,7 @@ const HomePage = () => {
             />
 
             <TodayEnergySection
-                dateTime="25.11.20 20:47:20"
+                dateTime={new Date().toLocaleString("ko-KR")} // "25.11.26 13:55:22" 같은 포맷
                 message={`${user || "사용자"}야, 지금 너의 에너지는 어때?`}
             />
 
