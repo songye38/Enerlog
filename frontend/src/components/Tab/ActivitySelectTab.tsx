@@ -6,7 +6,7 @@ interface ActivitySelectTabProps {
 
 export default function ActivitySelectTab({ onChange }: ActivitySelectTabProps) {
     const defaultOptions = [
-        "전체", "좋아요",
+        "전체",
         "에너지1", "에너지2", "에너지3", "에너지4", "에너지5",
         "에너지6", "에너지7", "에너지8", "에너지9", "에너지10"
     ];
