@@ -72,7 +72,7 @@ class ActivityOut(BaseModel):
     title: str
     description: Optional[str]
     is_public: bool
-    duration_minutes: Optional[int]
+    duration_minutes: Optional[str]
     good_point: Optional[str]
     insight: Optional[str]
     is_deleted: bool
