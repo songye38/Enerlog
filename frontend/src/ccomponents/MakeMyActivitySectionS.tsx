@@ -37,8 +37,9 @@ export default function MakeMyActivitySectionS() {
             energy_level: energyLevel!
         };
 
-        const _newActivity = await createActivity(payload);
+        const newActivity = await createActivity(payload);
         toast.success("활동이 저장되었습니다.")
+        console.log("저장 결과",newActivity)
         
 
         // 성공 후 UX 흐름 (예: 페이지 이동 또는 상태 초기화)
