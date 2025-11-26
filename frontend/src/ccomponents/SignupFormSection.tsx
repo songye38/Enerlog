@@ -7,6 +7,7 @@ import { COLORS } from "../types/Colors";
 import { registerUser } from "../api/auth";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 
 const loaderStyle: CSSProperties = {
     display: "block",
@@ -21,6 +22,7 @@ export default function SignupFormSection() {
     const [_error, setError] = useState("");
     const [_success, setSuccess] = useState("");
     const [loading, setLoading] = useState(false); // 🔹 로딩 상태 추가
+    const navigate = useNavigate();
 
     const handleSubmit = async () => {
         setError("");
@@ -41,6 +43,8 @@ export default function SignupFormSection() {
             });
             setSuccess("회원가입 성공! 환영해 🎉");
             toast.success("회원가입 성공! 환영해 🎉");
+            navigate('/login')
+
         } catch (err) {
             if (err instanceof Error) setError(err.message);
             else setError("알 수 없는 오류가 발생했어.");
