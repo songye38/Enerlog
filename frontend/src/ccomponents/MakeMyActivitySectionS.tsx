@@ -3,6 +3,7 @@ import { useState } from "react";
 import arrowIcon from '/icons/14X14/arrow-narrow-up-right.png'
 import EnergyLevelSelectSlider from "../components/Slide/EnergyLevelSelectSlider";
 import MainBtn from "../components/Button/MainBtn";
+import { createActivity } from "../api/activity";
 //import { ClipLoader } from "react-spinners";
 
 
@@ -17,31 +18,41 @@ export default function MakeMyActivitySectionS() {
 
     const isSubmitDisabled = loading || energyLevel === null || !title.trim() || !description.trim();
 
+
     async function handleSubmit() {
-        //서버에 저장하는 함수
-        //! 아직 연결안함
-        // if (isSubmitDisabled) return; // 안전 가드
+    if (isSubmitDisabled) return; // 안전 가드
 
-        // setLoading(true);
+    _setLoading(true); // 🔹 로딩 상태 시작
 
-        // try {
-        //     await fetch("/api/save", {
-        //         method: "POST",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify({
-        //             energyLevel,
-        //             title,
-        //             description,
-        //         }),
-        //     });
+    try {
+        // payload 생성
+        const payload = {
+            title,
+            description,
+            is_public: false, // 기본값
+            duration_minutes: duration,
+            good_point: goodPoint || undefined,
+            insight: "", // 필요하면 따로 state 만들어서 넣기
+            energy_level: energyLevel!
+        };
 
-        //     // 성공 후 UX 흐름 (예: 페이지 이동)
-        // } catch (error) {
-        //     console.error("저장 실패:", error);
-        // } finally {
-        //     setLoading(false);
-        // }
+        const newActivity = await createActivity(payload);
+        console.log("활동 생성 성공:", newActivity);
+
+        // 성공 후 UX 흐름 (예: 페이지 이동 또는 상태 초기화)
+        setTitle("");
+        setDescription("");
+        setGoodPoint("");
+        setDuration("");
+        setEnergyLevel(null);
+
+    } catch (error) {
+        console.error("활동 생성 실패:", error);
+        alert("활동 생성 실패: " + (error as Error).message);
+    } finally {
+        _setLoading(false); // 🔹 로딩 상태 끝
     }
+}
 
 
     return (
