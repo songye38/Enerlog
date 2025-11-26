@@ -52,7 +52,7 @@ class ActivityCreate(BaseModel):
     title: str
     description: Optional[str] = None
     is_public: Optional[bool] = False
-    duration_minutes: Optional[int] = None
+    duration_minutes: Optional[str] = None
     good_point: Optional[str] = None
     insight: Optional[str] = None
     energy_level: EnergyLevelEnum  
@@ -89,7 +89,7 @@ class ActivityOut(BaseModel):
 class ActivityTemplateCreate(BaseModel):
     title: str
     description: Optional[str] = None
-    duration_minutes: Optional[int] = None
+    duration_minutes: Optional[str] = None
     good_point: Optional[str] = None
     insight: Optional[str] = None
     energy_level: EnergyLevelEnum  # 0~10 숫자 레벨 Enum
@@ -99,7 +99,7 @@ class ActivityTemplateOut(BaseModel):
     id: UUID
     title: str
     description: Optional[str]
-    duration_minutes: Optional[int]
+    duration_minutes: Optional[str]
     good_point: Optional[str]
     insight: Optional[str]
     created_at: datetime
