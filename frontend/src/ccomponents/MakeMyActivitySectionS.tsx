@@ -15,7 +15,7 @@ export default function MakeMyActivitySectionS() {
     const [energyLevel, setEnergyLevel] = useState<number | null>(null);
     const [loading, _setLoading] = useState(false); // 🔹 로딩 상태 추가
 
-    const isSubmitDisabled = loading || !energyLevel || !title.trim() || !description.trim();
+    const isSubmitDisabled = loading || energyLevel === null || !title.trim() || !description.trim();
 
     async function handleSubmit() {
         //서버에 저장하는 함수
@@ -45,36 +45,38 @@ export default function MakeMyActivitySectionS() {
 
 
     return (
-        <div style={{ width: 390, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', gap: 16, display: 'inline-flex', marginTop: 32, backgroundColor: '#ECEFF9', padding: '20px 16px', borderRadius: 12 }}>
+        <div style={{ width: 390, flexDirection: 'column', gap: 20, display: 'inline-flex', marginTop: 32, backgroundColor: '#ECEFF9', padding: '20px 16px', borderRadius: 12 }}>
             {/* 에너지 레벨 선택하는 부분 */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: '100%' }}>
+            <div>
                 <div
                     onClick={() => setShowSlider((prev) => !prev)}
                     style={{
-                        width: 'auto',
-                        padding: "12px 8px",
+                        display: "inline-flex",       // 🔹 내용만큼 크기
+                        padding: "6px 8px",
                         background: "#455CC5",
                         borderRadius: 6,
-                        display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        gap: 4,
+                        gap: 6,
+                        cursor: "pointer",
+                        width: "fit-content",         // 🔹 강제로 내용만큼
                     }}
                 >
                     <img src={arrowIcon} alt="Arrow Icon" style={{ width: 14, height: 14 }} />
                     <div
                         style={{
                             color: "#ECEFF9",
-                            fontSize: 15,
+                            fontSize: 13,
                             fontFamily: "Pretendard",
                             fontWeight: 600,
-                            wordWrap: "break-word",
+                            whiteSpace: "nowrap",     // 🔹 줄바꿈 방지
                         }}
                     >
-                        {energyLevel ? `에너지 레벨 ${energyLevel}` : "에너지 레벨 선택(필수)"}
+                        {energyLevel !== null ? `에너지 레벨 ${energyLevel}` : "에너지 레벨 선택(필수)"}
                     </div>
                 </div>
             </div>
+
             {/* 제목 */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: '100%' }}>
                 <div
@@ -85,17 +87,17 @@ export default function MakeMyActivitySectionS() {
                         fontWeight: 600,
                     }}
                 >
-                    내가 만드는 활동
+                    활동제목(필수)
                 </div>
 
                 <input
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="활동제목(필수)"
+                    placeholder="활동의 제목을 적어주세요."
                     style={{
                         color: 'black',
-                        fontSize: 18,
+                        fontSize: 20,
                         fontFamily: "IsYun, sans-serif",
                         fontWeight: 600,
                         border: 'none',
@@ -116,17 +118,17 @@ export default function MakeMyActivitySectionS() {
                         fontWeight: 600,
                     }}
                 >
-                    설명
+                    설명(필수)
                 </div>
 
                 <input
                     type="text"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    placeholder="설명(필수)"
+                    placeholder="이 활동에서 어떤 것들을 하는지 적어주세요."
                     style={{
                         color: 'black',
-                        fontSize: 18,
+                        fontSize: 20,
                         fontFamily: "IsYun, sans-serif",
                         fontWeight: 600,
                         border: 'none',
@@ -155,10 +157,10 @@ export default function MakeMyActivitySectionS() {
                     type="text"
                     value={goodPoint}
                     onChange={(e) => setGoodPoint(e.target.value)}
-                    placeholder="좋은점"
+                    placeholder="이 활동을 하면 어떤 점이 좋을까요?"
                     style={{
                         color: 'black',
-                        fontSize: 18,
+                        fontSize: 20,
                         fontFamily: "IsYun, sans-serif",
                         fontWeight: 600,
                         border: 'none',
@@ -186,10 +188,10 @@ export default function MakeMyActivitySectionS() {
                     type="text"
                     value={duration}
                     onChange={(e) => setDuration(e.target.value)}
-                    placeholder="소요시간"
+                    placeholder="예)5분, 1시간"
                     style={{
                         color: 'black',
-                        fontSize: 18,
+                        fontSize: 20,
                         fontFamily: "IsYun, sans-serif",
                         fontWeight: 600,
                         border: 'none',
