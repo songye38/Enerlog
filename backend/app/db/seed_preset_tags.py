@@ -10,8 +10,8 @@ PRESET_TAG_DATA = [
         "energy_level": EnergyLevelEnum.level_0,
         "type": "mental",
         "tag_titles": [
-            "집중 불가"
-            "무기력"
+            "집중 불가",
+            "무기력",
             "감정적 불안정",
             "비관적 사고",
             "생존모드", 
