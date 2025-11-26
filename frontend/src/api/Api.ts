@@ -48,6 +48,8 @@ Api.interceptors.response.use(
 
 // ✅ 로그인 상태 복원 + 세션 저장
 export const useRestoreUser = () => {
+
+  console.log("useRestoreUser 제일 상단 부분",useRestoreUser);
   const { user, setUser } = useAuth();
 
   useEffect(() => {

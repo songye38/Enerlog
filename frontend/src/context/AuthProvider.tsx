@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const restoreUser = async () => {
       try {
         const res = await Api.get("/users/me");
+        console.log("AuthProvider에서 /users/me로 보낸 결과 res",res);
         setUser(res.data.name);
         sessionStorage.setItem("userName", res.data.name);
         console.log("restoreUser를 통해서 /me에 요청보내고 세팅 완료 setUser 완료")
