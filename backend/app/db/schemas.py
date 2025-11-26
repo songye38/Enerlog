@@ -110,13 +110,23 @@ class ActivityTemplateOut(BaseModel):
     updated_at: datetime
     energy_level: int
 
-    model_config = {"from_attributes": True}
+    class Config:
+        orm_mode = True
 
-    @model_validator(mode='after')
-    def convert_enum(cls, values):
-        if isinstance(values.energy_level, Enum):
-            values.energy_level = values.energy_level.value
-        return values
+    @classmethod
+    def from_orm_obj(cls, obj):
+        return cls(
+            id=obj.id,
+            title=obj.title,
+            description=obj.description,
+            duration_minutes=obj.duration_minutes,
+            good_point=obj.good_point,
+            insight=obj.insight,
+            created_at=obj.created_at,
+            updated_at=obj.updated_at,
+            energy_level=obj.energy_level.value  # Enum → int로 변환
+        )
+
 
 
 

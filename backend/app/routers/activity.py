@@ -49,7 +49,10 @@ router = APIRouter(prefix="/activities", tags=["Activities"])
 
 @router.get("/templates", response_model=List[ActivityTemplateOut])
 def list_activity_templates(db: Session = Depends(get_db)):
-    return db.query(ActivityTemplate).all()
+    templates = db.query(ActivityTemplate).all()
+    # 각 ORM 객체를 Pydantic 모델로 변환
+    return [ActivityTemplateOut.from_orm_obj(t) for t in templates]
+
 
 # @router.get("/templates/{user_id}", response_model=ActivityTemplateOut)
 # def get_activity_template(template_id: UUID, db: Session = Depends(get_db)):
