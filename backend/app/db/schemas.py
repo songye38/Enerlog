@@ -1,9 +1,10 @@
 from datetime import datetime
 from typing import List, Optional
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr,Field
 from uuid import UUID
 from enum import Enum
 from app.db.models import EnergyLevelEnum
+from typing import Annotated
 
 # -----------------------
 # Enums
@@ -95,10 +96,6 @@ class ActivityTemplateCreate(BaseModel):
     energy_level: EnergyLevelEnum  # 0~10 숫자 레벨 Enum
 
 
-from pydantic import BaseModel, field_validator, model_validator
-
-from pydantic import BaseModel, model_validator
-
 class ActivityTemplateOut(BaseModel):
     id: UUID
     title: str
@@ -152,6 +149,19 @@ class EnergyLevelOut(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+# -------------------------------
+# 요청 바디 모델
+# -------------------------------
+class EnergyLevelRequest(BaseModel):
+    level: Annotated[int, Field(ge=0, le=10, description="Energy level from 0 to 10")]
+
+# -------------------------------
+# 응답 모델
+# -------------------------------
+class EnergyLevelResponse(BaseModel):
+    id: str
 
 
 
