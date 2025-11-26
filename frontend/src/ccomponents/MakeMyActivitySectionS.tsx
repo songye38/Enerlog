@@ -46,7 +46,7 @@ export default function MakeMyActivitySectionS() {
 
 
     return (
-        <div style={{ width: 390, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', gap: 36, display: 'inline-flex' }}>
+        <div style={{ width: 390, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', gap: 36, display: 'inline-flex' ,marginTop:32}}>
             {/* 제목 */}
             <div style={{ alignSelf: 'stretch', textAlign: 'center' }}>
                 <span style={{ color: 'black', fontSize: 16, fontFamily: 'Pretendard', fontWeight: 600, lineHeight: '26px' }}>
@@ -56,11 +56,11 @@ export default function MakeMyActivitySectionS() {
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="제목"
+                    placeholder="제목(필수)"
                     style={{
                         color: 'black',
-                        fontSize: 18,
-                        fontFamily: 'Pretendard',
+                        fontSize: 20,
+                        fontFamily: "IsYun, sans-serif",
                         fontWeight: 600,
                         lineHeight: '26px',
                         border: 'none',
@@ -77,8 +77,8 @@ export default function MakeMyActivitySectionS() {
                 <div
                     onClick={() => setShowSlider((prev) => !prev)}
                     style={{
-                        width: '132px',
-                        padding: "6px 8px",
+                        width: 'auto',
+                        padding: "12px 8px",
                         background: "#455CC5",
                         borderRadius: 6,
                         display: "flex",
@@ -97,11 +97,11 @@ export default function MakeMyActivitySectionS() {
                             wordWrap: "break-word",
                         }}
                     >
-                        {energyLevel ? `에너지 레벨 ${energyLevel}` : "에너지 레벨 선택"}
+                        {energyLevel ? `에너지 레벨 ${energyLevel}` : "에너지 레벨 선택(필수)"}
                     </div>
                 </div>
                 {/* 세부 정보 */}
-                <MainInput label="설명" value={description} onChange={setDescription} type="text" />
+                <MainInput label="설명(필수)" value={description} onChange={setDescription} type="text" />
                 <MainInput label="좋은점" value={goodPoint} onChange={setGoodPoint} type="text" />
                 <MainInput label="소요시간" value={duration} onChange={setDuration} type="text" />
             </div>
