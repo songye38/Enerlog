@@ -1,5 +1,4 @@
 
-import MainInput from "../components/Input/MainInput";
 import { useState } from "react";
 import arrowIcon from '/icons/14X14/arrow-narrow-up-right.png'
 import EnergyLevelSelectSlider from "../components/Slide/EnergyLevelSelectSlider";
@@ -46,33 +45,8 @@ export default function MakeMyActivitySectionS() {
 
 
     return (
-        <div style={{ width: 390, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', gap: 36, display: 'inline-flex' ,marginTop:32}}>
-            {/* 제목 */}
-            <div style={{ alignSelf: 'stretch', textAlign: 'center' }}>
-                <span style={{ color: 'black', fontSize: 16, fontFamily: 'Pretendard', fontWeight: 600, lineHeight: '26px' }}>
-                    내가 만드는 활동<br /><br />
-                </span>
-                <input
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="제목(필수)"
-                    style={{
-                        color: 'black',
-                        fontSize: 20,
-                        fontFamily: "IsYun, sans-serif",
-                        fontWeight: 600,
-                        lineHeight: '26px',
-                        border: 'none',
-                        outline: 'none',
-                        width: '100%',
-                        background: 'transparent',
-                    }}
-                />
-
-            </div>
-
-
+        <div style={{ width: 390, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', gap: 16, display: 'inline-flex', marginTop: 32, backgroundColor: '#ECEFF9', padding: '20px 16px', borderRadius: 12 }}>
+            {/* 에너지 레벨 선택하는 부분 */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: '100%' }}>
                 <div
                     onClick={() => setShowSlider((prev) => !prev)}
@@ -100,11 +74,135 @@ export default function MakeMyActivitySectionS() {
                         {energyLevel ? `에너지 레벨 ${energyLevel}` : "에너지 레벨 선택(필수)"}
                     </div>
                 </div>
-                {/* 세부 정보 */}
-                <MainInput label="설명(필수)" value={description} onChange={setDescription} type="text" />
-                <MainInput label="좋은점" value={goodPoint} onChange={setGoodPoint} type="text" />
-                <MainInput label="소요시간" value={duration} onChange={setDuration} type="text" />
             </div>
+            {/* 제목 */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: '100%' }}>
+                <div
+                    style={{
+                        color: 'black',
+                        fontSize: 13,
+                        fontFamily: 'Pretendard',
+                        fontWeight: 600,
+                    }}
+                >
+                    내가 만드는 활동
+                </div>
+
+                <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="활동제목(필수)"
+                    style={{
+                        color: 'black',
+                        fontSize: 18,
+                        fontFamily: "IsYun, sans-serif",
+                        fontWeight: 600,
+                        border: 'none',
+                        outline: 'none',
+                        width: '100%',
+                        background: 'transparent',
+                        padding: 0,
+                    }}
+                />
+            </div>
+            {/* 설명 */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: '100%' }}>
+                <div
+                    style={{
+                        color: 'black',
+                        fontSize: 13,
+                        fontFamily: 'Pretendard',
+                        fontWeight: 600,
+                    }}
+                >
+                    설명
+                </div>
+
+                <input
+                    type="text"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder="설명(필수)"
+                    style={{
+                        color: 'black',
+                        fontSize: 18,
+                        fontFamily: "IsYun, sans-serif",
+                        fontWeight: 600,
+                        border: 'none',
+                        outline: 'none',
+                        width: '100%',
+                        background: 'transparent',
+                        padding: 0,
+                    }}
+                />
+            </div>
+
+            {/* 좋은점 */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: '100%' }}>
+                <div
+                    style={{
+                        color: 'black',
+                        fontSize: 13,
+                        fontFamily: 'Pretendard',
+                        fontWeight: 600,
+                    }}
+                >
+                    좋은점
+                </div>
+
+                <input
+                    type="text"
+                    value={goodPoint}
+                    onChange={(e) => setGoodPoint(e.target.value)}
+                    placeholder="좋은점"
+                    style={{
+                        color: 'black',
+                        fontSize: 18,
+                        fontFamily: "IsYun, sans-serif",
+                        fontWeight: 600,
+                        border: 'none',
+                        outline: 'none',
+                        width: '100%',
+                        background: 'transparent',
+                        padding: 0,
+                    }}
+                />
+            </div>
+            {/* 소요시간 */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: '100%' }}>
+                <div
+                    style={{
+                        color: 'black',
+                        fontSize: 13,
+                        fontFamily: 'Pretendard',
+                        fontWeight: 600,
+                    }}
+                >
+                    소요시간
+                </div>
+
+                <input
+                    type="text"
+                    value={duration}
+                    onChange={(e) => setDuration(e.target.value)}
+                    placeholder="소요시간"
+                    style={{
+                        color: 'black',
+                        fontSize: 18,
+                        fontFamily: "IsYun, sans-serif",
+                        fontWeight: 600,
+                        border: 'none',
+                        outline: 'none',
+                        width: '100%',
+                        background: 'transparent',
+                        padding: 0,
+                    }}
+                />
+            </div>
+
+
+
 
             {/* 버튼  */}
             <MainBtn onClick={handleSubmit} disabled={isSubmitDisabled}>

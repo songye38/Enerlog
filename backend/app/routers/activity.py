@@ -1,36 +1,36 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends,HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 
 from app.db.database import get_db  # SessionLocal 반환
-from app.db.models import ActivityTemplate
-from app.db.schemas import ActivityTemplateOut
+from app.db.models import ActivityTemplate,EnergyLevel,Activity
+from app.db.schemas import ActivityTemplateOut,ActivityOut,ActivityCreate
 
 router = APIRouter(prefix="/activities", tags=["Activities"])
 
 # -----------------------
 # Activity CRUD
 # -----------------------
-# @router.post("/", response_model=ActivityOut)
-# def create_activity(activity_in: ActivityCreate, db: Session = Depends(get_db)):
-#     # 에너지 레벨 확인
-#     energy = db.query(EnergyLevel).filter(EnergyLevel.id == activity_in.energy_level_id).first()
-#     if not energy:
-#         raise HTTPException(status_code=404, detail="Energy level not found")
+@router.post("/", response_model=ActivityOut)
+def create_activity(activity_in: ActivityCreate, db: Session = Depends(get_db)):
+    # 에너지 레벨 확인
+    energy = db.query(EnergyLevel).filter(EnergyLevel.id == activity_in.energy_level_id).first()
+    if not energy:
+        raise HTTPException(status_code=404, detail="Energy level not found")
 
-#     activity = Activity(
-#         user_id=activity_in.user_id,
-#         title=activity_in.title,
-#         description=activity_in.description,
-#         duration_minutes=activity_in.duration_minutes,
-#         good_point=activity_in.good_point,
-#         insight=activity_in.insight,
-#         energy_level_id=energy.id
-#     )
-#     db.add(activity)
-#     db.commit()
-#     db.refresh(activity)
-#     return activity
+    activity = Activity(
+        user_id=activity_in.user_id,
+        title=activity_in.title,
+        description=activity_in.description,
+        duration_minutes=activity_in.duration_minutes,
+        good_point=activity_in.good_point,
+        insight=activity_in.insight,
+        energy_level_id=energy.id
+    )
+    db.add(activity)
+    db.commit()
+    db.refresh(activity)
+    return activity
 
 # @router.get("/", response_model=List[ActivityOut])
 # def list_activities(db: Session = Depends(get_db)):
