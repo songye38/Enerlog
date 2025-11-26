@@ -1,31 +1,48 @@
 import ActivitySelectTab from "../components/Tab/ActivitySelectTab";
 import ActivityTab from "../components/Tab/ActivityTab";
 import ActivitySection from "../ccomponents/ActivitySection";
-import type { ActivityFeed, EnergyLevel } from "../types/ActivityFeed";
+import type { ActivityFeed } from "../types/ActivityFeed";
+import { fetchActivityTemplates } from "../api/activity";
+import { useEffect, useState } from "react";
+import { ClipLoader } from "react-spinners";
+import type { CSSProperties } from "react";
+
+
+const loaderStyle: CSSProperties = {
+    display: "block",
+    margin: "0 auto",
+};
 
 
 const ActivityPage = () => {
 
-    const activities: ActivityFeed[] = [
-        {
-            level: 4 as EnergyLevel,
-            isHearted: true,
-            title: "내가 제일 좋아하는 자전거길 걷기",
-            description: "주변의 시각적·청각적 자극을 최소화하여\n마음과 몸이 안정될 수 있는 환경을 만드는 활동입니다.",
-            tags: ["편안함", "스트레스완화", "마음안정"],
-            count: 4,
-            durationMinutes: 30,
-        },
-        {
-            level: 2 as EnergyLevel,
-            isHearted: false,
-            title: "짧은 명상하기",
-            description: "잠시 눈을 감고 심호흡을 하며 마음을 정리하는 활동입니다.",
-            tags: ["집중", "마음안정"],
-            count: 3,
-            durationMinutes: 10,
-        },
-    ];
+    const [activities, setActivities] = useState<ActivityFeed[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const loadActivities = async () => {
+            try {
+                const templates = await fetchActivityTemplates(); // 여기서 서버 API 호출
+                const mapped: ActivityFeed[] = templates.map((tpl) => ({
+                    level: tpl.energy_level,       // 0~10 숫자 그대로
+                    isHearted: false,              // 기본값
+                    title: tpl.title,
+                    description: tpl.description || "",
+                    tags: [],                       // 나중에 태그 연결 가능
+                    count: 0,                       // 기본값
+                    durationMinutes: tpl.duration_minutes || 0,
+                }));
+                setActivities(mapped);
+            } catch (err) {
+                console.error("템플릿 불러오기 실패:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadActivities();
+    }, []);
+
 
     return (
         <div>
@@ -34,11 +51,15 @@ const ActivityPage = () => {
             />
             <ActivityTab myActivitiesCount={5} />
             <div style={{ marginTop: 24 }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                    {activities.map((activity, index) => (
+                {loading ? (
+                    <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
+                        <ClipLoader color="#455CC5" loading={loading} size={40} cssOverride={loaderStyle} />
+                    </div>
+                ) : (
+                    activities.map((activity, index) => (
                         <ActivitySection key={index} activity={activity} />
-                    ))}
-                </div>
+                    ))
+                )}
             </div>
         </div>
     );
