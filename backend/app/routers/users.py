@@ -135,7 +135,7 @@ def read_users_me(
     return {
         "id": current_user.id,
         "email": current_user.email,
-        "name": current_user.name,
+        "name": current_user.nickname,
     }
 
 
