@@ -33,7 +33,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
 
 
 # -----------------------
-# 로그인
+# 로그인 왜
 # -----------------------
 @router.post("/login", response_model=UserOut)
 async def login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
