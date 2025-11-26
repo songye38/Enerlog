@@ -1,11 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from uuid import UUID
 from typing import List
 
 from app.db.database import get_db  # SessionLocal 반환
-from app.db.models import Activity, ActivityTemplate, EnergyLevel
-from schemas import ActivityCreate, ActivityOut, ActivityTemplateCreate, ActivityTemplateOut
+from app.db.models import ActivityTemplate
+from app.db.schemas import ActivityTemplateOut
 
 router = APIRouter(prefix="/activities", tags=["Activities"])
 
