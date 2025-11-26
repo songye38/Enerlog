@@ -16,7 +16,9 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
-#DB 세션을 만들어 주는 함수
+# -----------------------
+# DB 세션 만드는 함수
+# -----------------------
 def get_db():
     db = SessionLocal()
     try:

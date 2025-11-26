@@ -4,7 +4,7 @@ from app.db.database import SessionLocal
 
 
 # -----------------------------
-# 공용 ActivityTemplate 데이터
+# 데이터
 # -----------------------------
 TAG_DATA = [
     # -----------------------------

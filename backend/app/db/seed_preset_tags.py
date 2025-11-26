@@ -4,7 +4,9 @@ import uuid
 from app.db.database import SessionLocal
 
 
-
+# -----------------------
+# 데이터
+# -----------------------
 PRESET_TAG_DATA = [
     {
         "energy_level": EnergyLevelEnum.level_0,

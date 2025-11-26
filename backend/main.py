@@ -1,17 +1,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
 from app.db.database import engine
 from app.db.models import Base
-from app.db.seed_preset_tags import seed_preset_tags
+#from app.db.seed_preset_tags import seed_preset_tags
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.routers.users import router as users_router
 
 
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
-seed_preset_tags()
+#seed_preset_tags()
 
 app = FastAPI(root_path="", title="My API")
 
@@ -30,3 +30,6 @@ app.add_middleware(
     allow_methods=["*"],            # 모든 메서드 허용
     allow_headers=["*"],            # 모든 헤더 허용
 )
+
+
+app.include_router(users_router)
