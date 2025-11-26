@@ -3,8 +3,9 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.db.database import get_db  # SessionLocal 반환
-from app.db.models import ActivityTemplate,EnergyLevel,Activity
+from app.db.models import ActivityTemplate,EnergyLevel,Activity,User
 from app.db.schemas import ActivityTemplateOut,ActivityOut,ActivityCreate
+from app.auth.dependencies import get_current_user
 
 router = APIRouter(prefix="/activities", tags=["Activities"])
 
@@ -12,7 +13,11 @@ router = APIRouter(prefix="/activities", tags=["Activities"])
 # Activity CRUD
 # -----------------------
 @router.post("/", response_model=ActivityOut)
-def create_activity(activity_in: ActivityCreate, db: Session = Depends(get_db)):
+def create_activity(
+    activity_in: ActivityCreate,  # user_id 제거한 새로운 Pydantic 모델
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),  # 로그인한 유저
+):
     # EnergyLevel 조회
     energy = db.query(EnergyLevel).filter(EnergyLevel.value == activity_in.energy_level.value).first()
     if not energy:
@@ -20,7 +25,7 @@ def create_activity(activity_in: ActivityCreate, db: Session = Depends(get_db)):
 
     # Activity 생성
     activity = Activity(
-        user_id=activity_in.user_id,
+        user_id=current_user.id,  # payload가 아니라 현재 로그인한 유저 사용
         title=activity_in.title,
         description=activity_in.description,
         duration_minutes=activity_in.duration_minutes,
@@ -29,13 +34,12 @@ def create_activity(activity_in: ActivityCreate, db: Session = Depends(get_db)):
         energy_level_id=energy.id
     )
 
-    # 트랜잭션 처리
     try:
         db.add(activity)
         db.commit()
         db.refresh(activity)
     except Exception as e:
-        db.rollback()  # 실패 시 롤백
+        db.rollback()
         raise HTTPException(status_code=500, detail=f"Failed to create activity: {e}")
 
     return activity

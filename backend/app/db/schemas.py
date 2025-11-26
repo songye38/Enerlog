@@ -49,7 +49,6 @@ class UserLogin(BaseModel):
 # Activity Schemas (Energy Level 포함)
 # -----------------------
 class ActivityCreate(BaseModel):
-    user_id: UUID
     title: str
     description: Optional[str] = None
     is_public: Optional[bool] = False
