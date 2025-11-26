@@ -45,9 +45,20 @@ def create_activity(
     return activity
 
 
-# @router.get("/", response_model=List[ActivityOut])
-# def list_activities(db: Session = Depends(get_db)):
-#     return db.query(Activity).filter(Activity.is_deleted == False).all()
+@router.get("/", response_model=List[ActivityTemplateOut])
+def list_user_activities(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),  # 로그인한 유저
+):
+    activities = (
+        db.query(Activity)
+        .filter(Activity.is_deleted == False)
+        .filter(Activity.user_id == current_user.id)  # 사용자별 필터
+        .all()
+    )
+
+    return [ActivityTemplateOut.from_orm_obj(t) for t in activities]
+
 
 # @router.get("/{activity_id}", response_model=ActivityOut)
 # def get_activity(activity_id: UUID, db: Session = Depends(get_db)):

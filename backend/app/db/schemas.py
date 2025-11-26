@@ -68,7 +68,6 @@ class EnergyLevelMiniOut(BaseModel):
 
 class ActivityOut(BaseModel):
     id: UUID
-    user_id: UUID
     title: str
     description: Optional[str]
     is_public: bool

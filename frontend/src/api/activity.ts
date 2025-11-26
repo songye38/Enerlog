@@ -55,3 +55,8 @@ export async function createActivity(payload: Omit<ActivityCreatePayload, "user_
     throw new Error(msg);
   }
 }
+
+
+/*----------------------------------------------
+ * ✅ 유저의 Activities 전부 가져오기 
+ ----------------------------------------------*/
