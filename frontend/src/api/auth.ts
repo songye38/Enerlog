@@ -28,6 +28,8 @@ export interface UserOut {
 
  ----------------------------------------------*/
 export async function registerUser(payload: RegisterPayload): Promise<UserOut> {
+
+  console.log("회원가입 요청 데이터:", payload); // 🔹 여기에 찍기
   try {
     const res = await Api.post("users/register", payload);
     return res.data;
@@ -44,6 +46,8 @@ export async function registerUser(payload: RegisterPayload): Promise<UserOut> {
 
  ----------------------------------------------*/
 export async function loginUser(payload: LoginPayload): Promise<UserOut> {
+
+  console.log("로그인 요청 데이터:", payload); // 🔹 여기에 찍기
   try {
     const res = await Api.post("users/login", payload);
     return res.data; // Axios는 인터셉터가 이미 withCredentials 포함, 401 자동 처리
