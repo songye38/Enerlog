@@ -9,7 +9,7 @@ export default function ActRecordSection() {
         description: "짧은 산책으로 기분 전환",
         tags: ["걷기", "운동"],
         count: 0,
-        durationMinutes: 20
+        durationMinutes: "20분"
     };
 
     return (
