@@ -7,7 +7,7 @@ from app.db.models import EnergyLevelEnum
 from typing import Annotated
 
 # -----------------------
-# Enums
+# Enums 테스트
 # -----------------------
 class BehaveStatusEnum(str, Enum):
     emotion_recorded = "emotion_recorded"
