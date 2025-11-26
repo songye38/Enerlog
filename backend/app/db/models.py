@@ -162,7 +162,6 @@ class PresetTag(Base):
 
 class PresetTagTags(Base):
     __tablename__ = "preset_tag_tags"
-
     preset_tag_id = Column(UUID(as_uuid=True), ForeignKey("preset_tags.id"), primary_key=True)
     tag_id = Column(UUID(as_uuid=True), ForeignKey("tags.id"), primary_key=True)
 
