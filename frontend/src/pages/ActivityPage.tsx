@@ -50,7 +50,7 @@ const ActivityPage = () => {
                 onChange={(selected) => console.log("선택된 탭:", selected)}
             />
             <ActivityTab myActivitiesCount={5} />
-            <div style={{ marginTop: 24 }}>
+            <div style={{ marginTop: 24,display:'flex',flexDirection:'column',gap:12 }}>
                 {loading ? (
                     <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
                         <ClipLoader color="#455CC5" loading={loading} size={40} cssOverride={loaderStyle} />
