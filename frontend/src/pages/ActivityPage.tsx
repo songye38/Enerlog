@@ -50,15 +50,17 @@ const ActivityPage = () => {
                 onChange={(selected) => console.log("선택된 탭:", selected)}
             />
             <ActivityTab myActivitiesCount={5} />
-            <div style={{ marginTop: 24,display:'flex',flexDirection:'column',gap:12 }}>
+            <div style={{ marginTop: 24 }}>
                 {loading ? (
                     <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
                         <ClipLoader color="#455CC5" loading={loading} size={40} cssOverride={loaderStyle} />
                     </div>
                 ) : (
-                    activities.map((activity, index) => (
-                        <ActivitySection key={index} activity={activity} />
-                    ))
+                    <div style={{display:'flex',flexDirection:'column',gap:12}}>
+                        {activities.map((activity, index) => (
+                            <ActivitySection key={index} activity={activity} />
+                        ))}
+                    </div>
                 )}
             </div>
         </div>
