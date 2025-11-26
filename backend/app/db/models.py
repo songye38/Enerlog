@@ -98,7 +98,6 @@ class Activity(Base):
 # -----------------------
 # Activity Templates
 # -----------------------
-# ActivityTemplate 예시
 class ActivityTemplate(Base):
     __tablename__ = "activity_templates"
 
