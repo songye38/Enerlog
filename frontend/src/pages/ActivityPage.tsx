@@ -55,7 +55,7 @@ const ActivityPage = () => {
                     count: 0,
                     durationMinutes: tpl.duration_minutes || "",
                 }));
-                
+
                 setUserActivities(mapped);
             } catch (err) {
                 console.error("내 활동 불러오기 실패:", err);
@@ -66,19 +66,20 @@ const ActivityPage = () => {
 
         loadActivities();
         loadUserActivities();
-        console.log("전체 활동 목록",activities)
-        console.log("사용자 전체 활동 목록",userActivities)
+        console.log("전체 활동 목록", activities)
+        console.log("사용자 전체 활동 목록", userActivities)
     }, []);
 
-    // 1️⃣ 첫 번째 필터 적용
-    const baseActivities = selectedMainTab === "추천 활동" ? activities : userActivities;
+    const baseActivities =
+        selectedMainTab === "추천 활동" ? activities : userActivities;
 
-    // 2️⃣ 두 번째 필터 적용
     const displayedActivities =
         selectedFilterTab === "전체"
             ? baseActivities
             : selectedFilterTab.startsWith("에너지")
-                ? baseActivities.filter(a => a.level === Number(selectedFilterTab.slice(2)))
+                ? baseActivities.filter(
+                    (a) => a.level === Number(selectedFilterTab.replace("에너지", ""))
+                )
                 : baseActivities;
 
     return (
