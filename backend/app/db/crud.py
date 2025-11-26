@@ -10,7 +10,11 @@ from passlib.context import CryptContext
 from app.db import models
 from app.db.models import User
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+#pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(
+    schemes=["argon2"],  # bcrypt 대신 argon2
+    deprecated="auto"
+)
 
 
 # 비밀번호 해시 함수
