@@ -6,6 +6,7 @@ import { fetchActivityTemplates } from "../api/activity";
 import { useEffect, useState } from "react";
 import { ClipLoader } from "react-spinners";
 import type { CSSProperties } from "react";
+import MakeMyActivitySectionS from "../ccomponents/MakeMyActivitySectionS";
 
 
 const loaderStyle: CSSProperties = {
@@ -63,6 +64,7 @@ const ActivityPage = () => {
                     </div>
                 )}
             </div>
+            <MakeMyActivitySectionS />
         </div>
     );
 };

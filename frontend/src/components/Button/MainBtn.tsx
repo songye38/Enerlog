@@ -12,7 +12,7 @@ export default function MainBtn({ children, onClick, disabled = false }: MainBtn
         width: "100%",
         alignSelf: "stretch",
         padding: "20px 22px",
-        background: disabled ? "#A0A0A0" : "#455CC5", // 🔹 disabled 시 회색
+        background: disabled ? "#AFB9E6" : "#455CC5", // 🔹 disabled 시 회색
         borderRadius: 8,
         justifyContent: "center",
         alignItems: "center",
