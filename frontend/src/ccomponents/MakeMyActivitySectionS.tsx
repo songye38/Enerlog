@@ -7,6 +7,7 @@ import { createActivity } from "../api/activity";
 import { toast } from "react-toastify";
 import type { ActivityUpdatePayload, ActivityCreatePayload } from "../api/activity";
 import { UpdateUserActivity } from "../api/activity";
+import type { ActivityFeed } from "../types/ActivityFeed";
 
 interface MakeMyActivitySectionSProps {
     initialTitle?: string;
@@ -17,6 +18,7 @@ interface MakeMyActivitySectionSProps {
     onSubmit?: (payload: ActivityUpdatePayload, isEditing: boolean, id?: string) => Promise<void>;
     isEditing?: boolean;
     editingActivityId?: string;
+    onAdded?: (newActivity: ActivityFeed) => void;  // ← 여기 추가
 }
 
 export default function MakeMyActivitySectionS({
@@ -28,18 +30,17 @@ export default function MakeMyActivitySectionS({
     onSubmit,
     isEditing = false,
     editingActivityId,
+    onAdded
 }: MakeMyActivitySectionSProps) {
     const [title, setTitle] = useState(initialTitle || "");
     const [description, setDescription] = useState(initialDescription || "");
     const [duration, setDuration] = useState(initialDuration || "");
     const [goodPoint, setGoodPoint] = useState(initialGoodPoint || "");
     const [energyLevel, setEnergyLevel] = useState<number | null>(initialEnergyLevel ?? null);
-    const [showSlider,setShowSlider] = useState(false);
+    const [showSlider, setShowSlider] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const isSubmitDisabled = loading || energyLevel === null || !title.trim() || !description.trim();
-
-
 
     async function handleSubmit() {
         if (isSubmitDisabled) return;
@@ -79,8 +80,12 @@ export default function MakeMyActivitySectionS({
                     energy_level: energyLevel,
                 };
 
-                await createActivity(createPayload);
+                const createdActivity = await createActivity(createPayload); // ← 여기에 담기
                 toast.success("활동이 저장되었습니다.");
+
+                if (onAdded) {
+                    onAdded(createdActivity); // 이제 에러 없음
+                }
             }
 
             // 공통 onSubmit 호출

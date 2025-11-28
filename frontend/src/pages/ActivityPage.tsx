@@ -35,6 +35,10 @@ const ActivityPage = () => {
         );
     };
 
+    const handleAdded = (newActivity: ActivityFeed) => {
+        setUserActivities(prev => [newActivity, ...prev]); // 새로 추가된 활동 맨 위로
+    };
+
     useEffect(() => {
         const loadActivities = async () => {
             setLoading(true);
@@ -119,7 +123,7 @@ const ActivityPage = () => {
                 ) : (
                     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                         {displayedActivities.map((activity, index) => (
-                            <ActivitySection key={index} activity={activity} onDeleted={handleDeleted} onEdited={handleEdited} />
+                            <ActivitySection key={index} activity={activity} onDeleted={handleDeleted} onEdited={handleEdited} onAdded={handleAdded}/>
                         ))}
                     </div>
                 )}

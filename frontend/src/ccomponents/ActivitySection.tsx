@@ -12,6 +12,7 @@ interface ActivitySectionProps {
   activity: ActivityFeed;
   onDeleted?: (id: string) => void; // 부모에게 알려서 리스트 갱신
   onEdited?: (id: string, payload: ActivityUpdatePayload) => void; // 편집 후 부모에게 알림
+  onAdded?: (newActivity: ActivityFeed) => void; // 새로 추가된 활동 알림
 }
 
 export default function ActivitySection({ activity, onDeleted ,onEdited}: ActivitySectionProps) {
