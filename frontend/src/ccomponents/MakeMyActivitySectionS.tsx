@@ -82,7 +82,7 @@ export default function MakeMyActivitySectionS({
 
                 const createdActivity = await createActivity(createPayload);
 
-                console.log("저장하고 받은 데이터 구조",createdActivity);
+                console.log("저장하고 받은 데이터 구조", createdActivity);
 
                 if (onAdded && createdActivity) {
                     onAdded({
@@ -91,11 +91,12 @@ export default function MakeMyActivitySectionS({
                         description: createdActivity.description || "",
                         durationMinutes: createdActivity.duration_minutes || "",
                         goodPoint: createdActivity.good_point || "",
-                        insight: createdActivity.insight || "",    // 서버에서 옵셔널이면 빈 문자열로
-                        level: createdActivity.energy_level,       // 반드시 EnergyLevel 타입
-                        isHearted: false,                          // 기본값
-                        tags: [],                                   // 기본값
-                        count: 0,                                   // 기본값
+                        level: typeof createdActivity.energy_level === "object"
+                            ? createdActivity.energy_level.value // 숫자만 넣기
+                            : createdActivity.energy_level,
+                        isHearted: false,
+                        tags: [],
+                        count: 0,
                     });
                 }
             }
