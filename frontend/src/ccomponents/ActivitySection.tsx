@@ -7,6 +7,7 @@ import UpdateMenu from "../components/Menu/UpdateMenu";
 import MakeMyActivitySectionS from "./MakeMyActivitySectionS";
 import { DeleteUserActivity, UpdateUserActivity } from "../api/activity";
 import type { ActivityUpdatePayload } from "../api/activity";
+import { toast } from "react-toastify";
 
 interface ActivitySectionProps {
   activity: ActivityFeed;
@@ -15,7 +16,7 @@ interface ActivitySectionProps {
   onAdded?: (newActivity: ActivityFeed) => void; // 새로 추가된 활동 알림
 }
 
-export default function ActivitySection({ activity, onDeleted ,onEdited}: ActivitySectionProps) {
+export default function ActivitySection({ activity, onDeleted, onEdited }: ActivitySectionProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const handleMenuClick = () => setMenuOpen(prev => !prev);
@@ -30,12 +31,11 @@ export default function ActivitySection({ activity, onDeleted ,onEdited}: Activi
     if (path === "/deleteAcitivity") {
       try {
         if (!confirm("정말 삭제할까요?")) return;
-
         onDeleted?.(activity.id); // 옵티미스틱 제거
-
         await DeleteUserActivity(activity.id);
-        console.log("삭제 완료");
+        toast.success("삭제 완료!");
       } catch (err) {
+        toast.error("삭제 실패");
         console.error("삭제 실패:", err);
       }
     }
@@ -94,7 +94,7 @@ export default function ActivitySection({ activity, onDeleted ,onEdited}: Activi
         <div style={{ alignSelf: "stretch", display: "flex", flexDirection: "column", gap: 8 }}>
           <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", gap: 7 }}>
             {/* 상단 태그 */}
-            <div style={{ width : 'auto',padding: "5px 8px", background: "black", borderRadius: 4, display: "inline-flex", justifyContent: "center", alignItems: "center" }}>
+            <div style={{ width: 'auto', padding: "5px 8px", background: "black", borderRadius: 4, display: "inline-flex", justifyContent: "center", alignItems: "center" }}>
               <div style={{ color: "white", fontSize: 12, fontFamily: "Pretendard", fontWeight: 600 }}>
                 #{activity.count}회 수행
               </div>

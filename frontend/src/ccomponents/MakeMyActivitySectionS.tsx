@@ -82,7 +82,7 @@ export default function MakeMyActivitySectionS({
 
                 const createdActivity = await createActivity(createPayload);
 
-                console.log("저장하고 받은 데이터 구조", createdActivity);
+                toast.success("활동이 추가되었습니다!");
 
                 if (onAdded && createdActivity) {
                     onAdded({
