@@ -28,7 +28,7 @@ export default function HomeMenu({ onNavigate }: HomeMenuProps) {
     ];
 
     return (
-        <div style={{ width: '210px', padding: '28px 20px 20px 20px', background: 'white', boxShadow: '0px 4px 4px rgba(0,0,0,0.25)', borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ width: '210px', padding: '20px 20px 20px 20px', background: 'white', boxShadow: '0px 4px 4px rgba(0,0,0,0.25)', borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 12 }}>
 
             {/* 메뉴 항목 */}
             <div style={{ borderBottom: '1px solid #D9D9D9', display: 'flex', flexDirection: 'column', gap: 16, paddingBottom: 20 }}>
