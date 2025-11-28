@@ -113,7 +113,7 @@ const ActivityPage = () => {
 
 
             {/* 내가 만든 활동 탭일 때만 새로운 활동 추가하기 컴포넌트가 보임 */}
-            {selectedMainTab === "내가 만든 활동" && <MakeMyActivitySectionS />}
+            {selectedMainTab === "내가 만든 활동" && <MakeMyActivitySectionS onAdded={handleAdded}/>}
 
             <div style={{ marginTop: 24 }}>
                 {loading ? (
