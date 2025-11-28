@@ -3,12 +3,29 @@ import type { ActivityFeed } from "../types/ActivityFeed";
 import arrowIcon from '/icons/14X14/arrow-narrow-up-right.png'
 import menuIcon from '/icons/20X20/dots-horizontal.png'
 import heartIcon from '/icons/16X16/heart.png'
+import { useState } from "react";
+import UpdateMenu from "../components/Menu/UpdateMenu";
 
 interface ActivitySectionProps {
   activity: ActivityFeed;
 }
 
 export default function ActivitySection({ activity }: ActivitySectionProps) {
+
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleMenuClick = () => {
+    setMenuOpen((prev) => !prev);  // 토글
+  };
+
+  const handleNavigate = (path: string) => {
+    console.log("메뉴 선택:", path);
+    setMenuOpen(false); // 선택 후 메뉴 닫기
+
+    // 예시)
+    // if (path === "/acts") delete 실행
+    // if (path === "/energy") edit 실행
+  };
   return (
     <div
       style={{
@@ -59,8 +76,19 @@ export default function ActivitySection({ activity }: ActivitySectionProps) {
         <div style={{ flex: "1 1 0", height: 8 }} />
         {/* 여기에 아이콘 예시 */}
         <img src={heartIcon} alt="Heart Icon" style={{ width: 16, height: 16 }} />
-        <img src={menuIcon} alt="Menu Icon" style={{ width: 20, height: 20 }} />
+        <img
+          src={menuIcon}
+          alt="Menu Icon"
+          style={{ width: 20, height: 20, cursor: "pointer" }}
+          onClick={handleMenuClick}
+        />
       </div>
+      {/* 메뉴 오픈 시 띄우기 */}
+      {menuOpen && (
+        <div style={{ position: "absolute", top: 28, right: 0, zIndex: 50 }}>
+          <UpdateMenu onNavigate={handleNavigate} />
+        </div>
+      )}
 
       {/* 활동 내용 */}
       <div
