@@ -20,9 +20,20 @@ const ActivityPage = () => {
     const [loading, setLoading] = useState(true);
 
     // 1️⃣ 첫 번째 필터: 추천 활동 vs 내가 만든 활동
-    const [selectedMainTab, setSelectedMainTab] = useState<"추천 활동" | "내가 만든 활동">("추천 활동");
+    //const [selectedMainTab, setSelectedMainTab] = useState<"추천 활동" | "내가 만든 활동">("추천 활동");
     // 2️⃣ 두 번째 필터: 에너지 레벨, 전체, 좋아요
-    const [selectedFilterTab, setSelectedFilterTab] = useState<string>("전체");
+    //const [selectedFilterTab, setSelectedFilterTab] = useState<string>("전체");
+
+    const [selectedMainTab, setSelectedMainTab] = useState<"추천 활동" | "내가 만든 활동">(
+        () => {
+            const saved = localStorage.getItem("selectedMainTab");
+            return saved === "내가 만든 활동" ? "내가 만든 활동" : "추천 활동";
+        }
+    );
+
+    const [selectedFilterTab, setSelectedFilterTab] = useState<string>(
+        () => localStorage.getItem("selectedFilterTab") || "전체"
+    );
 
     const handleDeleted = (id: string) => {
         setActivities(prev => prev.filter(a => a.id !== id));
@@ -106,14 +117,24 @@ const ActivityPage = () => {
         <div>
             <ActivityTab
                 myActivitiesCount={userActivities.length}
-                onChange={(tab) => setSelectedMainTab(tab as "추천 활동" | "내가 만든 활동")}
+                //onChange={(tab) => setSelectedMainTab(tab as "추천 활동" | "내가 만든 활동")}
+                onChange={(tab) => {
+                    setSelectedMainTab(tab as "추천 활동" | "내가 만든 활동");
+                    localStorage.setItem("selectedMainTab", tab);
+                }}
             />
 
-            <ActivitySelectTab onChange={setSelectedFilterTab} />
+            <ActivitySelectTab
+                //onChange={setSelectedFilterTab} 
+                onChange={(tab) => {
+                    setSelectedFilterTab(tab);
+                    localStorage.setItem("selectedFilterTab", tab);
+                }}
+            />
 
 
             {/* 내가 만든 활동 탭일 때만 새로운 활동 추가하기 컴포넌트가 보임 */}
-            {selectedMainTab === "내가 만든 활동" && <MakeMyActivitySectionS onAdded={handleAdded}/>}
+            {selectedMainTab === "내가 만든 활동" && <MakeMyActivitySectionS onAdded={handleAdded} />}
 
             <div style={{ marginTop: 24 }}>
                 {loading ? (
@@ -123,7 +144,7 @@ const ActivityPage = () => {
                 ) : (
                     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                         {displayedActivities.map((activity, index) => (
-                            <ActivitySection key={index} activity={activity} onDeleted={handleDeleted} onEdited={handleEdited} onAdded={handleAdded}/>
+                            <ActivitySection key={index} activity={activity} onDeleted={handleDeleted} onEdited={handleEdited} onAdded={handleAdded} />
                         ))}
                     </div>
                 )}
