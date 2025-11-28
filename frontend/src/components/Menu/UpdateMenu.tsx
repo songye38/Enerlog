@@ -17,7 +17,7 @@ export default function UpdateMenu({ onNavigate }: UpdateMenuProps) {
 
 
             {/* 수정,삭제 */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, paddingBottom: 20 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                 {mainItems.map((item, idx) => (
                     <div
                         key={idx}
@@ -25,7 +25,7 @@ export default function UpdateMenu({ onNavigate }: UpdateMenuProps) {
                         style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
                     >
                         <img src={item.icon} alt={item.label} style={{ width: 16, height: 16 }} />
-                        <div style={{ color: '#595959', fontSize: 17, fontFamily: 'Pretendard, sans-serif', fontWeight: 600 }}>
+                        <div style={{ color: '#000000', fontSize: 17, fontFamily: 'Pretendard, sans-serif', fontWeight: 600 }}>
                             {item.label}
                         </div>
                     </div>
