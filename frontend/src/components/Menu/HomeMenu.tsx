@@ -39,7 +39,7 @@ export default function HomeMenu({ onNavigate }: HomeMenuProps) {
                         style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
                     >
                         <img src={item.icon} alt={item.label} style={{ width: 16, height: 16 }} />
-                        <div style={{ color: '#00000', fontSize: 17, fontFamily: 'Pretendard, sans-serif', fontWeight: 600 }}>
+                        <div style={{ color: '#000000', fontSize: 17, fontFamily: 'Pretendard, sans-serif', fontWeight: 600 }}>
                             {item.label}
                         </div>
                     </div>
@@ -55,7 +55,7 @@ export default function HomeMenu({ onNavigate }: HomeMenuProps) {
                         style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
                     >
                         <img src={item.icon} alt={item.label} style={{ width: 16, height: 16 }} />
-                        <div style={{ color: '#00000', fontSize: 17, fontFamily: 'Pretendard, sans-serif', fontWeight: 600 }}>
+                        <div style={{ color: '#000000', fontSize: 17, fontFamily: 'Pretendard, sans-serif', fontWeight: 600 }}>
                             {item.label}
                         </div>
                     </div>
@@ -77,7 +77,7 @@ export default function HomeMenu({ onNavigate }: HomeMenuProps) {
                         style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
                     >
                         <img src={item.icon} alt={item.label} style={{ width: 16, height: 16 }} />
-                        <div style={{ color: '#00000', fontSize: 17, fontFamily: 'Pretendard, sans-serif', fontWeight: 600 }}>
+                        <div style={{ color: '#000000', fontSize: 17, fontFamily: 'Pretendard, sans-serif', fontWeight: 600 }}>
                             {item.label}
                         </div>
                     </div>
