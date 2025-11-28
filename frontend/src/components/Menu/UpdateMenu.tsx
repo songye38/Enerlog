@@ -24,8 +24,8 @@ export default function UpdateMenu({ onNavigate }: UpdateMenuProps) {
                         onClick={() => onNavigate(item.path)}
                         style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
                     >
-                        <img src={item.icon} alt={item.label} style={{ width: 12, height: 12 }} />
-                        <div style={{ color: '#595959', fontSize: 15, fontFamily: 'Pretendard, sans-serif', fontWeight: 600 }}>
+                        <img src={item.icon} alt={item.label} style={{ width: 16, height: 16 }} />
+                        <div style={{ color: '#595959', fontSize: 17, fontFamily: 'Pretendard, sans-serif', fontWeight: 600 }}>
                             {item.label}
                         </div>
                     </div>
