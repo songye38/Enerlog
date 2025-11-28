@@ -86,15 +86,16 @@ export default function ActivitySection({ activity }: ActivitySectionProps) {
             style={{ width: 20, height: 20, cursor: "pointer" }}
             onClick={handleMenuClick}
           />
-
-          {/* menuIcon 바로 아래에 뜨는 메뉴 */}
-          {menuOpen && (
-            <div style={{ marginTop: 8 }}>
-              <UpdateMenu onNavigate={handleNavigate} />
-            </div>
-          )}
         </div>
       </div>
+
+
+      {/* menuIcon 바로 아래에 뜨는 메뉴 */}
+      {menuOpen && (
+        <div style={{ marginTop: 8 }}>
+          <UpdateMenu onNavigate={handleNavigate} />
+        </div>
+      )}
 
 
       {/* 활동 내용 */}
