@@ -79,6 +79,7 @@ export default function ActivitySection({ activity }: ActivitySectionProps) {
         <img src={heartIcon} alt="Heart Icon" style={{ width: 16, height: 16 }} />
 
         {/* 메뉴 아이콘 */}
+        {/* 메뉴 아이콘 */}
         <div style={{ position: "relative" }}>
           <img
             src={menuIcon}
@@ -86,16 +87,27 @@ export default function ActivitySection({ activity }: ActivitySectionProps) {
             style={{ width: 20, height: 20, cursor: "pointer" }}
             onClick={handleMenuClick}
           />
+
+          {/* dropdown을 icon 바로 아래에 겹치게 */}
+          {menuOpen && (
+            <div
+              style={{
+                position: "absolute",
+                top: "100%",   // 아이콘 바로 아래
+                right: 0,
+                marginTop: 6,  // 약간 간격
+                zIndex: 50,
+              }}
+            >
+              <UpdateMenu onNavigate={handleNavigate} />
+            </div>
+          )}
         </div>
+
       </div>
 
 
-      {/* menuIcon 바로 아래에 뜨는 메뉴 */}
-      {menuOpen && (
-        <div style={{ marginTop: 8 }}>
-          <UpdateMenu onNavigate={handleNavigate} />
-        </div>
-      )}
+
 
 
       {/* 활동 내용 */}
