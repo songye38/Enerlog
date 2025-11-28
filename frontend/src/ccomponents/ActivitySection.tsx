@@ -73,30 +73,27 @@ export default function ActivitySection({ activity }: ActivitySectionProps) {
             에너지 레벨 : {activity.level}
           </div>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ flex: "1 1 0", height: 8 }} />
+        <div style={{ flex: "1 1 0", height: 8 }} />
 
-          {/* 하트 아이콘 */}
-          <img src={heartIcon} alt="Heart Icon" style={{ width: 16, height: 16 }} />
+        {/* 하트 아이콘 */}
+        <img src={heartIcon} alt="Heart Icon" style={{ width: 16, height: 16 }} />
 
-          {/* 메뉴 아이콘 */}
-          <div style={{ position: "relative" }}>
-            <img
-              src={menuIcon}
-              alt="Menu Icon"
-              style={{ width: 20, height: 20, cursor: "pointer" }}
-              onClick={handleMenuClick}
-            />
+        {/* 메뉴 아이콘 */}
+        <div style={{ position: "relative" }}>
+          <img
+            src={menuIcon}
+            alt="Menu Icon"
+            style={{ width: 20, height: 20, cursor: "pointer" }}
+            onClick={handleMenuClick}
+          />
 
-            {/* menuIcon 바로 아래에 뜨는 메뉴 */}
-            {menuOpen && (
-              <div style={{ marginTop: 8 }}>
-                <UpdateMenu onNavigate={handleNavigate} />
-              </div>
-            )}
-          </div>
+          {/* menuIcon 바로 아래에 뜨는 메뉴 */}
+          {menuOpen && (
+            <div style={{ marginTop: 8 }}>
+              <UpdateMenu onNavigate={handleNavigate} />
+            </div>
+          )}
         </div>
-
       </div>
 
 
