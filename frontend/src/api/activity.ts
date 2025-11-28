@@ -20,18 +20,11 @@ export interface ActivityCreatePayload {
     is_public: boolean;
     duration_minutes?: string;
     good_point?: string;
-    insight?: string;
     energy_level: number;
 }
 
 
-export interface ActivityUpdatePayload {
-    title?: string;
-    description?: string;
-    duration_minutes?: string;
-    energy_level?: number;
-    good_point?: string;
-}
+export type ActivityUpdatePayload = Partial<ActivityCreatePayload>;
 
 /*----------------------------------------------
  * ✅ ActivityTemplate 리스트 가져오기

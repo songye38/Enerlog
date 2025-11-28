@@ -5,57 +5,108 @@ import EnergyLevelSelectSlider from "../components/Slide/EnergyLevelSelectSlider
 import MainBtn from "../components/Button/MainBtn";
 import { createActivity } from "../api/activity";
 import { toast } from "react-toastify";
-//import { ClipLoader } from "react-spinners";
+import type { ActivityUpdatePayload, ActivityCreatePayload } from "../api/activity";
+import { UpdateUserActivity } from "../api/activity";
 
+interface MakeMyActivitySectionSProps {
+    initialTitle?: string;
+    initialDescription?: string;
+    initialDuration?: string;
+    initialEnergyLevel?: number;
+    initialGoodPoint?: string;
+    onSubmit?: (payload: ActivityUpdatePayload, isEditing: boolean, id?: string) => Promise<void>;
+    isEditing?: boolean;
+    editingActivityId?: string;
+}
 
-export default function MakeMyActivitySectionS() {
-    const [description, setDescription] = useState("");
-    const [title, setTitle] = useState("");
-    const [goodPoint, setGoodPoint] = useState("");
-    const [duration, setDuration] = useState("");
-    const [showSlider, setShowSlider] = useState(false);
-    const [energyLevel, setEnergyLevel] = useState<number | null>(null);
-    const [loading, _setLoading] = useState(false); // 🔹 로딩 상태 추가
+export default function MakeMyActivitySectionS({
+    initialTitle,
+    initialDescription,
+    initialDuration,
+    initialEnergyLevel,
+    initialGoodPoint,
+    onSubmit,
+    isEditing = false,
+    editingActivityId,
+}: MakeMyActivitySectionSProps) {
+    const [title, setTitle] = useState(initialTitle || "");
+    const [description, setDescription] = useState(initialDescription || "");
+    const [duration, setDuration] = useState(initialDuration || "");
+    const [goodPoint, setGoodPoint] = useState(initialGoodPoint || "");
+    const [energyLevel, setEnergyLevel] = useState<number | null>(initialEnergyLevel ?? null);
+    const [showSlider,setShowSlider] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const isSubmitDisabled = loading || energyLevel === null || !title.trim() || !description.trim();
 
 
+
     async function handleSubmit() {
-    if (isSubmitDisabled) return; // 안전 가드
+        if (isSubmitDisabled) return;
 
-    _setLoading(true); // 🔹 로딩 상태 시작
+        setLoading(true);
 
-    try {
-        // payload 생성
-        const payload = {
-            title,
-            description,
-            is_public: false, // 기본값
-            duration_minutes: duration,
-            good_point: goodPoint || undefined,
-            insight: "", // 필요하면 따로 state 만들어서 넣기
-            energy_level: energyLevel!
-        };
+        // 함수 상단에서 미리 선언
+        let updatePayload: ActivityUpdatePayload | undefined;
+        let createPayload: ActivityCreatePayload | undefined;
 
-        const newActivity = await createActivity(payload);
-        toast.success("활동이 저장되었습니다.")
-        console.log("저장 결과",newActivity)
-        
+        try {
+            if (isEditing && editingActivityId) {
+                updatePayload = {
+                    ...(title && { title }),
+                    ...(description && { description }),
+                    ...(duration && { duration_minutes: duration }),
+                    ...(goodPoint && { good_point: goodPoint }),
+                    ...(energyLevel != null && { energy_level: energyLevel }),
+                    is_public: false,
+                };
 
-        // 성공 후 UX 흐름 (예: 페이지 이동 또는 상태 초기화)
-        setTitle("");
-        setDescription("");
-        setGoodPoint("");
-        setDuration("");
-        setEnergyLevel(null);
+                await UpdateUserActivity(editingActivityId, updatePayload);
+                toast.success("활동이 수정되었습니다.");
+            } else {
+                if (!title || !description || energyLevel == null) {
+                    toast.error("필수 항목을 모두 입력해주세요.");
+                    setLoading(false);
+                    return;
+                }
 
-    } catch (error) {
-        console.error("활동 생성 실패:", error);
-        toast.error("활동 저장 실패")
-    } finally {
-        _setLoading(false); // 🔹 로딩 상태 끝
+                createPayload = {
+                    title,
+                    description,
+                    is_public: false,
+                    duration_minutes: duration,
+                    good_point: goodPoint || undefined,
+                    energy_level: energyLevel,
+                };
+
+                await createActivity(createPayload);
+                toast.success("활동이 저장되었습니다.");
+            }
+
+            // 공통 onSubmit 호출
+            if (onSubmit) {
+                await onSubmit(
+                    isEditing && editingActivityId ? updatePayload! : createPayload!,
+                    isEditing,
+                    editingActivityId
+                );
+            }
+
+            // 초기화
+            setTitle("");
+            setDescription("");
+            setDuration("");
+            setGoodPoint("");
+            setEnergyLevel(null);
+
+        } catch (error) {
+            console.error(error);
+            toast.error(isEditing ? "활동 수정 실패" : "활동 저장 실패");
+        } finally {
+            setLoading(false);
+        }
     }
-}
+
 
 
     return (

@@ -8,8 +8,8 @@ type UpdateMenuProps = {
 export default function UpdateMenu({ onNavigate }: UpdateMenuProps) {
 
     const mainItems = [
-        { label: "수정", path: "/energy", icon: editIcon },
-        { label: "삭제", path: "/acts", icon: trashIcon },
+        { label: "수정", path: "/updateActivity", icon: editIcon },
+        { label: "삭제", path: "/deleteAcitivity", icon: trashIcon },
     ];
 
     return (
