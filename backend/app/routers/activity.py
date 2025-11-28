@@ -75,6 +75,7 @@ def update_activity(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
+    # 기존 활동 조회
     activity = (
         db.query(Activity)
         .filter(Activity.id == activity_id)
@@ -95,11 +96,17 @@ def update_activity(
         activity.description = payload.description
     if payload.duration_minutes is not None:
         activity.duration_minutes = payload.duration_minutes
-    if payload.energy_level is not None:
-        activity.energy_level = payload.energy_level
     if payload.good_point is not None:
         activity.good_point = payload.good_point
 
+    # energy_level ORM 객체 조회 후 할당
+    if payload.energy_level is not None:
+        level_obj = db.query(EnergyLevel).filter(EnergyLevel.value == payload.energy_level).first()
+        if not level_obj:
+            raise HTTPException(status_code=404, detail="해당 에너지 레벨이 존재하지 않습니다.")
+        activity.energy_level = level_obj  # ORM 객체로 안전하게 할당
+
+    # 커밋 & 갱신
     db.commit()
     db.refresh(activity)
 
