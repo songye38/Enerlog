@@ -80,7 +80,8 @@ export default function MakeMyActivitySectionS({
                     energy_level: energyLevel,
                 };
 
-                const createdActivity = await createActivity(createPayload); // 반환값 반드시 변수에 담기
+                const createdActivity = await createActivity(createPayload);
+
                 if (onAdded && createdActivity) {
                     onAdded({
                         id: createdActivity.id,
@@ -88,10 +89,11 @@ export default function MakeMyActivitySectionS({
                         description: createdActivity.description || "",
                         durationMinutes: createdActivity.duration_minutes || "",
                         goodPoint: createdActivity.good_point || "",
-                        level: createdActivity.energy_level,
-                        isHearted: false,
-                        tags: [],
-                        count: 0,
+                        insight: createdActivity.insight || "",    // 서버에서 옵셔널이면 빈 문자열로
+                        level: createdActivity.energy_level,       // 반드시 EnergyLevel 타입
+                        isHearted: false,                          // 기본값
+                        tags: [],                                   // 기본값
+                        count: 0,                                   // 기본값
                     });
                 }
             }
