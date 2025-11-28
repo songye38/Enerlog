@@ -11,19 +11,12 @@ import type { ActivityUpdatePayload } from "../api/activity";
 interface ActivitySectionProps {
   activity: ActivityFeed;
   onDeleted?: (id: string) => void; // 부모에게 알려서 리스트 갱신
+  onEdited?: (id: string, payload: ActivityUpdatePayload) => void; // 편집 후 부모에게 알림
 }
 
-export default function ActivitySection({ activity, onDeleted }: ActivitySectionProps) {
+export default function ActivitySection({ activity, onDeleted ,onEdited}: ActivitySectionProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-
-  // 활동 수정 후 상태 업데이트
-  const handleEdited = (id: string, payload: ActivityUpdatePayload) => {
-    // 여기서는 필요한 경우 로컬 상태를 갱신
-    // 예: 부모 컴포넌트에서 activities를 관리하는 경우
-    console.log("편집 완료:", id, payload);
-  };
-
   const handleMenuClick = () => setMenuOpen(prev => !prev);
 
   const handleNavigate = async (path: string) => {
@@ -100,7 +93,7 @@ export default function ActivitySection({ activity, onDeleted }: ActivitySection
         <div style={{ alignSelf: "stretch", display: "flex", flexDirection: "column", gap: 8 }}>
           <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", gap: 7 }}>
             {/* 상단 태그 */}
-            <div style={{ padding: "5px 8px", background: "black", borderRadius: 4, display: "inline-flex", justifyContent: "center", alignItems: "center" }}>
+            <div style={{ width : 'auto',padding: "5px 8px", background: "black", borderRadius: 4, display: "inline-flex", justifyContent: "center", alignItems: "center" }}>
               <div style={{ color: "white", fontSize: 12, fontFamily: "Pretendard", fontWeight: 600 }}>
                 #{activity.count}회 수행
               </div>
@@ -151,7 +144,7 @@ export default function ActivitySection({ activity, onDeleted }: ActivitySection
             try {
               await UpdateUserActivity(activity.id, payload);
               setIsEditing(false);
-              handleEdited(activity.id, payload); // 편집 후 처리
+              onEdited?.(activity.id, payload); // 편집 후 처리
             } catch (err) {
               console.error("수정 실패:", err);
             }

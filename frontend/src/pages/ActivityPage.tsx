@@ -7,6 +7,7 @@ import MakeMyActivitySectionS from "../ccomponents/MakeMyActivitySectionS";
 import { fetchActivityTemplates, fetchUserActivites } from "../api/activity";
 import type { ActivityFeed } from "../types/ActivityFeed";
 import { ClipLoader } from "react-spinners";
+import type { ActivityUpdatePayload } from "../api/activity";
 
 const loaderStyle: CSSProperties = {
     display: "block",
@@ -28,6 +29,12 @@ const ActivityPage = () => {
         setUserActivities(prev => prev.filter(a => a.id !== id));
     };
 
+    const handleEdited = (id: string, payload: ActivityUpdatePayload) => {
+        setUserActivities(prev =>
+            prev.map(a => (a.id === id ? { ...a, ...payload } : a))
+        );
+    };
+
     useEffect(() => {
         const loadActivities = async () => {
             setLoading(true);
@@ -39,7 +46,7 @@ const ActivityPage = () => {
                     isHearted: false,
                     title: tpl.title,
                     description: tpl.description || "",
-                    goodPoint : tpl.good_point,
+                    goodPoint: tpl.good_point,
                     tags: [],
                     count: 0,
                     durationMinutes: tpl.duration_minutes || "",
@@ -59,7 +66,7 @@ const ActivityPage = () => {
                     isHearted: false,
                     title: tpl.title,
                     description: tpl.description || "",
-                    goodPoint : tpl.good_point,
+                    goodPoint: tpl.good_point,
                     tags: [],
                     count: 0,
                     durationMinutes: tpl.duration_minutes || "",
@@ -112,7 +119,7 @@ const ActivityPage = () => {
                 ) : (
                     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                         {displayedActivities.map((activity, index) => (
-                            <ActivitySection key={index} activity={activity} onDeleted={handleDeleted} />
+                            <ActivitySection key={index} activity={activity} onDeleted={handleDeleted} onEdited={handleEdited} />
                         ))}
                     </div>
                 )}
