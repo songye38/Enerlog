@@ -82,6 +82,8 @@ export default function MakeMyActivitySectionS({
 
                 const createdActivity = await createActivity(createPayload);
 
+                console.log("저장하고 받은 데이터 구조",createdActivity);
+
                 if (onAdded && createdActivity) {
                     onAdded({
                         id: createdActivity.id,
