@@ -117,7 +117,7 @@ const ActivityPage = () => {
         <div>
             <ActivityTab
                 myActivitiesCount={userActivities.length}
-                //onChange={(tab) => setSelectedMainTab(tab as "추천 활동" | "내가 만든 활동")}
+                selectedTab={selectedMainTab} // ← 여기에 현재 선택된 탭 전달
                 onChange={(tab) => {
                     setSelectedMainTab(tab as "추천 활동" | "내가 만든 활동");
                     localStorage.setItem("selectedMainTab", tab);
@@ -125,7 +125,7 @@ const ActivityPage = () => {
             />
 
             <ActivitySelectTab
-                //onChange={setSelectedFilterTab} 
+                selectedTab={selectedFilterTab} // ← 현재 필터도 전달
                 onChange={(tab) => {
                     setSelectedFilterTab(tab);
                     localStorage.setItem("selectedFilterTab", tab);
