@@ -97,107 +97,108 @@ export default function ActivitySection({ activity }: ActivitySectionProps) {
           </div>
         </div>
 
+      </div>
 
 
-        {/* 활동 내용 */}
+      {/* 활동 내용 */}
+      <div
+        style={{
+          alignSelf: "stretch",
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        {/* 상단 태그 */}
         <div
           style={{
-            alignSelf: "stretch",
             display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 7,
             flexDirection: "column",
-            gap: 8,
           }}
         >
-          {/* 상단 태그 */}
           <div
             style={{
-              display: "flex",
+              padding: "5px 8px",
+              background: "black",
+              borderRadius: 4,
+              display: "inline-flex",
               justifyContent: "center",
               alignItems: "center",
-              gap: 7,
-              flexDirection: "column",
+              gap: 4,
             }}
           >
             <div
               style={{
-                padding: "5px 8px",
-                background: "black",
-                borderRadius: 4,
-                display: "inline-flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 4,
+                color: "white",
+                fontSize: 12,
+                fontFamily: "Pretendard",
+                fontWeight: 600,
+                wordWrap: "break-word",
               }}
             >
-              <div
-                style={{
-                  color: "white",
-                  fontSize: 12,
-                  fontFamily: "Pretendard",
-                  fontWeight: 600,
-                  wordWrap: "break-word",
-                }}
-              >
-                #{activity.count}회 수행
-              </div>
-            </div>
-
-            {/* 제목 */}
-            <div style={{ alignSelf: "stretch", display: "flex", justifyContent: "center" }}>
-              <div
-                style={{
-                  color: "black",
-                  fontSize: 25,
-                  fontFamily: "IsYun, sans-serif",
-                  fontWeight: 400,
-                  lineHeight: "24px",
-                  textAlign: "center",
-                }}
-              >
-                {activity.title}
-              </div>
+              #{activity.count}회 수행
             </div>
           </div>
 
-          {/* 설명 및 태그 */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
-            <div style={{ textAlign: "center", color: "black", fontSize: 15, lineHeight: '22px' }}>
-              {activity.description.split("\n").map((line, i) => (
-                <span key={i}>
-                  {line}
-                  <br />
-                </span>
-              ))}
-            </div>
-
-            {/* 해시태그 */}
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center" }}>
-              {activity.tags.map((tag, i) => (
-                <div
-                  key={i}
-                  style={{
-                    borderRadius: 4,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    padding: "2px 6px",
-                  }}
-                >
-                  <div
-                    style={{
-                      color: "black",
-                      fontSize: 10,
-                      fontFamily: "Pretendard",
-                      fontWeight: 600,
-                    }}
-                  >
-                    #{tag}
-                  </div>
-                </div>
-              ))}
+          {/* 제목 */}
+          <div style={{ alignSelf: "stretch", display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                color: "black",
+                fontSize: 25,
+                fontFamily: "IsYun, sans-serif",
+                fontWeight: 400,
+                lineHeight: "24px",
+                textAlign: "center",
+              }}
+            >
+              {activity.title}
             </div>
           </div>
         </div>
+
+        {/* 설명 및 태그 */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
+          <div style={{ textAlign: "center", color: "black", fontSize: 15, lineHeight: '22px' }}>
+            {activity.description.split("\n").map((line, i) => (
+              <span key={i}>
+                {line}
+                <br />
+              </span>
+            ))}
+          </div>
+
+          {/* 해시태그 */}
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center" }}>
+            {activity.tags.map((tag, i) => (
+              <div
+                key={i}
+                style={{
+                  borderRadius: 4,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "2px 6px",
+                }}
+              >
+                <div
+                  style={{
+                    color: "black",
+                    fontSize: 10,
+                    fontFamily: "Pretendard",
+                    fontWeight: 600,
+                  }}
+                >
+                  #{tag}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-      );
+    </div>
+  );
 }
