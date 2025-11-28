@@ -80,11 +80,19 @@ export default function MakeMyActivitySectionS({
                     energy_level: energyLevel,
                 };
 
-                const createdActivity = await createActivity(createPayload); // ← 여기에 담기
-                toast.success("활동이 저장되었습니다.");
-
-                if (onAdded) {
-                    onAdded(createdActivity); // 이제 에러 없음
+                const createdActivity = await createActivity(createPayload); // 반환값 반드시 변수에 담기
+                if (onAdded && createdActivity) {
+                    onAdded({
+                        id: createdActivity.id,
+                        title: createdActivity.title,
+                        description: createdActivity.description || "",
+                        durationMinutes: createdActivity.duration_minutes || "",
+                        goodPoint: createdActivity.good_point || "",
+                        level: createdActivity.energy_level,
+                        isHearted: false,
+                        tags: [],
+                        count: 0,
+                    });
                 }
             }
 
