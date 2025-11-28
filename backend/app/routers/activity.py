@@ -4,13 +4,13 @@ from typing import List
 
 from app.db.database import get_db  # SessionLocal 반환
 from app.db.models import ActivityTemplate,EnergyLevel,Activity,User
-from app.db.schemas import ActivityTemplateOut,ActivityOut,ActivityCreate
+from app.db.schemas import ActivityTemplateOut,ActivityOut,ActivityCreate,ActivityUpdate
 from app.auth.dependencies import get_current_user
 
 router = APIRouter(prefix="/activities", tags=["Activities"])
 
 # -----------------------
-# Activity CRUD
+# 사용자 정의 활동 생성
 # -----------------------
 @router.post("/", response_model=ActivityOut)
 def create_activity(
@@ -45,6 +45,10 @@ def create_activity(
     return activity
 
 
+
+# -------------------------------------
+# user_id를 기반으로 사용자가 만든 활동 fetch
+# -------------------------------------
 @router.get("/", response_model=List[ActivityTemplateOut])
 def list_user_activities(
     db: Session = Depends(get_db),
@@ -60,6 +64,75 @@ def list_user_activities(
     return [ActivityTemplateOut.from_orm_obj(t) for t in activities]
 
 
+# --------------------------------
+# activity_id를 기반으로 활동 내용 수정
+# --------------------------------
+@router.put("/{activity_id}", response_model=ActivityTemplateOut)
+def update_activity(
+    activity_id: int,
+    payload: ActivityUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    activity = (
+        db.query(Activity)
+        .filter(Activity.id == activity_id)
+        .filter(Activity.is_deleted == False)
+        .first()
+    )
+
+    if not activity:
+        raise HTTPException(status_code=404, detail="활동이 존재하지 않습니다.")
+
+    if activity.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="수정 권한이 없습니다.")
+
+    # 변경 가능한 필드만 업데이트
+    if payload.title is not None:
+        activity.title = payload.title
+    if payload.description is not None:
+        activity.description = payload.description
+    if payload.duration_minutes is not None:
+        activity.duration_minutes = payload.duration_minutes
+    if payload.energy_level is not None:
+        activity.energy_level = payload.energy_level
+    if payload.good_point is not None:
+        activity.good_point = payload.good_point
+
+    db.commit()
+    db.refresh(activity)
+
+    return ActivityTemplateOut.from_orm_obj(activity)
+
+# -------------------------------
+# activity_id를 기반으로 삭제하는 함수
+# -------------------------------
+@router.delete("/{activity_id}")
+def delete_activity(
+    activity_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    activity = (
+        db.query(Activity)
+        .filter(Activity.id == activity_id)
+        .filter(Activity.is_deleted == False)
+        .first()
+    )
+
+    if not activity:
+        raise HTTPException(status_code=404, detail="활동이 존재하지 않습니다.")
+
+    if activity.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="삭제 권한이 없습니다.")
+
+    activity.is_deleted = True  # soft delete
+
+    db.commit()
+
+    return {"message": "활동이 삭제되었습니다."}
+
+
 # @router.get("/{activity_id}", response_model=ActivityOut)
 # def get_activity(activity_id: UUID, db: Session = Depends(get_db)):
 #     activity = db.query(Activity).filter(Activity.id == activity_id, Activity.is_deleted == False).first()
@@ -67,10 +140,12 @@ def list_user_activities(
 #         raise HTTPException(status_code=404, detail="Activity not found")
 #     return activity
 
+
+
+
 # -----------------------
 # ActivityTemplate CRUD
 # -----------------------
-
 @router.get("/templates", response_model=List[ActivityTemplateOut])
 def list_activity_templates(db: Session = Depends(get_db)):
     templates = db.query(ActivityTemplate).all()

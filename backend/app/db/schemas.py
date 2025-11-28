@@ -58,6 +58,14 @@ class ActivityCreate(BaseModel):
     energy_level: EnergyLevelEnum  
 
 
+class ActivityUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    duration_minutes: Optional[str] = None
+    energy_level: Optional[int] = None
+    good_point: Optional[str] = None
+
+
 class EnergyLevelMiniOut(BaseModel):
     id: UUID
     title: str

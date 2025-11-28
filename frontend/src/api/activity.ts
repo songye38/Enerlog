@@ -24,6 +24,15 @@ export interface ActivityCreatePayload {
     energy_level: number;
 }
 
+
+export interface ActivityUpdatePayload {
+    title?: string;
+    description?: string;
+    duration_minutes?: string;
+    energy_level?: number;
+    good_point?: string;
+}
+
 /*----------------------------------------------
  * ✅ ActivityTemplate 리스트 가져오기
  ----------------------------------------------*/
@@ -38,6 +47,22 @@ export async function fetchActivityTemplates(): Promise<ActivityTemplateOut[]> {
     }
 }
 
+
+/*----------------------------------------------
+ * ✅ 유저의 Activities 전부 가져오기 
+ ----------------------------------------------*/
+export async function fetchUserActivites(): Promise<ActivityTemplateOut[]> {
+    try {
+        const res = await Api.get("/activities/", {
+            withCredentials: true, // ⚡ 인증 쿠키 자동 포함
+        });
+        return res.data;
+    } catch (error) {
+        const axiosError = error as AxiosError<{ detail?: string }>;
+        const msg = axiosError.response?.data?.detail || "유저의 모든 활동 가져오기 실패";
+        throw new Error(msg);
+    }
+}
 
 /*----------------------------------------------
  * ✅ 직접 Activity 만들기
@@ -58,17 +83,33 @@ export async function createActivity(payload: Omit<ActivityCreatePayload, "user_
 
 
 /*----------------------------------------------
- * ✅ 유저의 Activities 전부 가져오기 
+ * ✅ 유저의 Activitiy 수정
  ----------------------------------------------*/
-export async function fetchUserActivites(): Promise<ActivityTemplateOut[]> {
+export async function UpdateUserActivity(activityId: number, payload: ActivityUpdatePayload) {
     try {
-        const res = await Api.get("/activities/", {
-            withCredentials: true, // ⚡ 인증 쿠키 자동 포함
+        const res = await Api.put(`/activities/${activityId}`, payload, {
+            withCredentials: true,
         });
         return res.data;
     } catch (error) {
         const axiosError = error as AxiosError<{ detail?: string }>;
-        const msg = axiosError.response?.data?.detail || "유저의 모든 활동 가져오기 실패";
+        const msg = axiosError.response?.data?.detail || "유저의 모든 활동 수정하기 실패";
+        throw new Error(msg);
+    }
+}
+
+/*----------------------------------------------
+ * ✅ 유저의 Activity 삭제
+ ----------------------------------------------*/
+export async function DeleteUserActivity(activityId: number) {
+    try {
+        const res = await Api.delete(`/activities/${activityId}`, {
+            withCredentials: true,
+        });
+        return res.data;
+    } catch (error) {
+        const axiosError = error as AxiosError<{ detail?: string }>;
+        const msg = axiosError.response?.data?.detail || "유저의 모든 활동 수정하기 실패";
         throw new Error(msg);
     }
 }
