@@ -85,31 +85,27 @@ export async function createActivity(payload: Omit<ActivityCreatePayload, "user_
 /*----------------------------------------------
  * ✅ 유저의 Activitiy 수정
  ----------------------------------------------*/
-export async function UpdateUserActivity(activityId: number, payload: ActivityUpdatePayload) {
-    try {
-        const res = await Api.put(`/activities/${activityId}`, payload, {
-            withCredentials: true,
-        });
-        return res.data;
-    } catch (error) {
-        const axiosError = error as AxiosError<{ detail?: string }>;
-        const msg = axiosError.response?.data?.detail || "유저의 모든 활동 수정하기 실패";
-        throw new Error(msg);
-    }
+export async function UpdateUserActivity(activityId: string, payload: ActivityUpdatePayload) {
+  try {
+    const res = await Api.put(`/activities/${activityId}`, payload, { withCredentials: true });
+    return res.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<{ detail?: string }>;
+    const msg = axiosError.response?.data?.detail || "Activity 수정 실패";
+    throw new Error(msg);
+  }
 }
 
 /*----------------------------------------------
  * ✅ 유저의 Activity 삭제
  ----------------------------------------------*/
-export async function DeleteUserActivity(activityId: number) {
-    try {
-        const res = await Api.delete(`/activities/${activityId}`, {
-            withCredentials: true,
-        });
-        return res.data;
-    } catch (error) {
-        const axiosError = error as AxiosError<{ detail?: string }>;
-        const msg = axiosError.response?.data?.detail || "유저의 모든 활동 수정하기 실패";
-        throw new Error(msg);
-    }
+export async function DeleteUserActivity(activityId: string) {
+  try {
+    const res = await Api.delete(`/activities/${activityId}`, { withCredentials: true });
+    return res.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<{ detail?: string }>;
+    const msg = axiosError.response?.data?.detail || "Activity 삭제 실패";
+    throw new Error(msg);
+  }
 }

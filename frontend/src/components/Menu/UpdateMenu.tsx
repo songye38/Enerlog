@@ -17,7 +17,7 @@ export default function UpdateMenu({ onNavigate }: UpdateMenuProps) {
 
 
             {/* 수정,삭제 */}
-            <div style={{ borderBottom: '1px solid #D9D9D9', display: 'flex', flexDirection: 'column', gap: 16, paddingBottom: 20 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, paddingBottom: 20 }}>
                 {mainItems.map((item, idx) => (
                     <div
                         key={idx}

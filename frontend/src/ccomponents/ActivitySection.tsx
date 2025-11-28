@@ -5,12 +5,15 @@ import menuIcon from '/icons/20X20/dots-horizontal.png'
 import heartIcon from '/icons/16X16/heart.png'
 import { useState } from "react";
 import UpdateMenu from "../components/Menu/UpdateMenu";
+import { DeleteUserActivity } from "../api/activity";
 
 interface ActivitySectionProps {
   activity: ActivityFeed;
+  onDeleted?: (id: string) => void; // 부모에게 알려서 리스트 갱신
 }
 
-export default function ActivitySection({ activity }: ActivitySectionProps) {
+
+export default function ActivitySection({ activity, onDeleted }: ActivitySectionProps) {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -18,14 +21,26 @@ export default function ActivitySection({ activity }: ActivitySectionProps) {
     setMenuOpen((prev) => !prev);  // 토글
   };
 
-  const handleNavigate = (path: string) => {
-    console.log("메뉴 선택:", path);
-    setMenuOpen(false); // 선택 후 메뉴 닫기
+  const handleNavigate = async (path: string) => {
+    setMenuOpen(false);
 
-    // 예시)
-    // if (path === "/acts") delete 실행
-    // if (path === "/energy") edit 실행
+    if (path === "/acts") {
+      try {
+        // 낭비 줄이려면 confirm 한 번
+        if (!confirm("정말 삭제할까요?")) return;
+
+        // 옵티미스틱: 부모 콜백으로 먼저 제거
+        onDeleted?.(activity.id);
+
+        await DeleteUserActivity(activity.id);
+        console.log("삭제 완료");
+      } catch (error) {
+        console.error("삭제 실패:", error);
+        // 실패하면 부모에게 다시 재요청 하게 하거나 에러 UI 띄우기
+      }
+    }
   };
+
   return (
     <div
       style={{

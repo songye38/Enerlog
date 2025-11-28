@@ -3,6 +3,7 @@ import ActRecordBtn from "../components/Button/ActRecordBtn";
 export default function ActRecordSection() {
 
     const activity: ActivityFeed = {
+        id:'1',
         level: 3,
         isHearted: false,
         title: "가벼운 산책",

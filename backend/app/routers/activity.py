@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends,HTTPException
 from sqlalchemy.orm import Session
 from typing import List
+from uuid import UUID
 
 from app.db.database import get_db  # SessionLocal 반환
 from app.db.models import ActivityTemplate,EnergyLevel,Activity,User
@@ -69,7 +70,7 @@ def list_user_activities(
 # --------------------------------
 @router.put("/{activity_id}", response_model=ActivityTemplateOut)
 def update_activity(
-    activity_id: int,
+    activity_id: UUID,
     payload: ActivityUpdate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
@@ -109,7 +110,7 @@ def update_activity(
 # -------------------------------
 @router.delete("/{activity_id}")
 def delete_activity(
-    activity_id: int,
+    activity_id: UUID,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):

@@ -2,6 +2,7 @@
 export type EnergyLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 export interface ActivityFeed {
+  id : string;
   level: EnergyLevel;
   isHearted: boolean;
   title: string;

@@ -6,6 +6,7 @@ import type { ActivityFeed } from "../types/ActivityFeed";
 
 const mockActivities: ActivityFeed[] = [
   {
+    id : '1',
     level: 4,
     isHearted: true,
     title: "전등 끄고 조용한 환경 만들기",
@@ -17,6 +18,7 @@ const mockActivities: ActivityFeed[] = [
     durationMinutes: "3분",
   },
   {
+    id : '2',
     level: 2,
     isHearted: false,
     title: "짧은 명상하기",
@@ -28,6 +30,7 @@ const mockActivities: ActivityFeed[] = [
     durationMinutes: "5분",
   },
   {
+    id : '3',
     level: 6,
     isHearted: true,
     title: "가벼운 산책하기",
