@@ -139,8 +139,9 @@ const AddEnergyPage = () => {
             console.log("Behave 생성 완료:", result);
         } catch (err) {
             if (axios.isAxiosError(err)) {
-                console.log(err.response?.data); // 서버에서 오는 422 메시지 확인 가능
-                console.error("Behave 생성 실패:", err.message);
+                // 여기서 서버가 보낸 422 메시지 확인 가능
+                console.error("Behave 생성 실패:", err.response?.data);
+                // err.response?.data.errors 또는 err.response?.data.detail 확인 가능
             } else {
                 console.error("알 수 없는 에러:", err);
             }
