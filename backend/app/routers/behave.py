@@ -71,31 +71,41 @@ def save_tags(db: Session, behave: Behave, user_tags: list, preset_tags: list):
 #     return behave
 
 
-print("route called")
+# print("route called")
+# @router.post("/", response_model=BehaveResponse)
+# def create_behave(
+#     payload: BehaveCreateRequest,
+#     db: Session = Depends(get_db),
+#     current_user = Depends(get_current_user)
+# ):
+#     print("Received payload:", payload)
+#     try:
+#         behave = Behave(
+#             user_id=current_user.id,
+#             before_energy=payload.before_energy,
+#             before_description=payload.before_description,
+#             status=BehaveStatusEnum(payload.status)
+#         )
+#         db.add(behave)
+#         db.flush()
+#         save_tags(db, behave, payload.user_tags, payload.preset_tags)
+#         db.refresh(behave)
+#         return behave
+#     except ValidationError as e:
+#         # Pydantic validation 에러 확인
+#         print("ValidationError:", e.json())
+#         return JSONResponse(status_code=422, content={"detail": e.errors()})
+#     except Exception as e:
+#         # 그 외 서버 에러
+#         print("ServerError:", e)
+#         return JSONResponse(status_code=500, content={"detail": str(e)})
+
 @router.post("/", response_model=BehaveResponse)
-def create_behave(
-    payload: BehaveCreateRequest,
+async def create_behave_raw(
+    request: Request,
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
-    print("Received payload:", payload)
-    try:
-        behave = Behave(
-            user_id=current_user.id,
-            before_energy=payload.before_energy,
-            before_description=payload.before_description,
-            status=BehaveStatusEnum(payload.status)
-        )
-        db.add(behave)
-        db.flush()
-        save_tags(db, behave, payload.user_tags, payload.preset_tags)
-        db.refresh(behave)
-        return behave
-    except ValidationError as e:
-        # Pydantic validation 에러 확인
-        print("ValidationError:", e.json())
-        return JSONResponse(status_code=422, content={"detail": e.errors()})
-    except Exception as e:
-        # 그 외 서버 에러
-        print("ServerError:", e)
-        return JSONResponse(status_code=500, content={"detail": str(e)})
+    body_bytes = await request.body()
+    print("Raw request body:", body_bytes.decode())
+    # 여기까지 찍히면 payload가 서버까지 제대로 도달하는지 확인 가능
