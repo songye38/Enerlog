@@ -272,35 +272,30 @@ class BehavePhotoOut(BaseModel):
 # -----------------------
 # Behave Schemas
 # -----------------------
-class BehaveCreate(BaseModel):
-    user_id: UUID
-    activity_id: UUID
-    before_energy_id: UUID
-    after_energy_id: Optional[UUID] = None
+class TagPayload(BaseModel):
+    title: str
+    type: str  # 'body' 또는 'mental'
+    id: Optional[str]  # preset tag일 경우
+
+class BehaveCreateRequest(BaseModel):
+    activity_id: str
+    before_energy: EnergyLevelEnum
+    after_energy: Optional[EnergyLevelEnum] = None
     before_description: Optional[str] = None
     after_description: Optional[str] = None
     status: BehaveStatusEnum
-    tag_ids: List[UUID] = []  # 태그 선택 시 전달
-    photos: List[str] = []    # 사진 URL
+    user_tags: List[TagPayload] = []
+    preset_tags: List[TagPayload] = []
 
-class BehaveOut(BaseModel):
-    id: UUID
-    user_id: UUID
-    activity_id: UUID
-    before_energy_id: UUID
-    after_energy_id: Optional[UUID]
+class BehaveResponse(BaseModel):
+    id: str
+    user_id: str
+    activity_id: str
+    before_energy: EnergyLevelEnum
+    after_energy: Optional[EnergyLevelEnum]
     before_description: Optional[str]
     after_description: Optional[str]
     status: BehaveStatusEnum
-    is_deleted: bool
-    created_at: datetime
-    updated_at: datetime
-    tags: List[BehaveTagOut] = []
-    photos: List[BehavePhotoOut] = []
-
-    class Config:
-        orm_mode = True
-
 # -----------------------
 # Letter Schemas
 # -----------------------

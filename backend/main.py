@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routers.users import router as users_router
 from app.routers.activity import router as activity_router
 from app.routers.energy import router as energy_router
+from app.routers.behave import router as behave_router
 
 
 
@@ -37,3 +38,4 @@ app.add_middleware(
 app.include_router(users_router)
 app.include_router(activity_router)
 app.include_router(energy_router)
+app.include_router(behave_router)
