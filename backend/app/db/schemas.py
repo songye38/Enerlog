@@ -290,8 +290,10 @@ class BehaveResponse(BaseModel):
     before_energy: EnergyLevelEnum
     before_description: Optional[str]
     status: BehaveStatusEnum
-    class Config:
-        orm_mode = True  # ✅ ORM 객체를 Pydantic 모델로 변환 가능
+
+    model_config = {
+        "from_attributes": True  # ✅ Pydantic 2.x에서는 이게 필요
+    }
 
 # -----------------------
 # Letter Schemas
