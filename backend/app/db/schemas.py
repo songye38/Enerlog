@@ -211,23 +211,29 @@ class PresetTagOut(BaseModel):
 # -----------------------
 # UserTag Schemas
 # -----------------------
-class UserTagCreate(BaseModel):
-    user_id: UUID
-    title: str
-    type: TagTypeEnum
-    tag_ids: List[UUID] = []
+# class UserTagCreate(BaseModel):
+#     user_id: UUID
+#     title: str
+#     type: TagTypeEnum
+#     tag_ids: List[UUID] = []
 
-class UserTagOut(BaseModel):
-    id: UUID
-    user_id: UUID
-    title: str
-    type: TagTypeEnum
-    tags: List[TagOut] = []
-    created_at: datetime
-    updated_at: datetime
+# class UserTagOut(BaseModel):
+#     id: UUID
+#     user_id: UUID
+#     title: str
+#     type: TagTypeEnum
+#     tags: List[TagOut] = []
+#     created_at: datetime
+#     updated_at: datetime
 
-    class Config:
-        orm_mode = True
+#     class Config:
+#         orm_mode = True
+
+class UserTagsRequest(BaseModel):
+    energy_level: EnergyLevelEnum  # 0~10 Enum
+
+class UserTagsResponse(BaseModel):
+    tags: List[TagOut]  # id, title, type
 
 # -----------------------
 # BehaveTag Schemas
