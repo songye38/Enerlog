@@ -234,13 +234,13 @@ class UserTagOut(BaseModel):
 # -----------------------
 class BehaveTagCreate(BaseModel):
     behave_id: UUID
-    tag_id: UUID
+    tag_ids: List[UUID]  # 단일 tag_id → 리스트로 변경
     phase: PhaseEnum
 
 class BehaveTagOut(BaseModel):
     id: UUID
     behave_id: UUID
-    tag: TagOut
+    tags: List[TagOut]  # 단일 tag → 리스트
     phase: PhaseEnum
 
     class Config:

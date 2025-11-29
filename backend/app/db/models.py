@@ -130,6 +130,8 @@ class EnergyLevel(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
+    preset_tags = relationship("PresetTag", back_populates="energy_level")
+
 
 # -----------------------
 # Tags
@@ -143,6 +145,10 @@ class Tag(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
+    preset_tags = relationship("PresetTag", secondary="preset_tag_tags", back_populates="tags")
+    user_tags = relationship("UserTag", secondary="user_tag_tags", back_populates="tags")
+    behave_tags = relationship("BehaveTag", secondary="behave_tag_tags", back_populates="tags")
+
 # -----------------------
 # Preset Tags
 # -----------------------
@@ -152,12 +158,14 @@ class PresetTag(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
         # 에너지 레벨 FK
     energy_level_id = Column(UUID(as_uuid=True), ForeignKey("energy_levels.id"), nullable=False)
-    energy_level = relationship("EnergyLevel", backref="preset_tags")
 
-
-    type = Column(String(50), nullable=False)  # 'body' / 'mental'
+    #type = Column(String(50), nullable=False)  # 'body' / 'mental'
+    type = Column(Enum(TagTypeEnum), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    tags = relationship("Tag", secondary="preset_tag_tags", back_populates="preset_tags")
+    energy_level = relationship("EnergyLevel", back_populates="preset_tags")
 
 class PresetTagTags(Base):
     __tablename__ = "preset_tag_tags"
@@ -173,11 +181,13 @@ class UserTag(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
     title = Column(String(255), nullable=False)
-    type = Column(String(50), nullable=False)  # 'body' / 'mental'
+    # type = Column(String(50), nullable=False)  # 'body' / 'mental'
+    type = Column(Enum(TagTypeEnum), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
     user = relationship("User", back_populates="user_tags")
+    tags = relationship("Tag", secondary="user_tag_tags", back_populates="user_tags")
 
 class UserTagTags(Base):
     __tablename__ = "user_tag_tags"
@@ -193,8 +203,10 @@ class BehaveTag(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     behave_id = Column(UUID(as_uuid=True), ForeignKey("behave.id"))
-    tag_id = Column(UUID(as_uuid=True), ForeignKey("tags.id"))
     phase = Column(Enum(PhaseEnum), nullable=False)   # 'before' / 'after'
+
+    tags = relationship("Tag", secondary="behave_tag_tags", back_populates="behave_tags")
+    behave = relationship("Behave", back_populates="behave_tags")
 
 class BehaveTagTags(Base):
     __tablename__ = "behave_tag_tags"
@@ -222,8 +234,45 @@ class Behave(Base):
 
     user = relationship("User", back_populates="behaves")
     activity = relationship("Activity", back_populates="behaves")
-    tags = relationship("BehaveTag", backref="behave")
+    behave_tags = relationship("BehaveTag", back_populates="behave")
     photos = relationship("BehavePhoto", back_populates="behave")
+
+        # -------------------------------
+    # Helper properties
+    # -------------------------------
+    @property
+    def before_tags(self):
+        return [tag for bt in self.behave_tags if bt.phase == PhaseEnum.before for tag in bt.tags]
+
+    @property
+    def after_tags(self):
+        return [tag for bt in self.behave_tags if bt.phase == PhaseEnum.after for tag in bt.tags]
+
+    def tags_by_type(self, phase: PhaseEnum, tag_type: str):
+        return [
+            tag
+            for bt in self.behave_tags
+            if bt.phase == phase
+            for tag in bt.tags
+            if tag.type == tag_type
+        ]
+
+    @property
+    def before_mental_tags(self):
+        return self.tags_by_type(PhaseEnum.before, "mental")
+
+    @property
+    def before_body_tags(self):
+        return self.tags_by_type(PhaseEnum.before, "body")
+
+    @property
+    def after_mental_tags(self):
+        return self.tags_by_type(PhaseEnum.after, "mental")
+
+    @property
+    def after_body_tags(self):
+        return self.tags_by_type(PhaseEnum.after, "body")
+
 
 # -----------------------
 # Behave Photos
