@@ -10,6 +10,7 @@ import type { EnergyLevel } from "../types/EnergyLevel";
 import { useLocation } from "react-router-dom";
 import { createBehave } from "../api/behave";
 import type { BehaveCreatePayload } from "../api/behave";
+import { toast } from "react-toastify";
 
 function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["sections"] {
     const mental = tags.filter(t => t.type === "mental");
@@ -99,9 +100,11 @@ const AddEnergyPage = () => {
 
         try {
             const result = await createBehave(payload);
+            toast.success("에너지 레벨 기록 완료");
             console.log("Behave 생성 완료:", result);
             // 필요하면 여기서 페이지 이동이나 상태 초기화
         } catch (e) {
+            toast.error("에너지 레벨 기록 실패");
             console.error("Behave 생성 실패:", e);
         }
     };
