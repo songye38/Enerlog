@@ -39,36 +39,36 @@ def save_tags(db: Session, behave: Behave, user_tags: list, preset_tags: list):
     db.commit()
 
 
-@router.post("/", response_model=BehaveResponse)
-def create_behave(
-    payload: BehaveCreateRequest,
-    db: Session = Depends(get_db),
-    current_user = Depends(get_current_user)
-):
-    """
-    Behave 생성 + user_tags, preset_tags 저장
-    """
+# @router.post("/", response_model=BehaveResponse)
+# def create_behave(
+#     payload: BehaveCreateRequest,
+#     db: Session = Depends(get_db),
+#     current_user = Depends(get_current_user)
+# ):
+#     """
+#     Behave 생성 + user_tags, preset_tags 저장
+#     """
 
-    # 1️⃣ Behave 생성
-    behave = Behave(
-        user_id=current_user.id,
-        before_energy=payload.before_energy,  # int Enum에 그대로 맞음
-        before_description=payload.before_description,
-        status=BehaveStatusEnum(payload.status)
-    )
-    db.add(behave)
-    db.flush()  # id 생성
+#     # 1️⃣ Behave 생성
+#     behave = Behave(
+#         user_id=current_user.id,
+#         before_energy=payload.before_energy,  # int Enum에 그대로 맞음
+#         before_description=payload.before_description,
+#         status=BehaveStatusEnum(payload.status)
+#     )
+#     db.add(behave)
+#     db.flush()  # id 생성
 
-    # 2️⃣ 태그 저장
-    save_tags(
-        db=db,
-        behave=behave,
-        user_tags=payload.user_tags,
-        preset_tags=payload.preset_tags
-    )
+#     # 2️⃣ 태그 저장
+#     save_tags(
+#         db=db,
+#         behave=behave,
+#         user_tags=payload.user_tags,
+#         preset_tags=payload.preset_tags
+#     )
 
-    db.refresh(behave)
-    return behave
+#     db.refresh(behave)
+#     return behave
 
 
 # print("route called")
@@ -100,12 +100,12 @@ def create_behave(
 #         print("ServerError:", e)
 #         return JSONResponse(status_code=500, content={"detail": str(e)})
 
-# @router.post("/", response_model=BehaveResponse)
-# async def create_behave_raw(
-#     request: Request,
-#     db: Session = Depends(get_db),
-#     current_user = Depends(get_current_user)
-# ):
-#     body_bytes = await request.body()
-#     print("Raw request body:", body_bytes.decode())
-#     # 여기까지 찍히면 payload가 서버까지 제대로 도달하는지 확인 가능
+@router.post("/", response_model=BehaveResponse)
+async def create_behave_raw(
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    body_bytes = await request.body()
+    print("Raw request body:", body_bytes.decode())
+    # 여기까지 찍히면 payload가 서버까지 제대로 도달하는지 확인 가능
