@@ -1,11 +1,16 @@
 
 from app.db.models import Behave,BehaveStatusEnum,PhaseEnum,UserEnergyTagStats
+from app.db.schemas import BehaveResponse
 
 
 def update_before_stats(db, behave: Behave):
 
     print("호출은 되었는지?")
-    print("behave __dict__:", behave.__dict__)
+
+    # 전체 항목을 보기 위해 Pydantic 모델로 변환
+    behave_dict = BehaveResponse.from_orm(behave).dict()
+    print("behave 전체 항목:", behave_dict)
+    
     """
     behave.status == 'emotion_recorded' 일 때 호출
     before_phase의 태그를 stats에 반영
