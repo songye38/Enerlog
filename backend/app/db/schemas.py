@@ -275,7 +275,7 @@ class BehavePhotoOut(BaseModel):
 class TagPayload(BaseModel):
     title: str
     type: str  # 'body' 또는 'mental'
-    id: Optional[str]  # preset tag일 경우
+    id: Optional[str] = None  # ✅ 기본값 None
 
 class BehaveCreateRequest(BaseModel):
     before_energy: EnergyLevelEnum
