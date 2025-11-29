@@ -78,8 +78,7 @@ def create_behave(
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
-    
-    print("Received payload:", payload.dict())
+    print("Received payload:", payload)
     try:
         behave = Behave(
             user_id=current_user.id,
