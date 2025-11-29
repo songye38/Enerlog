@@ -87,7 +87,7 @@ const AddEnergyPage = () => {
             }));
 
         const payload: BehaveCreatePayload = {
-            before_energy: `level_${energyLevel}` as const,
+            before_energy: energyLevel,
             before_description: description,
             status: "emotion_recorded",
             user_tags: userTags,

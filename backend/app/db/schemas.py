@@ -293,6 +293,7 @@ class BehaveResponse(BaseModel):
     before_description: Optional[str]
     after_description: Optional[str]
     status: BehaveStatusEnum
+    
 # -----------------------
 # Letter Schemas
 # -----------------------

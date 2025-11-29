@@ -4,7 +4,7 @@ from typing import List
 from uuid import UUID
 
 from app.db.database import get_db  # SessionLocal 반환
-from app.db.models import Behave,TagTypeEnum,UserTag,Tag,PhaseEnum,BehaveTag
+from app.db.models import Behave,TagTypeEnum,UserTag,Tag,PhaseEnum,BehaveTag,EnergyLevelEnum
 from app.db.schemas import BehaveResponse,BehaveCreateRequest
 from app.auth.dependencies import get_current_user
 
@@ -50,7 +50,7 @@ def create_behave(
     # 1️⃣ Behave 생성
     behave = Behave(
         user_id=current_user.id,
-        before_energy=payload.before_energy,
+        before_energy=EnergyLevelEnum(payload.before_energy),  # string -> Enum 변환
         before_description=payload.before_description,
         status=payload.status
     )
