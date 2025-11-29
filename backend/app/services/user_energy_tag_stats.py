@@ -3,26 +3,31 @@ from app.db.models import Behave,BehaveStatusEnum,PhaseEnum,UserEnergyTagStats
 from app.db.schemas import BehaveResponse
 
 
+from app.db.models import Behave, BehaveStatusEnum, PhaseEnum, UserEnergyTagStats
+
 def update_before_stats(db, behave: Behave):
-
     print("호출은 되었는지?")
-
-    # 전체 항목을 보기 위해 Pydantic 모델로 변환
-    behave_dict = BehaveResponse.from_orm(behave).dict()
-    print("behave 전체 항목:", behave_dict)
     
-    """
-    behave.status == 'emotion_recorded' 일 때 호출
-    before_phase의 태그를 stats에 반영
-    """
+    # 전체 behave 객체 확인
+    print("behave.id:", behave.id)
+    print("behave.status:", behave.status)
+    print("behave.before_energy:", behave.before_energy)
+    print("behave.behave_tags:", behave.behave_tags)
+
     if behave.status != BehaveStatusEnum.emotion_recorded:
+        print("Status가 emotion_recorded가 아니어서 종료")
+        return
+
+    energy_level = behave.before_energy
+    if energy_level is None:
+        print("before_energy가 None이라 종료")
         return
 
     for bt in behave.behave_tags:
         if bt.phase != PhaseEnum.before:
             continue
-        energy_level = behave.before_energy
-        if not energy_level:
+        if not bt.tags:
+            print(f"No tags 연결됨: BehaveTag id={bt.id}")
             continue
 
         tag_ids = [tag.id for tag in bt.tags]
@@ -47,6 +52,7 @@ def update_before_stats(db, behave: Behave):
                 ))
 
     db.commit()
+    print("UserEnergyTagStats 업데이트 완료")
 
 
 def update_after_stats(db, behave: Behave):

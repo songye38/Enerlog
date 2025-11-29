@@ -49,7 +49,9 @@ def save_tags(db: Session, behave: Behave, user_tags: List, preset_tags: List):
                 db.flush()
                 behave_tag.tags.append(tag)
 
-    db.commit()
+
+    db.flush()
+    db.commit()  # 여기서 실제 DB에 반영
 
 
 # @router.post("/")
