@@ -227,8 +227,8 @@ class Behave(Base):
     before_energy = Column(Enum(EnergyLevelEnum), nullable=False)
     after_energy = Column(Enum(EnergyLevelEnum), nullable=True)  # after는 선택적
 
-    before_description = Column(Text)
-    after_description = Column(Text)
+    before_description = Column(Text,nullable=True)
+    after_description = Column(Text,nullable=True)
     status = Column(Enum(BehaveStatusEnum), nullable=False)
     is_deleted = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
