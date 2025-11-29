@@ -285,13 +285,10 @@ class BehaveCreateRequest(BaseModel):
     preset_tags: List[TagPayload] = []
 
 class BehaveResponse(BaseModel):
-    id: str
-    user_id: str
-    activity_id: str
+    id: UUID
+    user_id: UUID
     before_energy: EnergyLevelEnum
-    after_energy: Optional[EnergyLevelEnum]
     before_description: Optional[str]
-    after_description: Optional[str]
     status: BehaveStatusEnum
     class Config:
         orm_mode = True  # ✅ ORM 객체를 Pydantic 모델로 변환 가능
