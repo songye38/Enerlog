@@ -293,7 +293,9 @@ class BehaveResponse(BaseModel):
     before_description: Optional[str]
     after_description: Optional[str]
     status: BehaveStatusEnum
-    
+    class Config:
+        orm_mode = True  # ✅ ORM 객체를 Pydantic 모델로 변환 가능
+
 # -----------------------
 # Letter Schemas
 # -----------------------
