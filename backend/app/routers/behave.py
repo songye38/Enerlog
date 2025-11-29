@@ -51,6 +51,8 @@ def create_behave(
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
+    
+    print("payload",payload)
     """
     Behave 생성 + user_tags, preset_tags 저장
     """
