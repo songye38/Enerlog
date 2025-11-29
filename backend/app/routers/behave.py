@@ -50,9 +50,9 @@ def create_behave(
     # 1️⃣ Behave 생성
     behave = Behave(
         user_id=current_user.id,
-        before_energy=EnergyLevelEnum(payload.before_energy),  # string -> Enum 변환
+        before_energy=payload.before_energy,  # int Enum에 그대로 맞음
         before_description=payload.before_description,
-        status=BehaveStatusEnum(payload.status)  
+        status=BehaveStatusEnum(payload.status)
     )
     db.add(behave)
     db.flush()  # id 생성
