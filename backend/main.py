@@ -9,6 +9,7 @@ from app.routers.users import router as users_router
 from app.routers.activity import router as activity_router
 from app.routers.energy import router as energy_router
 from app.routers.behave import router as behave_router
+from app.routers.insights import router as insights_router
 
 
 
@@ -39,3 +40,4 @@ app.include_router(users_router)
 app.include_router(activity_router)
 app.include_router(energy_router)
 app.include_router(behave_router)
+app.include_router(insights_router)
