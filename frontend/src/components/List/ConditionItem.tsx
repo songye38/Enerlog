@@ -19,17 +19,28 @@ export default function ConditionItem({
   countVisible = true,
   withBackground = true,
 }: ConditionItemProps) {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]); // 🔹 선택된 태그 상태
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [addingTag, setAddingTag] = useState(false); // 🔹 입력 모드 상태
+  const [newTagLabel, setNewTagLabel] = useState(""); // 🔹 새 태그 값
 
   const handleTagClick = (label: string) => {
     setSelectedTags((prev) => {
       const isSelected = prev.includes(label);
       const newSelected = isSelected
-        ? prev.filter((l) => l !== label) // 이미 선택되어 있으면 해제
-        : [...prev, label]; // 선택
-      onAdd?.(label); // 선택/해제 시 상위로 전달
+        ? prev.filter((l) => l !== label)
+        : [...prev, label];
+      onAdd?.(label); // 선택/해제 시 상위 전달
       return newSelected;
     });
+  };
+
+  const handleAddTagConfirm = () => {
+    if (newTagLabel.trim()) {
+      onAdd?.(newTagLabel.trim()); // 상위로 새 태그 전달
+      setSelectedTags((prev) => [...prev, newTagLabel.trim()]); // 선택 상태에도 추가
+      setNewTagLabel("");
+      setAddingTag(false);
+    }
   };
 
   return (
@@ -43,12 +54,26 @@ export default function ConditionItem({
             label={tag.label}
             count={countVisible ? tag.count : undefined}
             withBackground={withBackground}
-            isSelected={selectedTags.includes(tag.label)} // 🔹 선택 여부 전달
-            onClick={() => handleTagClick(tag.label)} // 🔹 클릭 이벤트
+            isSelected={selectedTags.includes(tag.label)}
+            onClick={() => handleTagClick(tag.label)}
           />
         ))}
 
-        <AddTagBtn onClick={() => onAdd?.("")} />
+        {addingTag ? (
+          <div style={{ display: "flex", gap: 4 }}>
+            <input
+              type="text"
+              value={newTagLabel}
+              onChange={(e) => setNewTagLabel(e.target.value)}
+              placeholder="태그 입력"
+              style={{ padding: "4px 8px", borderRadius: 8, border: "1px solid #ccc" }}
+            />
+            <button onClick={handleAddTagConfirm}>추가</button>
+            <button onClick={() => setAddingTag(false)}>취소</button>
+          </div>
+        ) : (
+          <AddTagBtn onClick={() => setAddingTag(true)} />
+        )}
       </div>
     </div>
   );
