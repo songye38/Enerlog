@@ -87,12 +87,13 @@ const AddEnergyPage = () => {
             }));
 
         const payload: BehaveCreatePayload = {
-            before_energy: energyLevel,                // 실제 값으로 교체
+            before_energy: `level_${energyLevel}` as const,
             before_description: description,
             status: "emotion_recorded",
             user_tags: userTags,
             preset_tags: presetTags,
         };
+
 
         console.log("Payload 확인:", payload);
 

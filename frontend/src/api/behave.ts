@@ -1,7 +1,8 @@
 // src/api/behave.ts
 import Api from "./Api";
 import type { AxiosError } from "axios";
-import type { EnergyLevel } from "../types/EnergyLevel";
+import type { EnergyLevel,EnergyLevelEnumStr } from "../types/EnergyLevel";
+
 
 export interface TagPayload {
     id?: string; // preset tag면 id 있음
@@ -10,7 +11,7 @@ export interface TagPayload {
 }
 
 export interface BehaveCreatePayload {
-    before_energy: EnergyLevel;
+    before_energy: EnergyLevelEnumStr;
     before_description?: string;
     status: "emotion_recorded"| "activity_pending"|"completed";
     user_tags?: TagPayload[];
