@@ -13,7 +13,7 @@ export interface TagPayload {
 export interface BehaveCreatePayload {
     before_energy: EnergyLevel;
     before_description?: string;
-    status: "emotion_recorded"| "activity_pending"|"completed";
+    status: "emotion_recorded" | "activity_pending" | "completed";
     user_tags?: TagPayload[];
     preset_tags?: TagPayload[];
 }
@@ -34,7 +34,8 @@ export interface BehaveResponse {
 export async function createBehave(payload: BehaveCreatePayload): Promise<BehaveResponse> {
     try {
         const res = await Api.post("/behave/", payload, {
-            withCredentials: true, // 인증 쿠키 포함
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
         });
         return res.data;
     } catch (error) {
