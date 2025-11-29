@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom";
 import { createBehave } from "../api/behave";
 import type { BehaveCreatePayload } from "../api/behave";
 //import { toast } from "react-toastify";
+import axios from "axios";
 
 function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["sections"] {
     const mental = tags.filter(t => t.type === "mental");
@@ -136,8 +137,13 @@ const AddEnergyPage = () => {
         try {
             const result = await createBehave(payload);
             console.log("Behave 생성 완료:", result);
-        } catch (e) {
-            console.error("Behave 생성 실패:", e);
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                console.log(err.response?.data); // 서버에서 오는 422 메시지 확인 가능
+                console.error("Behave 생성 실패:", err.message);
+            } else {
+                console.error("알 수 없는 에러:", err);
+            }
         }
     };
 
