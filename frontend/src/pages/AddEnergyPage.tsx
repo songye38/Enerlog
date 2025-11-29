@@ -16,11 +16,11 @@ function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["s
     return [
         {
             title: "나의 신체상태는?",
-            tags: body.map(t => ({ label: t.title, count: 0 })),
+            tags: body.map(t => ({ label: t.title, count: 0, isSelected: false, originalTag: t })),
         },
         {
             title: "나의 마음상태는?",
-            tags: mental.map(t => ({ label: t.title, count: 0 })),
+            tags: mental.map(t => ({ label: t.title, count: 0, isSelected: false, originalTag: t })),
         }
     ];
 }
@@ -28,20 +28,17 @@ function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["s
 const AddEnergyPage = () => {
     const [description, setDescription] = useState("");
     const [sections, setSections] = useState<ConditionListPayload["sections"]>([]);
-
     const location = useLocation();
     const energyLevel = Number(
         new URLSearchParams(location.search).get("energy_level")
     ) as EnergyLevel;
 
-    // ⭐ 여기에 에너지 레벨을 props나 상위에서 받아오게 바꿀 예정
-
+    // 서버에서 태그 가져오기
     useEffect(() => {
         async function loadTags() {
             try {
                 const res = await fetchUserTags(energyLevel);
                 const converted = convertTagsToConditionSections(res.tags);
-
                 setSections(converted);
             } catch (e) {
                 console.error("태그 불러오기 실패:", e);
@@ -49,6 +46,32 @@ const AddEnergyPage = () => {
         }
         loadTags();
     }, [energyLevel]);
+
+    // 태그 선택 토글
+    const handleTagToggle = (sectionIndex: number, tagIndex: number) => {
+        setSections(prev => {
+            const newSections = [...prev];
+            newSections[sectionIndex] = {
+                ...newSections[sectionIndex],
+                tags: [...newSections[sectionIndex].tags],
+            };
+            const tag = newSections[sectionIndex].tags[tagIndex];
+            tag.isSelected = !tag.isSelected;
+            return newSections;
+        });
+    };
+
+    // 기록 완료 클릭
+    const handleSubmit = () => {
+        const selectedTags = sections.flatMap(section =>
+            section.tags.filter(tag => tag.isSelected).map(tag => tag.originalTag)
+        );
+        console.log("선택된 태그들:", selectedTags);
+        console.log("설명:", description);
+
+        // 여기서 서버로 POST 요청 가능
+        // 예: saveEnergyRecord({ energyLevel, description, tags: selectedTags })
+    };
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
@@ -60,9 +83,7 @@ const AddEnergyPage = () => {
             <div>
                 <ConditionListSection
                     data={{ description: "", sections }}
-                    onAddTag={(sectionIndex) =>
-                        console.log("추가 클릭, 섹션:", sectionIndex)
-                    }
+                    onTagToggle={handleTagToggle} // 🔹 토글 핸들러
                     countVisible={false}
                     withBackground={false}
                 />
@@ -75,7 +96,7 @@ const AddEnergyPage = () => {
                 />
             </div>
 
-            <MainBtn>기록 완료</MainBtn>
+            <MainBtn onClick={handleSubmit}>기록 완료</MainBtn>
         </div>
     );
 };

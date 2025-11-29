@@ -1,9 +1,13 @@
 import type { ColorSecondary } from "./Colors";
+import type { TagOut } from "../api/energy";
 export type ConditionType = "recentEnergy" | "recoveryIndex" | "actRage";
+
 
 export interface TagData {
   label: string;
   count?: number;
+  isSelected?: boolean; // 🔹 선택 상태 추가
+  originalTag?: TagOut;    // 🔹 원본 태그 정보 (서버 전송용)
 }
 
 export interface ConditionSection {
