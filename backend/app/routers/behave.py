@@ -1,24 +1,22 @@
-from fastapi import APIRouter, Depends,HTTPException,Request
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 from uuid import UUID
-from fastapi.responses import JSONResponse
-from pydantic import ValidationError
 
-from app.db.database import get_db  # SessionLocal 반환
-from app.db.models import Behave,TagTypeEnum,UserTag,Tag,PhaseEnum,BehaveTag,EnergyLevelEnum,BehaveStatusEnum
-from app.db.schemas import BehaveResponse,BehaveCreateRequest
+from app.db.database import get_db
+from app.db.models import Behave, TagTypeEnum, UserTag, Tag, PhaseEnum, BehaveTag, EnergyLevelEnum, BehaveStatusEnum
+from app.db.schemas import BehaveResponse, BehaveCreateRequest
 from app.auth.dependencies import get_current_user
 
 router = APIRouter(prefix="/behave", tags=["Behave"])
 
-def save_tags(db: Session, behave: Behave, user_tags: list, preset_tags: list):
+def save_tags(db: Session, behave: Behave, user_tags: List, preset_tags: List):
     # 1️⃣ user_tags 저장
     for tag_data in user_tags:
-        # Pydantic 객체 속성 접근
+        # Pydantic 속성 접근
         new_tag = Tag(title=tag_data.title, type=TagTypeEnum(tag_data.type))
         db.add(new_tag)
-        db.flush()
+        db.flush()  # id 생성
 
         # 다대다 관계 만들기
         user_tag = UserTag(user_id=behave.user_id, title=tag_data.title, type=new_tag.type)
@@ -26,19 +24,25 @@ def save_tags(db: Session, behave: Behave, user_tags: list, preset_tags: list):
         db.add(user_tag)
         db.flush()
 
-        # behaveTag에 저장
-        behave_tag = BehaveTag(behave_id=behave.id, tag_id=new_tag.id, phase=PhaseEnum.before)
+        # BehaveTag 저장 (컬럼명 tag_ref_id 가정)
+        behave_tag = BehaveTag(
+            behave_id=behave.id,
+            tag_ref_id=new_tag.id,  # 실제 컬럼명 확인
+            phase=PhaseEnum.before
+        )
         db.add(behave_tag)
 
     # 2️⃣ preset_tags 저장
     for tag_data in preset_tags:
-        # id가 None일 수 있으니 체크
-        if tag_data.id:
-            behave_tag = BehaveTag(behave_id=behave.id, tag_id=UUID(tag_data.id), phase=PhaseEnum.before)
+        if tag_data.id:  # None 체크
+            behave_tag = BehaveTag(
+                behave_id=behave.id,
+                tag_ref_id=UUID(tag_data.id),  # 컬럼명 tag_ref_id 사용
+                phase=PhaseEnum.before
+            )
             db.add(behave_tag)
 
     db.commit()
-
 
 
 @router.post("/", response_model=BehaveResponse)
@@ -71,7 +75,7 @@ def create_behave(
 
     db.refresh(behave)
 
-    # 3️⃣ Pydantic 모델로 명시적으로 반환
+    # 3️⃣ Pydantic 모델로 명시적 반환
     response = BehaveResponse(
         id=behave.id,
         user_id=behave.user_id,
