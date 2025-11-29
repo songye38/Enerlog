@@ -20,7 +20,7 @@ export default function RecommendActivitySection({
       {/* 제목 */}
       <div style={{ alignSelf: 'stretch', textAlign: 'center' }}>
         <span style={{ color: 'black', fontSize: 16, fontFamily: 'Pretendard', fontWeight: 600, lineHeight: '26px' }}>
-          추천 활동 {rank}<br/><br/>
+          추천 활동 {rank}<br /><br />
         </span>
         <span style={{ color: 'black', fontSize: 18, fontFamily: 'Pretendard', fontWeight: 600, lineHeight: '26px' }}>
           {data.title}
@@ -70,14 +70,6 @@ export default function RecommendActivitySection({
             <div style={{ color: 'white', fontSize: 18, fontFamily: 'Pretendard', fontWeight: 600 }}>추천 행동 {rank} 나중에 해볼래</div>
           </div>
         </div>
-
-        {/* 페이지 인디케이터 */}
-        {/* <div style={{ justifyContent: 'flex-start', alignItems: 'center', gap: 5, display: 'inline-flex' }}>
-          <div style={{ width: 11, height: 11, background: '#BFBFBF', borderRadius: 9999 }} />
-          <div style={{ width: 11, height: 11, background: '#F0F0F0', borderRadius: 9999 }} />
-          <div style={{ width: 11, height: 11, background: '#F0F0F0', borderRadius: 9999 }} />
-          <div style={{ width: 11, height: 11, background: '#F0F0F0', borderRadius: 9999 }} />
-        </div> */}
       </div>
     </div>
   );

@@ -1,5 +1,8 @@
 import type { ActivityFeed } from "../types/ActivityFeed";
 import ActRecordBtn from "../components/Button/ActRecordBtn";
+
+
+// 메인 화면에서 아직 기록으로남기지 않은 행동을 표시하는 섹션
 export default function ActRecordSection() {
 
     const activity: ActivityFeed = {
