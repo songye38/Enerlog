@@ -11,8 +11,9 @@ from sqlalchemy.sql import select
 from app.db.database import get_db
 from app.db.models import (
     Behave, Activity, Tag, BehaveTag, BehaveTagTags, UserEnergyTagStats,
-    EnergyLevelEnum, PhaseEnum
+    EnergyLevelEnum, PhaseEnum,User
 )
+from app.db.schemas import BehaveStatusEnum
 from app.auth.dependencies import get_current_user
 
 router = APIRouter(prefix="/insights", tags=["Insights"])
@@ -272,3 +273,97 @@ def top_activities(
     rows = q.all()
     result = [{"title": r.title, "count": int(r.cnt)} for r in rows]
     return {"user_id": str(current_user.id), "top_activities": result}
+
+
+
+# -----------------------
+# 최근 3일 평균 에너지 상태 API
+# -----------------------
+@router.get("/stats/energy/average-3days")
+def get_average_energy_last_3days(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    three_days_ago = datetime.utcnow() - timedelta(days=3)
+
+    energy_values = (
+        db.query(Behave.before_energy)
+        .filter(
+            Behave.user_id == user.id,
+            Behave.created_at >= three_days_ago,
+            Behave.before_energy.isnot(None)
+        )
+        .all()
+    )
+
+    if not energy_values:
+        return {"average_energy": None}
+
+    avg_energy = sum(v[0] for v in energy_values) / len(energy_values)
+
+    return {"average_energy": avg_energy}
+
+
+
+# -----------------------
+# 지난 3일간의 에너지 변화량 API
+# -----------------------
+@router.get("/stats/energy/change-3days")
+def get_energy_change_last_3days(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    three_days_ago = datetime.utcnow() - timedelta(days=3)
+
+    records = (
+        db.query(Behave.before_energy, Behave.created_at)
+        .filter(
+            Behave.user_id == user.id,
+            Behave.created_at >= three_days_ago,
+            Behave.before_energy.isnot(None)
+        )
+        .order_by(Behave.created_at.asc())
+        .all()
+    )
+
+    if len(records) < 2:
+        return {"change": None}
+
+    start = records[0][0]
+    end = records[-1][0]
+
+    return {"change": end - start}
+
+
+# -----------------------
+# 지난 3일간 "실행 → 기록" 이어진 비율 API
+# -----------------------
+@router.get("/stats/execute-to-record-ratio-3days")
+def get_execute_to_record_ratio_last_3days(
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user)
+):
+    three_days_ago = datetime.utcnow() - timedelta(days=3)
+
+    # 실행된 행동: activity_pending
+    pending_count = (
+        db.query(Behave)
+        .filter(
+            Behave.user_id == user.id,
+            Behave.created_at >= three_days_ago,
+            Behave.status == BehaveStatusEnum.activity_pending
+        )
+        .count()
+    )
+
+    # 기록 완료된 행동: completed
+    completed_count = (
+        db.query(Behave)
+        .filter(
+            Behave.user_id == user.id,
+            Behave.created_at >= three_days_ago,
+            Behave.status == BehaveStatusEnum.completed
+        )
+        .count()
+    )
+
+    if pending_count == 0:
+        return {"ratio": None}
+
+    ratio = completed_count / pending_count
+
+    return {"ratio": ratio}
