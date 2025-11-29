@@ -39,8 +39,7 @@ def save_tags(db: Session, behave: Behave, user_tags: List, preset_tags: List):
     # 2️⃣ preset_tags 저장
     for tag_data in preset_tags:
         if tag_data.id:  # None 체크
-            # 이미 존재하는 Tag 객체 가져오기
-            tag = db.query(Tag).filter(Tag.id == UUID(tag_data.id)).first()
+            tag = db.query(Tag).filter(Tag.id == tag_data.id).first()
             if tag:
                 behave_tag = BehaveTag(
                     behave_id=behave.id,
