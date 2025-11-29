@@ -1,7 +1,9 @@
-from fastapi import APIRouter, Depends,HTTPException
+from fastapi import APIRouter, Depends,HTTPException,Request
 from sqlalchemy.orm import Session
 from typing import List
 from uuid import UUID
+from fastapi.responses import JSONResponse
+from pydantic import ValidationError
 
 from app.db.database import get_db  # SessionLocal 반환
 from app.db.models import Behave,TagTypeEnum,UserTag,Tag,PhaseEnum,BehaveTag,EnergyLevelEnum,BehaveStatusEnum
@@ -37,33 +39,63 @@ def save_tags(db: Session, behave: Behave, user_tags: list, preset_tags: list):
     db.commit()
 
 
+# @router.post("/", response_model=BehaveResponse)
+# def create_behave(
+#     payload: BehaveCreateRequest,
+#     db: Session = Depends(get_db),
+#     current_user = Depends(get_current_user)
+# ):
+#     """
+#     Behave 생성 + user_tags, preset_tags 저장
+#     """
+
+#     # 1️⃣ Behave 생성
+#     behave = Behave(
+#         user_id=current_user.id,
+#         before_energy=payload.before_energy,  # int Enum에 그대로 맞음
+#         before_description=payload.before_description,
+#         status=BehaveStatusEnum(payload.status)
+#     )
+#     db.add(behave)
+#     db.flush()  # id 생성
+
+#     # 2️⃣ 태그 저장
+#     save_tags(
+#         db=db,
+#         behave=behave,
+#         user_tags=payload.user_tags,
+#         preset_tags=payload.preset_tags
+#     )
+
+#     db.refresh(behave)
+#     return behave
+
+
 @router.post("/", response_model=BehaveResponse)
 def create_behave(
     payload: BehaveCreateRequest,
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
-    """
-    Behave 생성 + user_tags, preset_tags 저장
-    """
-
-    # 1️⃣ Behave 생성
-    behave = Behave(
-        user_id=current_user.id,
-        before_energy=payload.before_energy,  # int Enum에 그대로 맞음
-        before_description=payload.before_description,
-        status=BehaveStatusEnum(payload.status)
-    )
-    db.add(behave)
-    db.flush()  # id 생성
-
-    # 2️⃣ 태그 저장
-    save_tags(
-        db=db,
-        behave=behave,
-        user_tags=payload.user_tags,
-        preset_tags=payload.preset_tags
-    )
-
-    db.refresh(behave)
-    return behave
+    
+    print("Received payload:", payload.dict())
+    try:
+        behave = Behave(
+            user_id=current_user.id,
+            before_energy=payload.before_energy,
+            before_description=payload.before_description,
+            status=BehaveStatusEnum(payload.status)
+        )
+        db.add(behave)
+        db.flush()
+        save_tags(db, behave, payload.user_tags, payload.preset_tags)
+        db.refresh(behave)
+        return behave
+    except ValidationError as e:
+        # Pydantic validation 에러 확인
+        print("ValidationError:", e.json())
+        return JSONResponse(status_code=422, content={"detail": e.errors()})
+    except Exception as e:
+        # 그 외 서버 에러
+        print("ServerError:", e)
+        return JSONResponse(status_code=500, content={"detail": str(e)})
