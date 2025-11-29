@@ -45,7 +45,7 @@ def save_tags(db: Session, behave: Behave, user_tags: List, preset_tags: List):
     db.commit()
 
 
-@router.post("/", response_model=BehaveResponse)
+@router.post("/")
 def create_behave(
     payload: BehaveCreateRequest,
     db: Session = Depends(get_db),
@@ -68,21 +68,21 @@ def create_behave(
     db.flush()  # id 생성
 
     # 2️⃣ 태그 저장
-    save_tags(
-        db=db,
-        behave=behave,
-        user_tags=payload.user_tags,
-        preset_tags=payload.preset_tags
-    )
+    # save_tags(
+    #     db=db,
+    #     behave=behave,
+    #     user_tags=payload.user_tags,
+    #     preset_tags=payload.preset_tags
+    # )
 
-    db.refresh(behave)
+    # db.refresh(behave)
 
     # 3️⃣ Pydantic 모델로 명시적 반환
-    response = BehaveResponse(
-        id=behave.id,
-        user_id=behave.user_id,
-        before_energy=behave.before_energy,
-        before_description=behave.before_description,
-        status=behave.status
-    )
-    return response
+    # response = BehaveResponse(
+    #     id=behave.id,
+    #     user_id=behave.user_id,
+    #     before_energy=behave.before_energy,
+    #     before_description=behave.before_description,
+    #     status=behave.status
+    # )
+    return "ok"
