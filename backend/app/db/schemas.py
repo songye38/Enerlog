@@ -275,7 +275,7 @@ class BehavePhotoOut(BaseModel):
 class TagPayload(BaseModel):
     title: str
     type: str  # 'body' 또는 'mental'
-    id: Optional[str] = None  # ✅ 기본값 None
+    id: Optional[UUID] = None  # ✅ 기본값 None
 
     model_config = {
         "from_attributes": True
