@@ -277,6 +277,20 @@ class TagPayload(BaseModel):
     type: str  # 'body' 또는 'mental'
     id: Optional[str] = None  # ✅ 기본값 None
 
+    model_config = {
+        "from_attributes": True
+    }
+
+
+class BehaveTagResponse(BaseModel):
+    id: UUID
+    phase: PhaseEnum
+    tags: List[TagPayload] = []
+
+    model_config = {
+        "from_attributes": True
+    }
+
 class BehaveCreateRequest(BaseModel):
     before_energy: EnergyLevelEnum
     before_description: Optional[str] = None
@@ -290,6 +304,7 @@ class BehaveResponse(BaseModel):
     before_energy: EnergyLevelEnum
     before_description: Optional[str]
     status: BehaveStatusEnum
+    behave_tags: List[BehaveTagResponse] = []
 
     model_config = {
         "from_attributes": True  # ✅ Pydantic 2.x에서는 이게 필요
