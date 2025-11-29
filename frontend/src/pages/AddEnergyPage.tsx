@@ -10,7 +10,7 @@ import type { EnergyLevel } from "../types/EnergyLevel";
 import { useLocation } from "react-router-dom";
 import { createBehave } from "../api/behave";
 import type { BehaveCreatePayload } from "../api/behave";
-import { toast } from "react-toastify";
+//import { toast } from "react-toastify";
 
 function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["sections"] {
     const mental = tags.filter(t => t.type === "mental");
@@ -65,49 +65,82 @@ const AddEnergyPage = () => {
     };
 
     // 기록 완료 클릭
+    // const handleSubmit = async () => {
+    //     // 선택된 태그들을 모두 모음
+    //     const selectedTags = sections.flatMap(section =>
+    //         section.tags.filter(tag => tag.isSelected).map(tag => tag.originalTag)
+    //     );
+
+    //     // user_tags와 preset_tags 구분
+    //     const userTags = selectedTags
+    //         .filter((tag): tag is NonNullable<typeof tag> => !!tag && tag.id?.startsWith("temp"))
+    //         .map(tag => ({
+    //             title: tag.title,
+    //             type: tag.type,
+    //         }));
+
+    //     const presetTags = selectedTags
+    //         .filter((tag): tag is NonNullable<typeof tag> => !!tag && !!tag.id && !tag.id.startsWith("temp"))
+    //         .map(tag => ({
+    //             id: tag.id!,
+    //             title: tag.title,
+    //             type: tag.type,
+    //         }));
+
+    //     const payload: BehaveCreatePayload = {
+    //         before_energy: energyLevel,
+    //         before_description: description,
+    //         status: "emotion_recorded",
+    //         user_tags: userTags,
+    //         preset_tags: presetTags,
+    //     };
+
+
+    //     console.log("Payload 확인:", payload);
+
+    //     try {
+    //         const result = await createBehave(payload);
+    //         toast.success("에너지 레벨 기록 완료");
+    //         console.log("Behave 생성 완료:", result);
+    //         // 필요하면 여기서 페이지 이동이나 상태 초기화
+    //     } catch (e) {
+    //         toast.error("에너지 레벨 기록 실패");
+    //         console.error("Behave 생성 실패:", e);
+    //     }
+    // };
+
     const handleSubmit = async () => {
-        // 선택된 태그들을 모두 모음
+        // 선택된 태그들
         const selectedTags = sections.flatMap(section =>
             section.tags.filter(tag => tag.isSelected).map(tag => tag.originalTag)
         );
 
-        // user_tags와 preset_tags 구분
+        // user_tags / preset_tags 분리
         const userTags = selectedTags
-            .filter((tag): tag is NonNullable<typeof tag> => !!tag && tag.id?.startsWith("temp"))
-            .map(tag => ({
-                title: tag.title,
-                type: tag.type,
-            }));
+            .filter(tag => tag?.id?.startsWith("temp"))
+            .map(tag => ({ title: tag!.title, type: tag!.type }));
 
         const presetTags = selectedTags
-            .filter((tag): tag is NonNullable<typeof tag> => !!tag && !!tag.id && !tag.id.startsWith("temp"))
-            .map(tag => ({
-                id: tag.id!,
-                title: tag.title,
-                type: tag.type,
-            }));
+            .filter(tag => tag?.id && !tag.id.startsWith("temp"))
+            .map(tag => ({ id: tag!.id, title: tag!.title, type: tag!.type }));
 
+        // payload 구성
         const payload: BehaveCreatePayload = {
-            before_energy: energyLevel,
+            before_energy: energyLevel, // 숫자 그대로
             before_description: description,
             status: "emotion_recorded",
             user_tags: userTags,
             preset_tags: presetTags,
         };
 
-
-        console.log("Payload 확인:", payload);
-
         try {
             const result = await createBehave(payload);
-            toast.success("에너지 레벨 기록 완료");
             console.log("Behave 생성 완료:", result);
-            // 필요하면 여기서 페이지 이동이나 상태 초기화
         } catch (e) {
-            toast.error("에너지 레벨 기록 실패");
             console.error("Behave 생성 실패:", e);
         }
     };
+
 
 
     // AddEnergyPage.tsx
