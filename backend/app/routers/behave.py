@@ -7,6 +7,7 @@ from app.db.database import get_db
 from app.db.models import Behave, TagTypeEnum, UserTag, Tag, PhaseEnum, BehaveTag, EnergyLevelEnum, BehaveStatusEnum
 from app.db.schemas import BehaveResponse, BehaveCreateRequest
 from app.auth.dependencies import get_current_user
+from app.services.user_energy_tag_stats import update_before_stats
 
 router = APIRouter(prefix="/behave", tags=["Behave"])
 
@@ -58,11 +59,7 @@ def create_behave(
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
-    
-    print("payload",payload)
-    """
-    Behave 생성 + user_tags, preset_tags 저장
-    """
+    print("payload", payload)
 
     # 1️⃣ Behave 생성
     behave = Behave(
@@ -82,9 +79,10 @@ def create_behave(
         preset_tags=payload.preset_tags
     )
 
-    # db.refresh(behave)
+    # 3️⃣ before_phase stats 업데이트
+    update_before_stats(db, behave)
 
-    # 3️⃣ Pydantic 모델로 명시적 반환
+    # 4️⃣ Pydantic 모델로 명시적 반환
     response = BehaveResponse(
         id=behave.id,
         user_id=behave.user_id,
