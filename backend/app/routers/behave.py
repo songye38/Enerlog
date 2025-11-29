@@ -11,34 +11,79 @@ from app.services.user_energy_tag_stats import update_before_stats
 
 router = APIRouter(prefix="/behave", tags=["Behave"])
 
-def save_tags(db: Session, behave: Behave, user_tags: List, preset_tags: List):
+# def save_tags(db: Session, behave: Behave, user_tags: List, preset_tags: List):
+#     # 1️⃣ user_tags 저장
+#     for tag_data in user_tags:
+#         # Pydantic 속성 접근
+#         new_tag = Tag(title=tag_data.title, type=TagTypeEnum(tag_data.type))
+#         db.add(new_tag)
+#         db.flush()  # id 생성
+
+#         # 다대다 관계 만들기
+#         user_tag = UserTag(user_id=behave.user_id, title=tag_data.title, type=new_tag.type)
+#         user_tag.tags.append(new_tag)
+#         db.add(user_tag)
+#         db.flush()
+
+#         # BehaveTag 생성
+#         behave_tag = BehaveTag(
+#             behave_id=behave.id,
+#             phase=PhaseEnum.before
+#         )
+#         db.add(behave_tag)
+#         db.flush()  # id 생성
+
+#         # 다대다 테이블을 이용해서 Tag 연결
+#         behave_tag.tags.append(new_tag)
+
+#     # 2️⃣ preset_tags 저장
+#     for tag_data in preset_tags:
+#         if tag_data.id:  # None 체크
+#             tag = db.query(Tag).filter(Tag.id == tag_data.id).first()
+#             if tag:
+#                 behave_tag = BehaveTag(
+#                     behave_id=behave.id,
+#                     phase=PhaseEnum.before
+#                 )
+#                 db.add(behave_tag)
+#                 db.flush()
+#                 behave_tag.tags.append(tag)
+
+
+#     db.flush()
+#     db.commit()  # 여기서 실제 DB에 반영
+
+def save_tags(db: Session, behave: Behave, user_tags: List = None, preset_tags: List = None):
+    # None-safe 처리
+    user_tags = user_tags or []
+    preset_tags = preset_tags or []
+
     # 1️⃣ user_tags 저장
     for tag_data in user_tags:
-        # Pydantic 속성 접근
         new_tag = Tag(title=tag_data.title, type=TagTypeEnum(tag_data.type))
         db.add(new_tag)
-        db.flush()  # id 생성
+        db.flush()
 
-        # 다대다 관계 만들기
-        user_tag = UserTag(user_id=behave.user_id, title=tag_data.title, type=new_tag.type)
+        user_tag = UserTag(
+            user_id=behave.user_id,
+            title=tag_data.title,
+            type=new_tag.type
+        )
         user_tag.tags.append(new_tag)
         db.add(user_tag)
         db.flush()
 
-        # BehaveTag 생성
         behave_tag = BehaveTag(
             behave_id=behave.id,
             phase=PhaseEnum.before
         )
         db.add(behave_tag)
-        db.flush()  # id 생성
-
-        # 다대다 테이블을 이용해서 Tag 연결
+        db.flush()
         behave_tag.tags.append(new_tag)
 
     # 2️⃣ preset_tags 저장
     for tag_data in preset_tags:
-        if tag_data.id:  # None 체크
+        if tag_data.id:
             tag = db.query(Tag).filter(Tag.id == tag_data.id).first()
             if tag:
                 behave_tag = BehaveTag(
@@ -49,9 +94,8 @@ def save_tags(db: Session, behave: Behave, user_tags: List, preset_tags: List):
                 db.flush()
                 behave_tag.tags.append(tag)
 
+    db.commit()
 
-    db.flush()
-    db.commit()  # 여기서 실제 DB에 반영
 
 
 # @router.post("/")
