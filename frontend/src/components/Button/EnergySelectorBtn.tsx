@@ -12,7 +12,8 @@ type EnergySelectorBtnProps = {
 export default function EnergySelectorBtn({ data }: EnergySelectorBtnProps) {
     const navigate = useNavigate(); // 🔹 추가!
     const handleClick = () => {
-        navigate("/add"); // 🔹 클릭 시 /add 페이지로 이동
+        //navigate("/add"); 
+        navigate(`/add?energy_level=${data.level}`);
     };
 
     return (
