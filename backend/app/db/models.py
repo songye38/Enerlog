@@ -223,8 +223,10 @@ class Behave(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
     activity_id = Column(UUID(as_uuid=True), ForeignKey("activities.id"))
-    before_energy_id = Column(UUID(as_uuid=True), ForeignKey("energy_levels.id"))
-    after_energy_id = Column(UUID(as_uuid=True), ForeignKey("energy_levels.id"))
+    
+    before_energy = Column(Enum(EnergyLevelEnum), nullable=False)
+    after_energy = Column(Enum(EnergyLevelEnum), nullable=True)  # after는 선택적
+
     before_description = Column(Text)
     after_description = Column(Text)
     status = Column(Enum(BehaveStatusEnum), nullable=False)
@@ -303,3 +305,25 @@ class Letter(Base):
 
     user = relationship("User", back_populates="letters")
     related_activity = relationship("Activity", back_populates="letters")
+
+
+# -----------------------
+# 통계를 위한 테이블
+# -----------------------
+class UserEnergyTagStats(Base):
+    __tablename__ = "user_energy_tag_stats"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    energy_level = Column(Enum(EnergyLevelEnum), nullable=False)  # Enum 사용
+    tag_type = Column(Enum(TagTypeEnum), nullable=False)  # body / mental
+    tag_id = Column(UUID(as_uuid=True), ForeignKey("tags.id"), nullable=False)
+
+    selected_count = Column(Integer, default=0, nullable=False)
+
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    user = relationship("User")
+    tag = relationship("Tag")
