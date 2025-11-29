@@ -24,23 +24,30 @@ def save_tags(db: Session, behave: Behave, user_tags: List, preset_tags: List):
         db.add(user_tag)
         db.flush()
 
-        # BehaveTag 저장 (컬럼명 tag_ref_id 가정)
+        # BehaveTag 생성
         behave_tag = BehaveTag(
             behave_id=behave.id,
-            tag_ref_id=new_tag.id,  # 실제 컬럼명 확인
             phase=PhaseEnum.before
         )
         db.add(behave_tag)
+        db.flush()  # id 생성
+
+        # 다대다 테이블을 이용해서 Tag 연결
+        behave_tag.tags.append(new_tag)
 
     # 2️⃣ preset_tags 저장
     for tag_data in preset_tags:
         if tag_data.id:  # None 체크
-            behave_tag = BehaveTag(
-                behave_id=behave.id,
-                tag_ref_id=UUID(tag_data.id),  # 컬럼명 tag_ref_id 사용
-                phase=PhaseEnum.before
-            )
-            db.add(behave_tag)
+            # 이미 존재하는 Tag 객체 가져오기
+            tag = db.query(Tag).filter(Tag.id == UUID(tag_data.id)).first()
+            if tag:
+                behave_tag = BehaveTag(
+                    behave_id=behave.id,
+                    phase=PhaseEnum.before
+                )
+                db.add(behave_tag)
+                db.flush()
+                behave_tag.tags.append(tag)
 
     db.commit()
 
