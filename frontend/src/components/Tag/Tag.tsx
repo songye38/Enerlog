@@ -14,7 +14,7 @@ export default function Tag({ label, count, withBackground = true, isSelected = 
       onClick={onClick} // 🔹 클릭 시 토글
       style={{
         padding: "8px 14px",
-        backgroundColor: isSelected ? COLORS.primary[300] : withBackground ? "white" : COLORS.primary[100],
+        backgroundColor: withBackground ? "white" : COLORS.primary[100],
         borderRadius: 16,
         display: "inline-flex",
         alignItems: "center",
