@@ -34,14 +34,6 @@ export default function ConditionItem({
     });
   };
 
-  const handleAddTagConfirm = () => {
-    if (newTagLabel.trim()) {
-      onAdd?.(newTagLabel.trim()); // 상위로 새 태그 전달
-      setSelectedTags((prev) => [...prev, newTagLabel.trim()]); // 선택 상태에도 추가
-      setNewTagLabel("");
-      setAddingTag(false);
-    }
-  };
 
   return (
     <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: 12, color: "black" }}>
@@ -60,20 +52,39 @@ export default function ConditionItem({
         ))}
 
         {addingTag ? (
-          <div style={{ display: "flex", gap: 4 }}>
-            <input
-              type="text"
-              value={newTagLabel}
-              onChange={(e) => setNewTagLabel(e.target.value)}
-              placeholder="태그 입력"
-              style={{ padding: "4px 8px", borderRadius: 8, border: "1px solid #ccc" }}
-            />
-            <button onClick={handleAddTagConfirm}>추가</button>
-            <button onClick={() => setAddingTag(false)}>취소</button>
-          </div>
+          <input
+            type="text"
+            value={newTagLabel}
+            onChange={(e) => setNewTagLabel(e.target.value)}
+            onBlur={() => {
+              if (newTagLabel.trim()) {
+                onAdd?.(newTagLabel.trim());
+                setSelectedTags((prev) => [...prev, newTagLabel.trim()]);
+              }
+              setNewTagLabel("");
+              setAddingTag(false);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && newTagLabel.trim()) {
+                onAdd?.(newTagLabel.trim());
+                setSelectedTags((prev) => [...prev, newTagLabel.trim()]);
+                setNewTagLabel("");
+                setAddingTag(false);
+              }
+            }}
+            placeholder="태그 입력"
+            autoFocus
+            style={{
+              padding: "4px 8px",
+              borderRadius: 8,
+              border: "1px solid #ccc",
+              minWidth: 80,
+            }}
+          />
         ) : (
           <AddTagBtn onClick={() => setAddingTag(true)} />
         )}
+
       </div>
     </div>
   );
