@@ -278,11 +278,8 @@ class TagPayload(BaseModel):
     id: Optional[str]  # preset tag일 경우
 
 class BehaveCreateRequest(BaseModel):
-    activity_id: str
     before_energy: EnergyLevelEnum
-    after_energy: Optional[EnergyLevelEnum] = None
     before_description: Optional[str] = None
-    after_description: Optional[str] = None
     status: BehaveStatusEnum
     user_tags: List[TagPayload] = []
     preset_tags: List[TagPayload] = []

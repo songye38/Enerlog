@@ -221,8 +221,8 @@ class Behave(Base):
     __tablename__ = "behave"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
-    activity_id = Column(UUID(as_uuid=True), ForeignKey("activities.id"))
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"),nullable=False)
+    activity_id = Column(UUID(as_uuid=True), ForeignKey("activities.id")) 
     
     before_energy = Column(Enum(EnergyLevelEnum), nullable=False)
     after_energy = Column(Enum(EnergyLevelEnum), nullable=True)  # after는 선택적

@@ -50,11 +50,8 @@ def create_behave(
     # 1️⃣ Behave 생성
     behave = Behave(
         user_id=current_user.id,
-        activity_id=UUID(payload.activity_id),
         before_energy=payload.before_energy,
-        after_energy=payload.after_energy,
         before_description=payload.before_description,
-        after_description=payload.after_description,
         status=payload.status
     )
     db.add(behave)
