@@ -5,7 +5,7 @@ from app.db.models import Behave,BehaveStatusEnum,PhaseEnum,UserEnergyTagStats
 def update_before_stats(db, behave: Behave):
 
     print("호출은 되었는지?")
-    print("behave",behave)
+    print("behave",behave.dict())
     """
     behave.status == 'emotion_recorded' 일 때 호출
     before_phase의 태그를 stats에 반영
