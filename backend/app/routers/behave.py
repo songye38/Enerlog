@@ -71,6 +71,7 @@ def save_tags(db: Session, behave: Behave, user_tags: list, preset_tags: list):
 #     return behave
 
 
+print("route called")
 @router.post("/", response_model=BehaveResponse)
 def create_behave(
     payload: BehaveCreateRequest,
