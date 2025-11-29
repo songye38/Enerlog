@@ -19,7 +19,7 @@ export interface UserTagsResponse {
  ----------------------------------------------*/
 export async function fetchUserTags(energyLevel: EnergyLevel) {
     try {
-        const res = await Api.get("/tags", {
+        const res = await Api.get("/energy/tags", {
             params: { energy_level: energyLevel },
             withCredentials: true, // 인증 쿠키 포함
         });
