@@ -15,12 +15,13 @@ router = APIRouter(prefix="/behave", tags=["Behave"])
 def save_tags(db: Session, behave: Behave, user_tags: list, preset_tags: list):
     # 1️⃣ user_tags 저장
     for tag_data in user_tags:
-        new_tag = Tag(title=tag_data["title"], type=TagTypeEnum(tag_data["type"]))
+        # Pydantic 객체 속성 접근
+        new_tag = Tag(title=tag_data.title, type=TagTypeEnum(tag_data.type))
         db.add(new_tag)
         db.flush()
 
         # 다대다 관계 만들기
-        user_tag = UserTag(user_id=behave.user_id, title=tag_data["title"], type=new_tag.type)
+        user_tag = UserTag(user_id=behave.user_id, title=tag_data.title, type=new_tag.type)
         user_tag.tags.append(new_tag)
         db.add(user_tag)
         db.flush()
@@ -31,10 +32,13 @@ def save_tags(db: Session, behave: Behave, user_tags: list, preset_tags: list):
 
     # 2️⃣ preset_tags 저장
     for tag_data in preset_tags:
-        behave_tag = BehaveTag(behave_id=behave.id, tag_id=UUID(tag_data["id"]), phase=PhaseEnum.before)
-        db.add(behave_tag)
+        # id가 None일 수 있으니 체크
+        if tag_data.id:
+            behave_tag = BehaveTag(behave_id=behave.id, tag_id=UUID(tag_data.id), phase=PhaseEnum.before)
+            db.add(behave_tag)
 
     db.commit()
+
 
 
 @router.post("/", response_model=BehaveResponse)
