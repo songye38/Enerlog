@@ -73,6 +73,37 @@ const AddEnergyPage = () => {
         // 예: saveEnergyRecord({ energyLevel, description, tags: selectedTags })
     };
 
+    // AddEnergyPage.tsx
+    const handleAddTag = (sectionIndex: number, label: string) => {
+        setSections(prev => {
+            const newSections = [...prev];
+            const section = newSections[sectionIndex];
+
+            // 중복 방지
+            if (!section.tags.some(t => t.label === label)) {
+                const tempId = `temp-${Date.now()}`;
+
+                section.tags.push({
+                    label,
+                    count: 0,
+                    isSelected: true,
+                    originalTag: {
+                        id: tempId, // string 타입 맞춤
+                        title: label,
+                        type: section.title.includes("신체") ? "body" : "mental"
+                    },
+                });
+            } else {
+                // 이미 있는 태그면 선택 상태만 체크
+                const tag = section.tags.find(t => t.label === label);
+                if (tag) tag.isSelected = true;
+            }
+
+            return newSections;
+        });
+    };
+
+
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
             <GoToMainBtn />
@@ -83,6 +114,7 @@ const AddEnergyPage = () => {
             <div>
                 <ConditionListSection
                     data={{ description: "", sections }}
+                    onAddTag={handleAddTag} // 🔹 새 태그 추가 콜백
                     onTagToggle={handleTagToggle} // 🔹 토글 핸들러
                     countVisible={false}
                     withBackground={false}

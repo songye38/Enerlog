@@ -6,8 +6,8 @@ export interface TagOut {
   id: string;
   title: string;
   type: "mental" | "body";
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface UserTagsResponse {
