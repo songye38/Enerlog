@@ -15,6 +15,7 @@ interface Props {
 }
 
 export default function ConditionListSection({ data, onAddTag, countVisible = true, withBackground = true }: Props) {
+  console.log("서버에서 보내는 사용자가 선택한 태그 모음",data);
   return (
     <div style={{
       display: "flex",
