@@ -19,6 +19,8 @@ const EnergyPage = () => {
       try {
         const res = await fetchUserTagsRecorded();
 
+        console.log("fetchUserTagsRecorded의 결과",res);
+
         // optional 처리: energy_level 없으면 0, selected_count 없으면 0
         const normalizedTags = res.tags.map(tag => ({
           ...tag,
@@ -27,6 +29,7 @@ const EnergyPage = () => {
         }));
 
         const grouped = groupTagsByEnergyAndType(normalizedTags);
+        console.log("grouped 의 결과",grouped);
         setGroupedTags(grouped);
       } catch (error) {
         console.error("태그 불러오기 실패:", error);
