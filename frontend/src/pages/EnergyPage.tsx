@@ -13,11 +13,20 @@ const EnergyPage = () => {
   const [selectedTab, setSelectedTab] = useState<string>("전체");
   const [groupedTags, setGroupedTags] = useState<Record<number, { body: TagOut[]; mental: TagOut[] }>>({});
 
+  // 1️⃣ 서버에서 태그 가져오기
   useEffect(() => {
     async function loadTags() {
       try {
         const res = await fetchUserTagsRecorded();
-        const grouped = groupTagsByEnergyAndType(res.tags);
+
+        // optional 처리: energy_level 없으면 0, selected_count 없으면 0
+        const normalizedTags = res.tags.map(tag => ({
+          ...tag,
+          energy_level: tag.energy_level ?? 0,
+          selected_count: tag.selected_count ?? 0,
+        }));
+
+        const grouped = groupTagsByEnergyAndType(normalizedTags);
         setGroupedTags(grouped);
       } catch (error) {
         console.error("태그 불러오기 실패:", error);
@@ -26,26 +35,21 @@ const EnergyPage = () => {
     loadTags();
   }, []);
 
-  // 탭 변경 시 payload 업데이트
+  // 2️⃣ 선택된 탭이 바뀌면 payload 업데이트
   useEffect(() => {
-  if (!groupedTags) return;
-
-  const updatePayload = () => {
-    let level: number | null = null;
-    if (selectedTab.startsWith("에너지")) {
-      level = parseInt(selectedTab.replace("에너지", ""), 10);
-    }
+    if (!groupedTags || Object.keys(groupedTags).length === 0) return;
 
     let bodyTags: TagOut[] = [];
     let mentalTags: TagOut[] = [];
 
-    if (level && groupedTags[level]) {
-      bodyTags = groupedTags[level].body;
-      mentalTags = groupedTags[level].mental;
-    } else {
-      // "전체" 선택 시 모든 레벨 합치기
+    if (selectedTab === "전체") {
+      // 모든 레벨 합치기
       bodyTags = Object.values(groupedTags).flatMap(g => g.body);
       mentalTags = Object.values(groupedTags).flatMap(g => g.mental);
+    } else if (selectedTab.startsWith("에너지")) {
+      const level = parseInt(selectedTab.replace("에너지", ""), 10);
+      bodyTags = groupedTags[level]?.body ?? [];
+      mentalTags = groupedTags[level]?.mental ?? [];
     }
 
     const sections: ConditionSection[] = [
@@ -59,14 +63,11 @@ const EnergyPage = () => {
       },
     ];
 
-    setPayload({ description: "사용자 기록 태그", sections });
-  };
-
-  // 비동기로 감싸서 동기 호출 문제 방지
-  const id = setTimeout(updatePayload, 0);
-  return () => clearTimeout(id); // cleanup
-}, [selectedTab, groupedTags]);
-
+    // 3️⃣ setState 비동기 처리
+    setTimeout(() => {
+      setPayload({ description: "사용자 기록 태그", sections });
+    }, 0);
+  }, [selectedTab, groupedTags]);
 
   return (
     <div>
@@ -76,7 +77,7 @@ const EnergyPage = () => {
       />
       <ConditionListSection
         data={payload}
-        onAddTag={(sectionIndex) => console.log("추가 클릭, 섹션:", sectionIndex)}
+        onAddTag={(sectionIndex, tagLabel) => console.log("추가 클릭, 섹션:", sectionIndex, "태그:", tagLabel)}
       />
     </div>
   );
