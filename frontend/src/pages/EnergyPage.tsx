@@ -48,11 +48,11 @@ const EnergyPage = () => {
         const sections: ConditionSection[] = [
             {
                 title: "나의 신체상태는?",
-                tags: bodyTags.map(tag => ({ label: tag.title, count: tag.selected_count })),
+                tags: bodyTags.map(tag => ({ label: tag.tag_title, count: tag.selected_count })),
             },
             {
                 title: "나의 마음상태는?",
-                tags: mentalTags.map(tag => ({ label: tag.title, count: tag.selected_count })),
+                tags: mentalTags.map(tag => ({ label: tag.tag_title, count: tag.selected_count })),
             },
         ];
 

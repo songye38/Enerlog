@@ -4,7 +4,7 @@ import type { EnergyLevel } from "../types/EnergyLevel";
 
 export interface TagOut {
     id: string;
-    title: string;
+    tag_title: string;
     tag_type: "mental" | "body";
     created_at?: string;
     updated_at?: string;
