@@ -102,3 +102,25 @@ export async function DeleteUserActivity(activityId: string) {
     throw new Error(msg);
   }
 }
+
+/*----------------------------------------------
+ * ✅ 추천 활동 가져오기 (energy_level 기반)
+ ----------------------------------------------*/
+export async function fetchRecommendedActivities(
+  energyLevel: number
+): Promise<ActivityTemplateOut[]> {
+  try {
+    const res = await Api.get("/activities/recommend", {
+      params: { energy_level: energyLevel },
+      withCredentials: true, // ⭐ 쿠키 기반 인증이므로 필요
+    });
+
+    return res.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<{ detail?: string }>;
+    const msg =
+      axiosError.response?.data?.detail ||
+      "추천 활동을 불러오지 못했어요.";
+    throw new Error(msg);
+  }
+}
