@@ -6,7 +6,7 @@ import { fetchUserTagsRecorded, groupTagsByEnergyAndType } from "../api/energy";
 import type { UserTagOut } from "../api/energy";
 
 const EnergyPage = () => {
-    const [selectedTab, setSelectedTab] = useState<string>("전체");
+    const [selectedTab, setSelectedTab] = useState<string>("에너지0");
     const [groupedTags, setGroupedTags] = useState<Record<number, { body: UserTagOut[]; mental: UserTagOut[] }>>({});
 
     // 1️⃣ 서버에서 태그 가져오기
@@ -53,7 +53,6 @@ const EnergyPage = () => {
             />
             <ConditionListSection
                 data={payload}
-                onAddTag={(sectionIndex, tagLabel) => console.log("추가 클릭, 섹션:", sectionIndex, "태그:", tagLabel)}
             />
         </div>
     );
