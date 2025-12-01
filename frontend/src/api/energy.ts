@@ -3,18 +3,22 @@ import type { AxiosError } from "axios";
 import type { EnergyLevel } from "../types/EnergyLevel";
 
 export interface TagOut {
-  id: string;
-  title: string;
-  type: "mental" | "body";
-  energy_level?: number;
-  selected_count?: number;
-  created_at?: string;
-  updated_at?: string;
+    id: string;
+    title: string;
+    type: "mental" | "body";
+    created_at?: string;
+    updated_at?: string;
+}
+
+// 사용자 기록용 태그 (선택 횟수 + 에너지 레벨 포함)
+export interface UserTagOut extends TagOut {
+    energy_level: number;      // 필수
+    selected_count: number;    // 필수
 }
 
 
 export interface UserTagsResponse {
-  tags: TagOut[];
+    tags: UserTagOut[];
 }
 
 /*----------------------------------------------
@@ -40,18 +44,13 @@ export async function fetchUserTags(energyLevel: EnergyLevel) {
 /*----------------------------------------------
  * ✅ 전체 사용자 기록 태그 가져오기
  ----------------------------------------------*/
-export async function fetchUserTagsRecorded(): Promise<{ tags: TagOut[] }> {
+export async function fetchUserTagsRecorded(): Promise<{ tags: UserTagOut[] }> {
   try {
-    const res = await Api.get("/energy/user_tags_recorded", { withCredentials: true });
+    const res = await Api.get<UserTagOut[]>("/energy/user_tags_recorded", {
+      withCredentials: true,
+    });
 
-    // energy_level, selected_count 기본값 처리
-    const tags = res.data.map((tag: TagOut) => ({
-      ...tag,
-      energy_level: tag.energy_level ?? 0,
-      selected_count: tag.selected_count ?? 0,
-    }));
-
-    return { tags };
+    return { tags: res.data }; // 그대로 UserTagOut 배열로 반환
   } catch (error) {
     const axiosError = error as AxiosError<{ detail?: string }>;
     const msg = axiosError.response?.data?.detail || "사용자 태그 조회 실패";
@@ -62,14 +61,14 @@ export async function fetchUserTagsRecorded(): Promise<{ tags: TagOut[] }> {
 /*----------------------------------------------
  * ✅ 에너지 레벨 + 타입별로 그룹화
  ----------------------------------------------*/
-export function groupTagsByEnergyAndType(tags: TagOut[]) {
-  return tags.reduce<Record<number, { body: TagOut[]; mental: TagOut[] }>>(
-    (acc, tag) => {
-      const level = tag.energy_level ?? 0; // undefined면 0으로
-      if (!acc[level]) acc[level] = { body: [], mental: [] };
-      acc[level][tag.type].push(tag);
-      return acc;
-    },
-    {}
-  );
+export function groupTagsByEnergyAndType(tags: UserTagOut[]) {
+    return tags.reduce<Record<number, { body: UserTagOut[]; mental: UserTagOut[] }>>(
+        (acc, tag) => {
+            const level = tag.energy_level; // 항상 존재
+            if (!acc[level]) acc[level] = { body: [], mental: [] };
+            acc[level][tag.type].push(tag);
+            return acc;
+        },
+        {}
+    );
 }
