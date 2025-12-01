@@ -1,10 +1,12 @@
-from fastapi import APIRouter, Depends,HTTPException
+from fastapi import APIRouter, Depends,HTTPException,Query
 from sqlalchemy.orm import Session
 from typing import List
 from uuid import UUID
+import random
+
 
 from app.db.database import get_db  # SessionLocal 반환
-from app.db.models import ActivityTemplate,EnergyLevel,Activity,User
+from app.db.models import ActivityTemplate,EnergyLevel,Activity,User,UserSettings
 from app.db.schemas import ActivityTemplateOut,ActivityOut,ActivityCreate,ActivityUpdate
 from app.auth.dependencies import get_current_user
 
@@ -167,3 +169,62 @@ def list_activity_templates(db: Session = Depends(get_db)):
 #     if not template:
 #         raise HTTPException(status_code=404, detail="Template not found")
 #     return template
+
+
+
+
+
+
+# -----------------------
+# 추천 활동 API
+# -----------------------
+@router.get("/recommend", response_model=List[ActivityTemplateOut])
+def recommend_activities(
+    energy_level: int = Query(..., ge=0, le=10, description="사용자 현재 에너지 레벨"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    # 1. 사용자 환경 설정 조회 (최대 추천 개수)
+    settings = db.query(UserSettings).filter_by(user_id=current_user.id).first()
+    max_count = settings.max_recommendations if settings else 5
+
+    # 2. 사용자 활동 조회 (해당 에너지 레벨)
+    user_activities = (
+        db.query(Activity)
+        .join(EnergyLevel)
+        .filter(
+            Activity.user_id == current_user.id,
+            Activity.is_deleted == False,
+            EnergyLevel.value == energy_level
+        )
+        .all()
+    )
+
+    # 3. 템플릿 활동 조회 (해당 에너지 레벨)
+    templates = (
+        db.query(ActivityTemplate)
+        .join(EnergyLevel)
+        .filter(EnergyLevel.value == energy_level)
+        .all()
+    )
+
+    # 4. 추천 리스트 구성
+    recommended = []
+    
+    if len(user_activities) >= max_count:
+        # 사용자 활동만 max_count만큼 선택
+        recommended = random.sample(user_activities, max_count)
+    else:
+        # 사용자 활동 전부 + 부족한 슬롯 템플릿으로 채우기
+        recommended = user_activities.copy()
+        remaining_slots = max_count - len(recommended)
+        if remaining_slots > 0:
+            # 템플릿 중 부족한 개수만큼 샘플링
+            selected_templates = random.sample(templates, min(remaining_slots, len(templates)))
+            recommended.extend(selected_templates)
+
+    # 5. 최종 섞기
+    random.shuffle(recommended)
+
+    # 6. Pydantic 변환 후 반환
+    return [ActivityTemplateOut.from_orm_obj(a) for a in recommended]
