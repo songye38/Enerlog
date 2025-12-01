@@ -28,46 +28,31 @@ const EnergyPage = () => {
     }, []);
 
     // 2️⃣ 선택된 탭 기반 payload 계산
-    const memoizedPayload: ConditionListPayload = useMemo(() => {
-        if (!groupedTags || Object.keys(groupedTags).length === 0) {
-            return { description: "사용자 기록 태그", sections: [] };
-        }
+    const payload: ConditionListPayload = useMemo(() => {
+        if (!groupedTags || Object.keys(groupedTags).length === 0) return { description: "사용자 기록 태그", sections: [] };
 
-        const level = selectedTab.startsWith("에너지")
-            ? parseInt(selectedTab.replace("에너지", ""), 10)
-            : null;
+        const level = selectedTab.startsWith("에너지") ? Number(selectedTab.replace("에너지", "")) : null;
 
-        const bodyTags: UserTagOut[] = level !== null
-            ? groupedTags[level]?.body ?? []
-            : Object.values(groupedTags).flatMap(g => g.body);
-
-        const mentalTags: UserTagOut[] = level !== null
-            ? groupedTags[level]?.mental ?? []
-            : Object.values(groupedTags).flatMap(g => g.mental);
+        const getTagsByType = (type: "body" | "mental") => (level !== null && !Number.isNaN(level) ? groupedTags[level]?.[type] ?? [] : Object.values(groupedTags).flatMap(g => g[type]));
 
         const sections: ConditionSection[] = [
-            {
-                title: "나의 신체상태는?",
-                tags: bodyTags.map(tag => ({ label: tag.tag_title, count: tag.selected_count })),
-            },
-            {
-                title: "나의 마음상태는?",
-                tags: mentalTags.map(tag => ({ label: tag.tag_title, count: tag.selected_count })),
-            },
+            { title: "나의 신체상태는?", tags: getTagsByType("body").map(tag => ({ label: tag.tag_title, count: tag.selected_count })) },
+            { title: "나의 마음상태는?", tags: getTagsByType("mental").map(tag => ({ label: tag.tag_title, count: tag.selected_count })) },
         ];
 
         return { description: "사용자 기록 태그", sections };
     }, [selectedTab, groupedTags]);
+
 
     return (
         <div>
             <ActivitySelectTab
                 selectedTab={selectedTab}
                 onChange={setSelectedTab}
-                options={["에너지0","에너지1", "에너지2", "에너지3", "에너지4", "에너지5", "에너지6", "에너지7", "에너지8", "에너지9", "에너지10"]}
+                options={["에너지0", "에너지1", "에너지2", "에너지3", "에너지4", "에너지5", "에너지6", "에너지7", "에너지8", "에너지9", "에너지10"]}
             />
             <ConditionListSection
-                data={memoizedPayload}
+                data={payload}
                 onAddTag={(sectionIndex, tagLabel) => console.log("추가 클릭, 섹션:", sectionIndex, "태그:", tagLabel)}
             />
         </div>
