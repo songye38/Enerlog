@@ -16,8 +16,8 @@ import { useNavigate } from "react-router-dom";
 
 function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["sections"] {
     
-    const mental = tags.filter(t => t.type === "mental");
-    const body = tags.filter(t => t.type === "body");
+    const mental = tags.filter(t => t.tag_type === "mental");
+    const body = tags.filter(t => t.tag_type === "body");
 
     return [
         {
@@ -78,11 +78,11 @@ const AddEnergyPage = () => {
         // user_tags / preset_tags 분리
         const userTags = selectedTags
             .filter(tag => tag?.id?.startsWith("temp"))
-            .map(tag => ({ title: tag!.title, type: tag!.type }));
+            .map(tag => ({ title: tag!.title, type: tag!.tag_type }));
 
         const presetTags = selectedTags
             .filter(tag => tag?.id && !tag.id.startsWith("temp"))
-            .map(tag => ({ id: tag!.id, title: tag!.title, type: tag!.type }));
+            .map(tag => ({ id: tag!.id, title: tag!.title, type: tag!.tag_type }));
 
         // payload 구성
         const payload: BehaveCreatePayload = {
@@ -125,7 +125,7 @@ const AddEnergyPage = () => {
                     originalTag: {
                         id: tempId, // string 타입 맞춤
                         title: label,
-                        type: section.title.includes("신체") ? "body" : "mental"
+                        tag_type: section.title.includes("신체") ? "body" : "mental"
                     },
                 });
             } else {

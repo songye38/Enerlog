@@ -5,7 +5,7 @@ import type { EnergyLevel } from "../types/EnergyLevel";
 export interface TagOut {
     id: string;
     title: string;
-    type: "mental" | "body";
+    tag_type: "mental" | "body";
     created_at?: string;
     updated_at?: string;
 }
@@ -66,7 +66,7 @@ export function groupTagsByEnergyAndType(tags: UserTagOut[]) {
         (acc, tag) => {
             const level = tag.energy_level; // 항상 존재
             if (!acc[level]) acc[level] = { body: [], mental: [] };
-            acc[level][tag.type].push(tag);
+            acc[level][tag.tag_type].push(tag);
             return acc;
         },
         {}
