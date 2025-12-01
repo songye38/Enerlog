@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends,HTTPException, Query
 from sqlalchemy.orm import Session
 from app.db.database import get_db  # SessionLocal 반환
 from app.db.models import EnergyLevelEnum,EnergyLevel,UserEnergyTagStats,PresetTag,Tag,User
-from app.db.schemas import EnergyLevelResponse,EnergyLevelRequest,TagOut,UserTagsResponse,UserTagsRequest
+from app.db.schemas import EnergyLevelResponse,EnergyLevelRequest,TagOut,UserTagsResponse,UserTagsRequest,UserTagStatResponse
 from uuid import UUID
 from app.auth.dependencies import get_current_user
 from typing import List
@@ -64,9 +64,9 @@ def get_tags_for_user_energy(db: Session, user_id: UUID, energy_level: EnergyLev
         updated_at=tag.updated_at
     ) for tag in all_tags_dict.values()]
 
-# -----------------------------
-# 사용자의 태그들을 모두 가져오는 라우터
-# -----------------------------
+# ---------------------------------------------
+# 사용자의 태그들 + 기본 프리셋 태그 모두 가져오는 라우터
+# ---------------------------------------------
 @router.get("/tags", response_model=UserTagsResponse)
 def get_user_tags(
     energy_level: EnergyLevelEnum = Query(..., description="0~10 에너지 레벨"),
@@ -75,3 +75,33 @@ def get_user_tags(
 ):
     tags = get_tags_for_user_energy(db, current_user.id, energy_level)
     return UserTagsResponse(tags=tags)
+
+
+
+
+# -----------------------
+# 사용자가 실제로 선택한 태그들만 가져오는 함수 
+# 프리셋까지 모두 가져오는 건 아님
+# -----------------------
+@router.get("/user_tags_recorded", response_model=List[UserTagStatResponse])
+def get_user_tags_recorded(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    stats = (
+        db.query(UserEnergyTagStats)
+        .join(UserEnergyTagStats.tag)
+        .filter(UserEnergyTagStats.user_id == current_user.id)
+        .all()
+    )
+
+    return [
+        UserTagStatResponse(
+            tag_id=str(stat.tag_id),
+            tag_title=stat.tag.title,
+            energy_level=stat.energy_level.value,
+            tag_type=stat.tag_type.value,
+            selected_count=stat.selected_count
+        )
+        for stat in stats
+    ]

@@ -183,9 +183,19 @@ class TagOut(BaseModel):
     type: TagTypeEnum
     created_at: datetime
     updated_at: datetime
+    count: Optional[int] = 0  # 기본값 0
 
     class Config:
         orm_mode = True
+
+
+class UserTagStatResponse(BaseModel):
+    tag_id: str
+    tag_title: str
+    energy_level: int
+    tag_type: str
+    selected_count: int
+
 
 # -----------------------
 # PresetTag Schemas
@@ -206,32 +216,13 @@ class PresetTagOut(BaseModel):
     class Config:
         orm_mode = True
 
-# -----------------------
-# UserTag Schemas
-# -----------------------
-# class UserTagCreate(BaseModel):
-#     user_id: UUID
-#     title: str
-#     type: TagTypeEnum
-#     tag_ids: List[UUID] = []
 
-# class UserTagOut(BaseModel):
-#     id: UUID
-#     user_id: UUID
-#     title: str
-#     type: TagTypeEnum
-#     tags: List[TagOut] = []
-#     created_at: datetime
-#     updated_at: datetime
-
-#     class Config:
-#         orm_mode = True
 
 class UserTagsRequest(BaseModel):
     energy_level: EnergyLevelEnum  # 0~10 Enum
 
 class UserTagsResponse(BaseModel):
-    tags: List[TagOut]  # id, title, type
+    tags: List[TagOut]  # id, title, type, count
 
 # -----------------------
 # BehaveTag Schemas
