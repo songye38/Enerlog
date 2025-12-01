@@ -1,6 +1,5 @@
 import type { ActivityFeed } from "../types/ActivityFeed";
 import arrowIcon from '/icons/14X14/arrow-narrow-up-right.png';
-import heartIcon from '/icons/16X16/heart.png';
 
 interface ActivitySectionProps {
   activity: ActivityFeed;
@@ -48,7 +47,7 @@ export default function ActivityDisplaySection({ activity, onSelected }: Activit
             </div>
           </div>
           <div style={{ flex: "1 1 0", height: 8 }} />
-          <img src={heartIcon} alt="Heart Icon" style={{ width: 16, height: 16 }} />
+          {/* <img src={heartIcon} alt="Heart Icon" style={{ width: 16, height: 16 }} /> */}
         </div>
 
         {/* 내용 */}
@@ -62,12 +61,12 @@ export default function ActivityDisplaySection({ activity, onSelected }: Activit
           </div>
 
           <div style={{ textAlign: "center", marginTop: 7 }}>
-            <div style={{ fontSize: 25, fontFamily: "IsYun", fontWeight: 400 }}>
+            <div style={{ fontSize: 25, fontFamily: "IsYun", fontWeight: 400 ,color:'black'}}>
               {activity.title}
             </div>
           </div>
 
-          <div style={{ textAlign: "center", marginTop: 8, fontSize: 15, lineHeight: "22px" }}>
+          <div style={{ textAlign: "center", marginTop: 8, fontSize: 15, lineHeight: "22px",color:'black' }}>
             {activity.description}
           </div>
         </div>
