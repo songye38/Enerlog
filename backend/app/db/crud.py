@@ -5,7 +5,7 @@
 
 
 from sqlalchemy.orm import Session
-from app.db.models import User
+from app.db.models import User,UserSettings
 from passlib.context import CryptContext
 from app.db import models
 from app.db.models import User
@@ -25,16 +25,26 @@ def get_password_hash(password: str):
 # 사용자 생성하면서 유저 통계 정보도 함께 기본으로 세팅
 # -----------------------------------------
 def create_user(db: Session, email: str, password: str | None, name: str):
-    # ✅ 비밀번호 해싱
     hashed_pw = get_password_hash(password) if password else None
 
-    # ✅ 유저 생성
+    # 1️⃣ 유저 생성
     db_user = User(email=email, hashed_password=hashed_pw, nickname=name)
     db.add(db_user)
-    db.commit()
-    # ✅ 완성된 유저 반환
+    db.commit()       # user.id 확보
     db.refresh(db_user)
+
+    # 2️⃣ 기본 UserSettings 생성 (여기서 user.id 사용 가능)
+    settings = UserSettings(
+        user_id=db_user.id,
+        max_recommendations=5   # 기본값
+    )
+    db.add(settings)
+    db.commit()        # settings 저장
+    db.refresh(settings)
+
+    # 3️⃣ 유저 반환
     return db_user
+
 
 
 # -----------------------
