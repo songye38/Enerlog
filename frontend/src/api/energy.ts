@@ -42,7 +42,7 @@ export async function fetchUserTags(energyLevel: EnergyLevel) {
  ----------------------------------------------*/
 export async function fetchUserTagsRecorded(): Promise<{ tags: TagOut[] }> {
   try {
-    const res = await Api.get("/user_tags_recorded", { withCredentials: true });
+    const res = await Api.get("/energy/user_tags_recorded", { withCredentials: true });
 
     // energy_level, selected_count 기본값 처리
     const tags = res.data.map((tag: TagOut) => ({
