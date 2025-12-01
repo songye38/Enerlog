@@ -66,6 +66,7 @@ class User(Base):
     user_tags = relationship("UserTag", back_populates="user")
     behaves = relationship("Behave", back_populates="user")
     letters = relationship("Letter", back_populates="user")
+    settings = relationship("UserSettings", back_populates="user")
 
 # -----------------------
 # Activities
@@ -327,3 +328,17 @@ class UserEnergyTagStats(Base):
 
     user = relationship("User")
     tag = relationship("Tag")
+
+# -----------------------
+# 사용자별 세팅 저장을 위한 테이블
+# -----------------------
+class UserSettings(Base):
+    __tablename__ = "user_settings"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, unique=True)
+    max_recommendations = Column(Integer, default=5)  # 기본 5개
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    user = relationship("User", back_populates="settings")
