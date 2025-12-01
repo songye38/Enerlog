@@ -1,13 +1,14 @@
 interface ActivitySelectTabProps {
     selectedTab?: string; // 부모가 선택한 값
-    onChange?: (selected: string) => void; 
+    onChange?: (selected: string) => void;
+    options?: string[]; // 여기 추가
 }
 
-export default function ActivitySelectTab({ selectedTab, onChange }: ActivitySelectTabProps) {
-    const defaultOptions = [
-        "전체",
-        "에너지1","에너지2","에너지3","에너지4","에너지5",
-        "에너지6","에너지7","에너지8","에너지9","에너지10"
+export default function ActivitySelectTab({ selectedTab, onChange, options }: ActivitySelectTabProps) {
+    const defaultOptions = options ?? [
+        "전체","에너지0",
+        "에너지1", "에너지2", "에너지3", "에너지4", "에너지5",
+        "에너지6", "에너지7", "에너지8", "에너지9", "에너지10"
     ];
 
     const tabs = defaultOptions;
@@ -18,7 +19,7 @@ export default function ActivitySelectTab({ selectedTab, onChange }: ActivitySel
     };
 
     return (
-        <div style={{ display: "flex", gap: 6, overflowX: "auto", padding: 4, width:'90vw' }}>
+        <div style={{ display: "flex", gap: 6, overflowX: "auto", padding: 4, width: '90vw' }}>
             {tabs.map((label, idx) => (
                 <div
                     key={idx}
