@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends,HTTPException,Query
-from sqlalchemy.orm import Session,func
+from sqlalchemy.orm import Session
+from sqlalchemy import func
 from typing import List
 from uuid import UUID
 import random
