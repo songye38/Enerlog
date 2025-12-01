@@ -5,14 +5,16 @@ import type { EnergyLevel } from "../types/EnergyLevel";
 export interface ActivityTemplateOut {
     id: string; // UUID
     title: string;
-    description?: string;
-    duration_minutes?: string;
+    description: string;
+    durationMinutes?: string;
     good_point?: string;
     insight?: string;
     created_at: string;
     updated_at: string;
-    energy_level: EnergyLevel; // 0~10 숫자 타입
+    level: EnergyLevel; // 0~10 숫자 타입
+    count : number;
 }
+
 
 export interface ActivityCreatePayload {
     title: string;

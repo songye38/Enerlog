@@ -8,10 +8,8 @@ export default function ActRecordSection() {
     const activity: ActivityFeed = {
         id:'1',
         level: 3,
-        isHearted: false,
         title: "가벼운 산책",
         description: "짧은 산책으로 기분 전환",
-        tags: ["걷기", "운동"],
         count: 0,
         durationMinutes: "20분"
     };

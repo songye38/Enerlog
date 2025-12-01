@@ -118,15 +118,6 @@ export default function ActivitySection({ activity, onDeleted, onEdited }: Activ
                 </span>
               ))}
             </div>
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center" }}>
-              {activity.tags.map((tag, i) => (
-                <div key={i} style={{ borderRadius: 4, display: "flex", justifyContent: "center", alignItems: "center", padding: "2px 6px" }}>
-                  <div style={{ color: "black", fontSize: 10, fontFamily: "Pretendard", fontWeight: 600 }}>
-                    #{tag}
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>

@@ -94,8 +94,6 @@ export default function MakeMyActivitySectionS({
                         level: typeof createdActivity.energy_level === "object"
                             ? createdActivity.energy_level.value // 숫자만 넣기
                             : createdActivity.energy_level,
-                        isHearted: false,
-                        tags: [],
                         count: 0,
                     });
                 }

@@ -57,14 +57,14 @@ const ActivityPage = () => {
                 const templates = await fetchActivityTemplates();
                 const mapped: ActivityFeed[] = templates.map((tpl) => ({
                     id: tpl.id,
-                    level: tpl.energy_level,
+                    level: tpl.level,
                     isHearted: false,
                     title: tpl.title,
                     description: tpl.description || "",
                     goodPoint: tpl.good_point,
                     tags: [],
                     count: 0,
-                    durationMinutes: tpl.duration_minutes || "",
+                    durationMinutes: tpl.durationMinutes || "",
                 }));
                 setActivities(mapped);
             } catch (err) {
@@ -77,14 +77,14 @@ const ActivityPage = () => {
                 const templates = await fetchUserActivites();
                 const mapped: ActivityFeed[] = templates.map((tpl) => ({
                     id: tpl.id,
-                    level: tpl.energy_level,
+                    level: tpl.level,
                     isHearted: false,
                     title: tpl.title,
                     description: tpl.description || "",
                     goodPoint: tpl.good_point,
                     tags: [],
                     count: 0,
-                    durationMinutes: tpl.duration_minutes || "",
+                    durationMinutes: tpl.durationMinutes || "",
                 }));
 
                 setUserActivities(mapped);
