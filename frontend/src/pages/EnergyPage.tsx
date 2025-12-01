@@ -1,41 +1,85 @@
+import { useEffect, useState } from "react";
 import ActivitySelectTab from "../components/Tab/ActivitySelectTab";
 import ConditionListSection from "../ccomponents/ConditionListSection";
-import type { ConditionListPayload } from "../types/ConditionTypes";
+import type { ConditionListPayload, ConditionSection } from "../types/ConditionTypes";
+import { fetchUserTagsRecorded, groupTagsByEnergyAndType } from "../api/energy";
+import type { TagOut } from "../api/energy";
 
-const payload: ConditionListPayload = {
-    description: "극도의 피로감, 몸이 무겁고 움직이기조차 힘듦",
-    sections: [
-        {
-            title: "나의 신체상태는?",
-            tags: [
-                { label: "움직일수없음", count: 12 },
-                { label: "극도의피로", count: 8 },
-                { label: "몸무거움", count: 6 },
-            ],
-        },
-        {
-            title: "나의 마음상태는?",
-            tags: [
-                { label: "무기력", count: 18 },
-                { label: "불안", count: 15 },
-                { label: "초조", count: 14 },
-            ],
-        },
-    ],
-};
 const EnergyPage = () => {
+  const [payload, setPayload] = useState<ConditionListPayload>({
+    description: "사용자 기록 태그",
+    sections: [],
+  });
+  const [selectedTab, setSelectedTab] = useState<string>("전체");
+  const [groupedTags, setGroupedTags] = useState<Record<number, { body: TagOut[]; mental: TagOut[] }>>({});
 
-    return (
-        <div>
-            <ActivitySelectTab
-                onChange={(selected) => console.log("선택된 탭:", selected)}
-            />
-            <ConditionListSection
-                data={payload}
-                onAddTag={(sectionIndex) => console.log("추가 클릭, 섹션:", sectionIndex)}
-            />
-        </div>
-    );
+  useEffect(() => {
+    async function loadTags() {
+      try {
+        const res = await fetchUserTagsRecorded();
+        const grouped = groupTagsByEnergyAndType(res.tags);
+        setGroupedTags(grouped);
+      } catch (error) {
+        console.error("태그 불러오기 실패:", error);
+      }
+    }
+    loadTags();
+  }, []);
+
+  // 탭 변경 시 payload 업데이트
+  useEffect(() => {
+  if (!groupedTags) return;
+
+  const updatePayload = () => {
+    let level: number | null = null;
+    if (selectedTab.startsWith("에너지")) {
+      level = parseInt(selectedTab.replace("에너지", ""), 10);
+    }
+
+    let bodyTags: TagOut[] = [];
+    let mentalTags: TagOut[] = [];
+
+    if (level && groupedTags[level]) {
+      bodyTags = groupedTags[level].body;
+      mentalTags = groupedTags[level].mental;
+    } else {
+      // "전체" 선택 시 모든 레벨 합치기
+      bodyTags = Object.values(groupedTags).flatMap(g => g.body);
+      mentalTags = Object.values(groupedTags).flatMap(g => g.mental);
+    }
+
+    const sections: ConditionSection[] = [
+      {
+        title: "나의 신체상태는?",
+        tags: bodyTags.map(tag => ({ label: tag.title, count: tag.selected_count })),
+      },
+      {
+        title: "나의 마음상태는?",
+        tags: mentalTags.map(tag => ({ label: tag.title, count: tag.selected_count })),
+      },
+    ];
+
+    setPayload({ description: "사용자 기록 태그", sections });
+  };
+
+  // 비동기로 감싸서 동기 호출 문제 방지
+  const id = setTimeout(updatePayload, 0);
+  return () => clearTimeout(id); // cleanup
+}, [selectedTab, groupedTags]);
+
+
+  return (
+    <div>
+      <ActivitySelectTab
+        selectedTab={selectedTab}
+        onChange={(tab) => setSelectedTab(tab)}
+      />
+      <ConditionListSection
+        data={payload}
+        onAddTag={(sectionIndex) => console.log("추가 클릭, 섹션:", sectionIndex)}
+      />
+    </div>
+  );
 };
 
 export default EnergyPage;
