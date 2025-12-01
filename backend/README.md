@@ -36,7 +36,6 @@
   * FastAPI 서버: 엔드포인트, 요청/응답 처리
   * PostgreSQL: 테이블 구조, 관계
   * Railway: 배포 환경, 환경 변수, CI/CD
-* ![아키텍처 그림](./images/architecture.png)
 
 ---
 
@@ -215,7 +214,7 @@ PostgreSQL을 기준으로 모델링했으며, UUID를 PK로 사용하고, Enum�
 
 ## API
 
-* FastAPI 자동 문서: [`/docs` (Swagger) / `/redoc` (Redoc)](https://api.enerlog.kr/docs#/)
+* FastAPI 자동 문서: [`/docs` (Swagger) (Redoc)](https://api.enerlog.kr/docs#/)
 * 주요 엔드포인트 요약:
 
 | Method | Endpoint | 요청 예시              | 응답 예시                       | 설명        |
@@ -224,15 +223,9 @@ PostgreSQL을 기준으로 모델링했으며, UUID를 PK로 사용하고, Enum�
 | POST   | /users   | `{ "name": "송이" }` | `{ "id": 1, "name": "송이" }` | 사용자 생성    |
 
 
-
-* Pydantic 모델 예시:
-
-좋아, 송이. 이제 네가 만든 **Pydantic 스키마** 기반으로 API 요청/응답 구조와 데이터 흐름을 설명해줄게.
-이걸 문서나 README에 넣으면 API 구조 이해가 훨씬 쉬워질 거야.
-
 ---
 
-## Pydantic 스키마 기반 설명
+## Pydantic 스키마
 
 이 프로젝트에서는 **FastAPI + Pydantic**을 활용해 DB 모델과 API 요청/응답 데이터를 명확하게 구분함.
 모든 스키마는 `orm_mode=True` 또는 Pydantic 2.x 기준 `model_config={"from_attributes": True}`를 적용해 **SQLAlchemy ORM 객체 → JSON 변환**이 가능하게 설계됨.
