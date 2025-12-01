@@ -57,12 +57,10 @@ const ActivityPage = () => {
                 const templates = await fetchActivityTemplates();
                 const mapped: ActivityFeed[] = templates.map((tpl) => ({
                     id: tpl.id,
-                    level: tpl.level,
-                    isHearted: false,
+                    energy_level: tpl.energy_level,
                     title: tpl.title,
                     description: tpl.description || "",
-                    goodPoint: tpl.good_point,
-                    tags: [],
+                    good_point: tpl.good_point,
                     count: 0,
                     durationMinutes: tpl.durationMinutes || "",
                 }));
@@ -77,12 +75,10 @@ const ActivityPage = () => {
                 const templates = await fetchUserActivites();
                 const mapped: ActivityFeed[] = templates.map((tpl) => ({
                     id: tpl.id,
-                    level: tpl.level,
-                    isHearted: false,
+                    energy_level: tpl.energy_level,
                     title: tpl.title,
                     description: tpl.description || "",
-                    goodPoint: tpl.good_point,
-                    tags: [],
+                    good_point: tpl.good_point,
                     count: 0,
                     durationMinutes: tpl.durationMinutes || "",
                 }));
@@ -109,7 +105,7 @@ const ActivityPage = () => {
             ? baseActivities
             : selectedFilterTab.startsWith("에너지")
                 ? baseActivities.filter(
-                    (a) => a.level === Number(selectedFilterTab.replace("에너지", ""))
+                    (a) => a.energy_level === Number(selectedFilterTab.replace("에너지", ""))
                 )
                 : baseActivities;
 

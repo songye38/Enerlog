@@ -7,7 +7,7 @@ export default function ActRecordSection() {
 
     const activity: ActivityFeed = {
         id:'1',
-        level: 3,
+        energy_level: 3,
         title: "가벼운 산책",
         description: "짧은 산책으로 기분 전환",
         count: 0,

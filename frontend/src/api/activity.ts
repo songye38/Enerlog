@@ -11,7 +11,7 @@ export interface ActivityTemplateOut {
     insight?: string;
     created_at: string;
     updated_at: string;
-    level: EnergyLevel; // 0~10 숫자 타입
+    energy_level: EnergyLevel; // 0~10 숫자 타입
     count : number;
 }
 
@@ -22,7 +22,7 @@ export interface ActivityCreatePayload {
     is_public: boolean;
     duration_minutes?: string;
     good_point?: string;
-    energy_level: number;
+    energy_level: EnergyLevel;
 }
 
 

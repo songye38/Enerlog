@@ -41,7 +41,7 @@ export default function RecommendActivitySection({
         <div style={{ alignSelf: 'stretch', padding: 12, background: '#ECEFF9', borderRadius: 8, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', gap: 10, display: 'flex' }}>
           <div style={{ color: 'black', fontSize: 14, fontFamily: 'Pretendard', fontWeight: 600 }}>좋은 점</div>
           <div style={{ textAlign: 'center', color: 'black', fontSize: 16, fontFamily: 'Pretendard', fontWeight: 400, lineHeight: '21px' }}>
-            {data.goodPoint}
+            {data.good_point}
           </div>
         </div>
 

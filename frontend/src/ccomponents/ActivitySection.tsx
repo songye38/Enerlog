@@ -70,7 +70,7 @@ export default function ActivitySection({ activity, onDeleted, onEdited }: Activ
           >
             <img src={arrowIcon} alt="Arrow Icon" style={{ width: 14, height: 14 }} />
             <div style={{ color: "#ECEFF9", fontSize: 15, fontFamily: "Pretendard", fontWeight: 600 }}>
-              에너지 레벨 : {activity.level}
+              에너지 레벨 : {activity.energy_level}
             </div>
           </div>
           <div style={{ flex: "1 1 0", height: 8 }} />
@@ -128,8 +128,8 @@ export default function ActivitySection({ activity, onDeleted, onEdited }: Activ
           initialTitle={activity.title}
           initialDescription={activity.description}
           initialDuration={activity.durationMinutes}
-          initialEnergyLevel={activity.level}
-          initialGoodPoint={activity.goodPoint}
+          initialEnergyLevel={activity.energy_level}
+          initialGoodPoint={activity.good_point}
           isEditing={true}
           editingActivityId={activity.id}
           onSubmit={async (payload) => {
