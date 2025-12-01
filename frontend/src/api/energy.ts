@@ -42,7 +42,7 @@ export async function fetchUserTags(energyLevel: EnergyLevel) {
  ----------------------------------------------*/
 export async function fetchUserTagsRecorded(): Promise<UserTagsResponse> {
   try {
-    const res = await Api.get("/user_tags_recorded", {
+    const res = await Api.get("/energy/user_tags_recorded", {
       withCredentials: true, // 인증 쿠키 포함
     });
 
