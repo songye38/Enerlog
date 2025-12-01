@@ -112,6 +112,8 @@ class ActivityTemplateOut(BaseModel):
     created_at: datetime
     updated_at: datetime
     energy_level: int
+    count: Optional[int]
+
 
     class Config:
         orm_mode = True
