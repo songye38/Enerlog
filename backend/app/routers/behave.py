@@ -53,6 +53,10 @@ router = APIRouter(prefix="/behave", tags=["Behave"])
 #     db.flush()
 #     db.commit()  # 여기서 실제 DB에 반영
 
+
+# -------------------------------
+# 사용자가 선택한 태그를 저장하는 라우터
+# -------------------------------
 def save_tags(db: Session, behave: Behave, user_tags: List = None, preset_tags: List = None):
     # None-safe 처리
     user_tags = user_tags or []
@@ -98,46 +102,9 @@ def save_tags(db: Session, behave: Behave, user_tags: List = None, preset_tags: 
 
 
 
-# @router.post("/")
-# def create_behave(
-#     payload: BehaveCreateRequest,
-#     db: Session = Depends(get_db),
-#     current_user = Depends(get_current_user)
-# ):
-#     print("payload", payload)
-
-#     # 1️⃣ Behave 생성
-#     behave = Behave(
-#         user_id=current_user.id,
-#         before_energy=payload.before_energy,
-#         before_description=payload.before_description,
-#         status=BehaveStatusEnum(payload.status)
-#     )
-#     db.add(behave)
-#     db.flush()  # id 생성
-
-#     # 2️⃣ 태그 저장
-#     save_tags(
-#         db=db,
-#         behave=behave,
-#         user_tags=payload.user_tags,
-#         preset_tags=payload.preset_tags
-#     )
-
-#     # 3️⃣ before_phase stats 업데이트
-#     update_before_stats(db, behave)
-
-#     # 4️⃣ Pydantic 모델로 명시적 반환
-#     response = BehaveResponse(
-#         id=behave.id,
-#         user_id=behave.user_id,
-#         before_energy=behave.before_energy,
-#         before_description=behave.before_description,
-#         status=behave.status
-#     )
-#     return response
-
-
+# --------------------------------------------
+# 사용자가 자신의 에너지 레벨을 초기에 저장하는 라우터
+# --------------------------------------------
 @router.post("/", response_model=BehaveResponse)
 def create_behave(
     payload: BehaveCreateRequest,

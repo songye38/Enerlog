@@ -10,9 +10,9 @@ from typing import List
 
 router = APIRouter(prefix="/energy", tags=["Energy"])
 
-
-
-
+# -----------------------
+# 보조함수
+# -----------------------
 @router.post("/energy-level-id", response_model=EnergyLevelResponse)
 def get_energy_level_id(request: EnergyLevelRequest, db: Session = Depends(get_db)):
     """
@@ -30,6 +30,9 @@ def get_energy_level_id(request: EnergyLevelRequest, db: Session = Depends(get_d
     return {"id": str(record.id)}
 
 
+# ---------------------------------
+# get_user_tags함수에서 사용하는 보조함수
+# ---------------------------------
 def get_tags_for_user_energy(db: Session, user_id: UUID, energy_level: EnergyLevelEnum) -> List[TagOut]:
     stats = (
         db.query(UserEnergyTagStats)
@@ -61,9 +64,9 @@ def get_tags_for_user_energy(db: Session, user_id: UUID, energy_level: EnergyLev
         updated_at=tag.updated_at
     ) for tag in all_tags_dict.values()]
 
-# -----------------------
-# 엔드포인트
-# -----------------------
+# -----------------------------
+# 사용자의 태그들을 모두 가져오는 라우터
+# -----------------------------
 @router.get("/tags", response_model=UserTagsResponse)
 def get_user_tags(
     energy_level: EnergyLevelEnum = Query(..., description="0~10 에너지 레벨"),
