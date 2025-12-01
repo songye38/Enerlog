@@ -16,6 +16,7 @@ const RecordPage = () => {
   useEffect(() => {
     async function load() {
       const res = await fetchRecommendedActivities(energyLevel);
+      console.log("서버에서 받아온 활동들 ",res);
       setActivities(res);
     }
     load();
