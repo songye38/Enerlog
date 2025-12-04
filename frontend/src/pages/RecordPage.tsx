@@ -52,6 +52,7 @@ const RecordPage = () => {
             key={a.id}
             activity={a}
             onSelected={handleSelected}
+            selected={selectedId === a.id} // 🔥 선택된 카드만 border 적용
           />
         ))}
       </div>
