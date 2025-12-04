@@ -12,7 +12,7 @@ from app.auth.dependencies import get_current_user
 
 router = APIRouter(prefix="/activities", tags=["Activities"])
 
-# -----------------------
+# ------------------------
 # 사용자 정의 활동 생성
 # 
 # 새로운 Activity(활동) 객체를 생성합니다.
