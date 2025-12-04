@@ -27,7 +27,7 @@ export default function ActivityDisplaySection({ activity, onSelected ,selected}
           flexDirection: "column",
           alignItems: "center",
           gap: 24,
-          border: selected ? "3px solid #455CC5" : "3px solid transparent", // 🔥 변화되는 부분
+          border: selected ? "3px solid transparent" : "3px solid #455CC5", // 🔥 변화되는 부분
         }}
       >
         {/* 에너지 레벨 */}
