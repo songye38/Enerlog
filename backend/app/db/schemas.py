@@ -240,6 +240,9 @@ class BehaveTagOut(BaseModel):
     class Config:
         orm_mode = True
 
+class SelectActivityRequest(BaseModel):
+    activity_id: UUID
+
 # -----------------------
 # BehavePhoto Schemas
 # -----------------------

@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends,HTTPException
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from uuid import UUID
 
 from app.db.database import get_db
 from app.db.models import Behave, TagTypeEnum, UserTag, Tag, PhaseEnum, BehaveTag, EnergyLevelEnum, BehaveStatusEnum
-from app.db.schemas import BehaveResponse, BehaveCreateRequest
+from app.db.schemas import BehaveResponse, BehaveCreateRequest,SelectActivityRequest
 from app.auth.dependencies import get_current_user
 from app.services.user_energy_tag_stats import update_before_stats
 
@@ -135,4 +135,29 @@ def create_behave(
     update_before_stats(db, behave)
 
     # 4️⃣ Pydantic ORM 변환해서 반환
+    return BehaveResponse.from_orm(behave)
+
+
+
+@router.patch("/{behave_id}/select-activity", response_model=BehaveResponse)
+def select_activity(
+    behave_id: UUID,
+    payload: SelectActivityRequest,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user),
+):
+    behave = db.query(Behave).filter(
+        Behave.id == behave_id,
+        Behave.user_id == current_user.id
+    ).first()
+
+    if not behave:
+        raise HTTPException(status_code=404, detail="Behave not found")
+
+    behave.activity_id = payload.activity_id
+    behave.status = BehaveStatusEnum.activity_pending
+
+    db.commit()
+    db.refresh(behave)
+
     return BehaveResponse.from_orm(behave)
