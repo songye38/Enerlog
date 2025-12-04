@@ -44,3 +44,27 @@ export async function createBehave(payload: BehaveCreatePayload): Promise<Behave
         throw new Error(msg);
     }
 }
+
+
+/*----------------------------------------------
+ * ✅ 선택한 activity_id로 Behave 업데이트
+ ----------------------------------------------*/
+export async function updateBehaveWithActivity(
+    behaveId: string,
+    activityId: string
+): Promise<BehaveResponse> {
+    try {
+        const res = await Api.patch(`/behave/${behaveId}/select-activity`, 
+            { activity_id: activityId },
+            {
+                headers: { "Content-Type": "application/json" },
+                withCredentials: true,
+            }
+        );
+        return res.data;
+    } catch (error) {
+        const axiosError = error as AxiosError<{ detail?: string }>;
+        const msg = axiosError.response?.data?.detail || "활동 선택 저장 실패";
+        throw new Error(msg);
+    }
+}

@@ -15,7 +15,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["sections"] {
-    
+
     const mental = tags.filter(t => t.tag_type === "mental");
     const body = tags.filter(t => t.tag_type === "body");
 
@@ -93,10 +93,23 @@ const AddEnergyPage = () => {
             preset_tags: presetTags,
         };
 
+        // try {
+        //     const result = await createBehave(payload);
+        //     console.log("Behave 생성 완료:", result);
+        //     navigate(`/record?energy_level=${energyLevel}`);
+        // } catch (err) {
+        //     if (axios.isAxiosError(err)) {
+        //         console.error("Behave 생성 실패(JSON):", JSON.stringify(err.response?.data, null, 2));
+        //     } else {
+        //         console.error("알 수 없는 에러:", err);
+        //     }
+        // }
         try {
             const result = await createBehave(payload);
             console.log("Behave 생성 완료:", result);
-            navigate(`/record?energy_level=${energyLevel}`);
+
+            // 👉 여기서 behaveId 넣어서 이동!
+            navigate(`/record?energy_level=${energyLevel}&behave_id=${result.id}`);
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 console.error("Behave 생성 실패(JSON):", JSON.stringify(err.response?.data, null, 2));

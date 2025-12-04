@@ -5,6 +5,7 @@ import type { ActivityTemplateOut } from "../api/activity";
 import { useLocation } from "react-router-dom";
 import MainBtn from "../components/Button/MainBtn";
 import { useNavigate } from "react-router-dom";
+import { updateBehaveWithActivity } from "../api/behave";
 
 const RecordPage = () => {
   const [activities, setActivities] = useState<ActivityTemplateOut[]>([]);
@@ -14,9 +15,9 @@ const RecordPage = () => {
   const isSubmitDisabled = selectedId === null;
 
   const location = useLocation();
-  const energyLevel = Number(
-    new URLSearchParams(location.search).get("energy_level")
-  );
+  const params = new URLSearchParams(location.search);
+  const energyLevel = Number(params.get("energy_level"));
+  const behaveId = params.get("behave_id");  // 🔥 바로 이거
 
   useEffect(() => {
     async function load() {
@@ -33,8 +34,15 @@ const RecordPage = () => {
     setSelectedActivity(item);
   };
 
-  const handleSubmit = () => {
-    //navigate('/')
+  const handleSubmit = async () => {
+    if (!selectedId || !behaveId) return;
+
+    try {
+      await updateBehaveWithActivity(behaveId, selectedId);
+      navigate(`/next-page`);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const handleToMain = () => {
