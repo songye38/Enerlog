@@ -21,7 +21,7 @@ pwd_context = CryptContext(
 def get_password_hash(password: str):
     return pwd_context.hash(password)
 
-# -----------------------------------------
+# ------------------------------------------
 # 사용자 생성하면서 유저 통계 정보도 함께 기본으로 세팅
 # -----------------------------------------
 def create_user(db: Session, email: str, password: str | None, name: str):
