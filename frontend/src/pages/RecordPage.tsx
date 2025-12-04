@@ -3,10 +3,13 @@ import ActivityDisplaySection from "../ccomponents/ActivityDisplaySection";
 import { fetchRecommendedActivities } from "../api/activity";
 import type { ActivityTemplateOut } from "../api/activity";
 import { useLocation } from "react-router-dom";
+import MainBtn from "../components/Button/MainBtn";
+import { useNavigate } from "react-router-dom";
 
 const RecordPage = () => {
   const [activities, setActivities] = useState<ActivityTemplateOut[]>([]);
   const [_selectedId, setSelectedId] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const location = useLocation();
   const energyLevel = Number(
@@ -16,7 +19,7 @@ const RecordPage = () => {
   useEffect(() => {
     async function load() {
       const res = await fetchRecommendedActivities(energyLevel);
-      console.log("서버에서 받아온 활동들 ",res);
+      console.log("서버에서 받아온 활동들 ", res);
       setActivities(res);
     }
     load();
@@ -28,15 +31,36 @@ const RecordPage = () => {
     // 👉 이후 다음 페이지로 이동하거나 API 호출할 때 사용 가능
   };
 
+  const handleSubmit = () => {
+    //navigate('/')
+  };
+
+  const handleToMain = () => {
+    navigate('/')
+  };
+
+
+
+
+
   return (
-    <div style={{display:'flex',flexDirection:'column',gap:20}}>
-      {activities.map((a) => (
-        <ActivityDisplaySection
-          key={a.id}
-          activity={a}
-          onSelected={handleSelected}
-        />
-      ))}
+    <div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        {activities.map((a) => (
+          <ActivityDisplaySection
+            key={a.id}
+            activity={a}
+            onSelected={handleSelected}
+          />
+        ))}
+      </div>
+      {/* 제출 버튼 */}
+      <MainBtn onClick={handleSubmit} disabled={isSubmitDisabled}>
+        {loading ? "저장 중..." : "저장하기"}
+      </MainBtn>
+      <MainBtn onClick={handleToMain}>
+        오늘은 쉴래
+      </MainBtn>
     </div>
   );
 };
