@@ -56,13 +56,16 @@ def get_tags_for_user_energy(db: Session, user_id: UUID, energy_level: EnergyLev
     # stats + preset_tags 합치고 중복 제거
     all_tags_dict = {tag.id: tag for tag in stats_tags + preset_tags}
 
-    return [TagOut(
-        id=tag.id,
-        title=tag.title,
-        type=tag.type,
+    return [
+    TagOut(
+        tag_id=tag.id,
+        tag_title=tag.title,
+        tag_type=tag.type,
         created_at=tag.created_at,
         updated_at=tag.updated_at
-    ) for tag in all_tags_dict.values()]
+    )
+    for tag in all_tags_dict.values()
+]
 
 # ---------------------------------------------
 # 사용자의 태그들 + 기본 프리셋 태그 모두 가져오는 라우터
