@@ -178,19 +178,18 @@ class TagCreate(BaseModel):
     type: TagTypeEnum
 
 class TagOut(BaseModel):
-    id: UUID
-    title: str
-    type: TagTypeEnum
+    tag_id: UUID
+    tag_title: str
+    tag_type: TagTypeEnum
     created_at: datetime
     updated_at: datetime
-    count: Optional[int] = 0  # 기본값 0
 
     class Config:
         orm_mode = True
 
 
 class UserTagStatResponse(BaseModel):
-    tag_id: str
+    tag_id: UUID
     tag_title: str
     energy_level: int
     tag_type: str

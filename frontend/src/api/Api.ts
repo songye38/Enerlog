@@ -11,6 +11,7 @@ const Api = axios.create({
 // 왜냐면 서버가 쿠키에서 access_token 확인
 
 // 👇 응답 인터셉터 (4단계)
+// 👇 응답 인터셉터 (4단계)
 Api.interceptors.response.use(
   (response) => response, // 성공 시 그대로 리턴
   async (error) => {
@@ -31,13 +32,18 @@ Api.interceptors.response.use(
           { withCredentials: true }
         );
 
-        console.log("에러 방지용",res);
+        console.log("에러 방지용", res);
         
         return Api(originalRequest); // 원래 요청 재시도
       } catch (refreshError) {
-        console.error("리프레시 토큰도 만료됨");
-        // 로그아웃 처리
-        // window.location.href = "/login";
+        console.error("리프레시 토큰도 만료됨 → 강제 로그아웃 진행");
+
+        // 🔥 1) 클라이언트 상태 초기화
+        sessionStorage.removeItem("userName");
+
+        // 🔥 2) 로그인 페이지로 이동 → 세션 완전 만료 UX
+        window.location.href = "/login";
+
         return Promise.reject(refreshError);
       }
     }
@@ -45,6 +51,7 @@ Api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
 
 // ✅ 로그인 상태 복원 + 세션 저장
 export const useRestoreUser = () => {
