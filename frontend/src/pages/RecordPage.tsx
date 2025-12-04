@@ -8,8 +8,9 @@ import { useNavigate } from "react-router-dom";
 
 const RecordPage = () => {
   const [activities, setActivities] = useState<ActivityTemplateOut[]>([]);
-  const [_selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const navigate = useNavigate();
+  const isSubmitDisabled = selectedId === null;
 
   const location = useLocation();
   const energyLevel = Number(
@@ -56,7 +57,8 @@ const RecordPage = () => {
       </div>
       {/* 제출 버튼 */}
       <MainBtn onClick={handleSubmit} disabled={isSubmitDisabled}>
-        {loading ? "저장 중..." : "저장하기"}
+        {/* {loading ? "저장 중..." : "저장하기"} */}
+        저장하기
       </MainBtn>
       <MainBtn onClick={handleToMain}>
         오늘은 쉴래

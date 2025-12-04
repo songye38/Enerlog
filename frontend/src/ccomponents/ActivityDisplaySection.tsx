@@ -1,12 +1,13 @@
-import type { ActivityFeed } from "../types/ActivityFeed";
 import arrowIcon from '/icons/14X14/arrow-narrow-up-right.png';
+import type { ActivityTemplateOut } from "../api/activity";
 
 interface ActivitySectionProps {
-  activity: ActivityFeed;
+  activity: ActivityTemplateOut;
   onSelected?: (id: string) => void;
+  selected?: boolean; // 🔥 추가
 }
 
-export default function ActivityDisplaySection({ activity, onSelected }: ActivitySectionProps) {
+export default function ActivityDisplaySection({ activity, onSelected ,selected}: ActivitySectionProps) {
 
   const handleClick = () => {
     if (onSelected) {
@@ -26,6 +27,7 @@ export default function ActivityDisplaySection({ activity, onSelected }: Activit
           flexDirection: "column",
           alignItems: "center",
           gap: 24,
+          border: selected ? "3px solid #455CC5" : "3px solid transparent", // 🔥 변화되는 부분
         }}
       >
         {/* 에너지 레벨 */}
