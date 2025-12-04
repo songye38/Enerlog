@@ -45,7 +45,7 @@ const RecordPage = () => {
 
 
   return (
-    <div>
+    <div style={{display:'flex',flexDirection:'column',gap:32}}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
         {activities.map((a) => (
           <ActivityDisplaySection
@@ -56,14 +56,18 @@ const RecordPage = () => {
           />
         ))}
       </div>
-      {/* 제출 버튼 */}
-      <MainBtn onClick={handleSubmit} disabled={isSubmitDisabled}>
-        {/* {loading ? "저장 중..." : "저장하기"} */}
-        저장하기
-      </MainBtn>
-      <MainBtn onClick={handleToMain}>
-        오늘은 쉴래
-      </MainBtn>
+
+      <div style={{display:'flex',flexDirection:'column',gap:12}}>
+        {/* 저장하기 버튼 */}
+        <MainBtn onClick={handleSubmit} disabled={isSubmitDisabled}>
+          {/* {loading ? "저장 중..." : "저장하기"} */}
+          저장하기
+        </MainBtn>
+        {/* 오늘은 건너뛰기 버튼 */}
+        <MainBtn onClick={handleToMain}>
+          오늘은 쉴래
+        </MainBtn>
+      </div>
     </div>
   );
 };
