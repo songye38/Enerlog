@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 const RecordPage = () => {
   const [activities, setActivities] = useState<ActivityTemplateOut[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedActivity, setSelectedActivity] = useState<ActivityTemplateOut | null>(null);
   const navigate = useNavigate();
   const isSubmitDisabled = selectedId === null;
 
@@ -28,8 +29,8 @@ const RecordPage = () => {
 
   const handleSelected = (id: string) => {
     setSelectedId(id);
-    console.log("사용자가 선택한 활동 ID:", id);
-    // 👉 이후 다음 페이지로 이동하거나 API 호출할 때 사용 가능
+    const item = activities.find(a => a.id === id) || null;
+    setSelectedActivity(item);
   };
 
   const handleSubmit = () => {
@@ -60,8 +61,7 @@ const RecordPage = () => {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {/* 저장하기 버튼 */}
         <MainBtn onClick={handleSubmit} disabled={isSubmitDisabled}>
-          {/* {loading ? "저장 중..." : "저장하기"} */}
-          저장하기
+          {selectedActivity ? `${selectedActivity.title} 해볼래` : "해볼래"}
         </MainBtn>
         {/* 오늘은 건너뛰기 버튼 */}
         <MainBtn variant="secondary" onClick={handleToMain}>
