@@ -5,6 +5,7 @@ from uuid import UUID
 from enum import Enum
 from app.db.models import EnergyLevelEnum
 from typing import Annotated
+from app.db.models import Behave
 
 # -----------------------
 # Enums 테스트
@@ -293,6 +294,15 @@ class BehaveCreateRequest(BaseModel):
     user_tags: List[TagPayload] = []
     preset_tags: List[TagPayload] = []
 
+
+class BehaveUpdateRequest(BaseModel):
+    after_energy: Optional[EnergyLevelEnum] = None
+    after_description: Optional[str] = None
+    status: Optional[BehaveStatusEnum] = None
+    user_tags: List[TagPayload] = []
+    preset_tags: List[TagPayload] = []
+
+
 class BehaveResponse(BaseModel):
     id: UUID
     user_id: UUID
@@ -318,6 +328,53 @@ class RecentPendingBehaveResponse(BaseModel):
     model_config = {
         "from_attributes": True  # ORM 변환용
     }
+
+
+class BehaveCompleteResponse(BaseModel):
+    id: UUID
+
+    before_energy: EnergyLevelEnum | None
+    after_energy: EnergyLevelEnum | None
+
+    before_description: str | None
+    after_description: str | None
+
+    mental_before: List[TagOut] = []
+    mental_after: List[TagOut] = []
+    body_before: List[TagOut] = []
+    body_after: List[TagOut] = []
+
+    class Config:
+        orm_mode = True
+
+    @classmethod
+    def from_orm(cls, behave: Behave):
+
+        def to_tag_out(tags):
+            return [
+                TagOut(
+                    tag_id=t.id,
+                    tag_title=t.title,
+                    tag_type=t.type,
+                    created_at=t.created_at,
+                    updated_at=t.updated_at,
+                )
+                for t in tags
+            ]
+
+        return cls(
+            id=behave.id,
+            before_energy=behave.before_energy,
+            after_energy=behave.after_energy,
+            before_description=behave.before_description,
+            after_description=behave.after_description,
+
+            mental_before=to_tag_out(behave.before_mental_tags),
+            mental_after=to_tag_out(behave.after_mental_tags),
+            body_before=to_tag_out(behave.before_body_tags),
+            body_after=to_tag_out(behave.after_body_tags),
+        )
+
 
 # -----------------------
 # Letter Schemas
