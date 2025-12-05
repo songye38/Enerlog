@@ -4,6 +4,7 @@ import { AuthContext } from "./AuthContext";
 import { logoutUser } from "../api/auth";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<string | null>(() => {
     return sessionStorage.getItem("userName");
   });
@@ -34,8 +35,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           sessionStorage.setItem("userName", res.data.name);
         }
       } catch {
-        console.warn("유저 정보 복원 실패, 로그인 필요");
+        setUser(null);
+        sessionStorage.removeItem("userName");
         // 강제 null 초기화는 로그인 페이지에서 처리
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -43,7 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []); // ✅ 빈 배열 → 마운트 시 1회만 실행
 
   return (
-    <AuthContext.Provider value={{ user, setUser, login, logout }}>
+    <AuthContext.Provider value={{ user, setUser, login, logout,loading }}>
       {children}
     </AuthContext.Provider>
   );

@@ -8,12 +8,15 @@ interface MainProfileSectionProps {
 
 export default function MainProfileSection({ name, imageUrl }: MainProfileSectionProps) {
 
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  if (loading) return (
+    <div style={{ width: 36, height: 36, background: "#ccc", borderRadius: 9999 }} />
+  );
   return (
     <div
       style={{
         width: '100%',
-        height:'auto',
+        height: 'auto',
         justifyContent: "flex-start",
         alignItems: "center",
         gap: 6,
@@ -53,7 +56,7 @@ export default function MainProfileSection({ name, imageUrl }: MainProfileSectio
       <div style={{ flex: "1 1 0", height: 16 }} />
 
       {/* 상태 아이콘 */}
-       <img src={BellIcon} alt="알림 아이콘" style={{ width: 20, height: 20 }} />
+      <img src={BellIcon} alt="알림 아이콘" style={{ width: 20, height: 20 }} />
     </div>
   );
 }
