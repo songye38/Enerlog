@@ -26,7 +26,6 @@ function AppContent() {
 }
 
 function App() {
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,29 +33,27 @@ function App() {
     window.addEventListener("forceLogout", handleForceLogout);
     return () => window.removeEventListener("forceLogout", handleForceLogout);
   }, [navigate]);
+
   return (
-    <AuthProvider>
-      <Router>
-        <div>
-          <Header />
-          <AppContent />
-          <ToastContainer
-            aria-label="notification toaster"
-            position="top-right"
-            autoClose={1500}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
-        </div>
-      </Router>
-    </AuthProvider>
+    <>
+      <Header />
+      <AppContent />
+      <ToastContainer
+        aria-label="notification toaster"
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </>
   );
 }
+
 
 
 export default App;
