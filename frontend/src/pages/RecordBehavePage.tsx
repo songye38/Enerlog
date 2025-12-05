@@ -12,6 +12,8 @@ import { createBehave } from "../api/behave";
 import type { BehaveCreatePayload } from "../api/behave";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import TodayEnergySection from "../ccomponents/TodayEnergySection";
+import { useAuth } from "../hooks/useAuth";
 
 function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["sections"] {
 
@@ -31,6 +33,7 @@ function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["s
 }
 
 const RecordBehavePage = () => {
+    const { user } = useAuth();
     const navigate = useNavigate();
     const [description, setDescription] = useState("");
     const [sections, setSections] = useState<ConditionListPayload["sections"]>([]);
@@ -165,6 +168,11 @@ const RecordBehavePage = () => {
                     value={description}
                     onChange={setDescription}
                     type="text"
+                />
+
+                <TodayEnergySection
+                    dateTime={new Date().toLocaleString("ko-KR")} // "25.11.26 13:55:22" 같은 포맷
+                    message={`${user || "사용자"}야, 지금 너의 에너지는 어때?`}
                 />
             </div>
 
