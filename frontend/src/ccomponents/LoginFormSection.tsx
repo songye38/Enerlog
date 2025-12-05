@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import type { CSSProperties } from "react";
 import { ClipLoader } from "react-spinners";
 import { loginUser } from "../api/auth";
+import { useAuth } from "../hooks/useAuth";
 
 const loaderStyle: CSSProperties = {
     display: "block",
@@ -15,6 +16,7 @@ const loaderStyle: CSSProperties = {
 };
 
 export default function LoginFormSection() {
+    const { login } = useAuth();
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -26,23 +28,20 @@ export default function LoginFormSection() {
     const handleSubmit = async () => {
         setError("");
         setSuccess("");
-        setLoading(true); // 🔹 API 요청 시작 시 로딩 true
+        setLoading(true);
 
         try {
-            await loginUser({
-                email,
-                password,
-            });
-            setSuccess("로그인 성공 🎉");
+            const res = await loginUser({ email, password });
+            const userName = res.name; // 서버에서 받은 사용자 이름
+            login(userName); // AuthContext와 세션에 바로 저장
             toast.success("로그인 성공 🎉");
-            navigate('/')
-
+            navigate('/');
         } catch (err) {
             if (err instanceof Error) setError(err.message);
             else setError("로그인 실패.");
             toast.error("로그인 실패");
         } finally {
-            setLoading(false); // 🔹 API 요청 끝나면 항상 로딩 false
+            setLoading(false);
         }
     };
 
