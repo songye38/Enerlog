@@ -305,6 +305,19 @@ class BehaveResponse(BaseModel):
         "from_attributes": True  # ✅ Pydantic 2.x에서는 이게 필요
     }
 
+
+class RecentPendingBehaveResponse(BaseModel):
+    behave_id: UUID
+    user_id: UUID
+    activity_id: Optional[UUID] = None
+    activity_template_id: Optional[UUID] = None
+    title: str
+    created_at: datetime
+
+    model_config = {
+        "from_attributes": True  # ORM 변환용
+    }
+
 # -----------------------
 # Letter Schemas
 # -----------------------

@@ -2,10 +2,11 @@ from fastapi import APIRouter, Depends,HTTPException,Body
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from uuid import UUID
+from datetime import datetime, timedelta,timezone
 
 from app.db.database import get_db
 from app.db.models import Behave, TagTypeEnum, UserTag, Tag, PhaseEnum, BehaveTag, EnergyLevelEnum, BehaveStatusEnum
-from app.db.schemas import BehaveResponse, BehaveCreateRequest,SelectActivityRequest
+from app.db.schemas import BehaveResponse, BehaveCreateRequest,SelectActivityRequest,RecentPendingBehaveResponse
 from app.auth.dependencies import get_current_user
 from app.services.user_energy_tag_stats import update_before_stats
 
@@ -170,3 +171,48 @@ def select_activity(
     db.refresh(behave)
 
     return BehaveResponse.from_orm(behave)
+
+
+
+
+@router.get("/recent-pending", response_model=List[RecentPendingBehaveResponse])
+def get_recent_pending_behaves(
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    now = datetime.now(timezone.utc)
+    since = now - timedelta(hours=24)
+
+    behaves = (
+        db.query(Behave)
+        .filter(
+            Behave.user_id == current_user.user_id,
+            Behave.status == BehaveStatusEnum.activity_pending,
+            Behave.is_deleted == False,
+            Behave.created_at >= since
+        )
+        .all()
+    )
+
+    # activity / template에서 title 가져오기
+    result = []
+    for b in behaves:
+        if b.activity:
+            title = b.activity.title
+        elif b.activity_template:
+            title = b.activity_template.title
+        else:
+            title = "Unknown"
+
+        result.append(
+            RecentPendingBehaveResponse(
+                behave_id=b.id,
+                user_id=b.user_id,
+                activity_id=b.activity_id,
+                activity_template_id=b.activity_template_id,
+                title=title,
+                created_at=b.created_at
+            )
+        )
+
+    return result
