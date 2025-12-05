@@ -150,7 +150,7 @@ const RecordBehavePage = () => {
 
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 32,width:'100%'}}>
             <GoToMainBtn />
             <div style={{ textAlign: 'center', color: 'black', fontSize: 18, fontFamily: 'Pretendard', fontWeight: '600', wordWrap: 'break-word' }}>
                 {title}
@@ -171,11 +171,6 @@ const RecordBehavePage = () => {
                     onChange={setDescription}
                     type="text"
                 />
-
-                {/* <TodayEnergySection
-                    dateTime={new Date().toLocaleString("ko-KR")} // "25.11.26 13:55:22" 같은 포맷
-                    message={`${user || "사용자"}야, 지금 너의 에너지는 어때?`}
-                /> */}
 
                 <div
                     style={{
