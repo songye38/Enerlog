@@ -4,12 +4,16 @@ import programIcon from "/icons/12X12/message-chat-circle.png";
 import profileIcon from "/icons/12X12/settings-01.png";
 import energyIcon from "/icons/12X12/folder-check.png";
 import actsIcon from "/icons/12X12/folder-check.png";
+import { useAuth } from "../../hooks/useAuth";
 
 type HomeMenuProps = {
     onNavigate: (path: string) => void;
 };
 
 export default function HomeMenu({ onNavigate }: HomeMenuProps) {
+    const { user, logout } = useAuth(); // user가 있으면 로그인 상태
+
+
     const menuItems = [
         { label: "대시보드", path: "/dash", icon: dashboardIcon },
         { label: "기록", path: "/archive", icon: archiveIcon },
@@ -22,10 +26,19 @@ export default function HomeMenu({ onNavigate }: HomeMenuProps) {
         { label: "활동 관리", path: "/acts", icon: actsIcon },
     ];
 
-    const authItems = [
-        { label: "로그인", path: "/login", icon: energyIcon },
-        { label: "회원가입", path: "/signup", icon: actsIcon },
-    ];
+    // 로그인 상태에 따라 버튼 설정
+    const authItems = user
+        ? [
+            {
+                label: "로그아웃",
+                icon: energyIcon,
+                onClick: () => logout(), // path는 안 쓰고 onClick만
+            },
+        ]
+        : [
+            { label: "로그인", path: "/login", icon: energyIcon },
+            { label: "회원가입", path: "/signup", icon: actsIcon },
+        ];
 
     return (
         <div style={{ width: '210px', padding: '20px 20px 20px 20px', background: 'white', boxShadow: '0px 4px 4px rgba(0,0,0,0.25)', borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -67,13 +80,21 @@ export default function HomeMenu({ onNavigate }: HomeMenuProps) {
                 display: 'flex',
                 width: '100%',
                 flexDirection: 'row',
-                justifyContent: 'space-between', // 양 끝단 배치
+                justifyContent: 'space-between',
                 alignItems: 'center',
             }}>
                 {authItems.map((item, idx) => (
                     <div
                         key={idx}
-                        onClick={() => onNavigate(item.path)}
+                        onClick={() => {
+                            if ("onClick" in item && item.onClick) {
+                                // onClick 속성이 있는 경우 실행
+                                item.onClick();
+                            } else if ("path" in item && item.path) {
+                                // path 속성이 있는 경우 navigate
+                                onNavigate(item.path);
+                            }
+                        }}
                         style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
                     >
                         <img src={item.icon} alt={item.label} style={{ width: 16, height: 16 }} />
@@ -83,8 +104,6 @@ export default function HomeMenu({ onNavigate }: HomeMenuProps) {
                     </div>
                 ))}
             </div>
-
-
         </div>
     );
 }
