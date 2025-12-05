@@ -13,6 +13,7 @@ export interface ActivityTemplateOut {
     updated_at: string;
     energy_level: EnergyLevel; // 0~10 숫자 타입
     count : number;
+    type : string; //서버와의 통신을 위해서만 필요한 값
 }
 
 
