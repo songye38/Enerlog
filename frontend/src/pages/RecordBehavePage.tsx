@@ -168,7 +168,7 @@ const RecordBehavePage = () => {
                     flexDirection: "row",
                     gap: 12,
                     overflowX: "auto",
-                    width: "100%",
+                    width: "100vw",
                     boxSizing: "border-box",
                     padding: "12px 0",
                     scrollbarWidth: "none",
