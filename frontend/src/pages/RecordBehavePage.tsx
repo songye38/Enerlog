@@ -13,12 +13,10 @@ import type { BehaveCreatePayload } from "../api/behave";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import EnergySelectorBtn from "../components/Button/EnergySelectorBtn";
-import { ENERGY_LEVELS } from "../types/EnergyLevel"; // Record<EnergyLevel, EnergyLevelInfo>
+import { ENERGY_LEVELS } from "../types/EnergyLevel"; 
 import type { EnergyLevelInfo } from "../types/EnergyLevel";
 
-
 function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["sections"] {
-
     const mental = tags.filter(t => t.tag_type === "mental");
     const body = tags.filter(t => t.tag_type === "body");
 
@@ -40,13 +38,11 @@ const RecordBehavePage = () => {
     const [description, setDescription] = useState("");
     const [sections, setSections] = useState<ConditionListPayload["sections"]>([]);
     const location = useLocation();
-    const { behave_id, energy_level, title } = location.state as {
-        behave_id: string;
+    const { _behave_id, energy_level, title } = location.state as {
+        _behave_id: string;
         energy_level: EnergyLevel;
         title: string;
     };
-
-    console.log("넘어온 데이터:", behave_id, energy_level, title);
 
     // 서버에서 태그 가져오기
     useEffect(() => {
@@ -62,7 +58,6 @@ const RecordBehavePage = () => {
         loadTags();
     }, [energy_level]);
 
-    // 태그 선택 토글
     const handleTagToggle = (sectionIndex: number, tagIndex: number) => {
         setSections(prev => {
             const newSections = [...prev];
@@ -76,14 +71,11 @@ const RecordBehavePage = () => {
         });
     };
 
-
     const handleSubmit = async () => {
-        // 선택된 태그들
         const selectedTags = sections.flatMap(section =>
             section.tags.filter(tag => tag.isSelected).map(tag => tag.originalTag)
         );
 
-        // user_tags / preset_tags 분리
         const userTags = selectedTags
             .filter(tag => tag?.id?.startsWith("temp"))
             .map(tag => ({ title: tag!.tag_title, type: tag!.tag_type }));
@@ -92,9 +84,8 @@ const RecordBehavePage = () => {
             .filter(tag => tag?.id && !tag.id.startsWith("temp"))
             .map(tag => ({ id: tag!.id, title: tag!.tag_title, type: tag!.tag_type }));
 
-        // payload 구성
         const payload: BehaveCreatePayload = {
-            before_energy: energy_level, // 숫자 그대로
+            before_energy: energy_level,
             before_description: description,
             status: "emotion_recorded",
             user_tags: userTags,
@@ -103,9 +94,6 @@ const RecordBehavePage = () => {
 
         try {
             const result = await createBehave(payload);
-            console.log("Behave 생성 완료:", result);
-
-            // 👉 여기서 behaveId 넣어서 이동!
             navigate(`/record?energy_level=${energy_level}&behave_id=${result.id}`);
         } catch (err) {
             if (axios.isAxiosError(err)) {
@@ -116,30 +104,24 @@ const RecordBehavePage = () => {
         }
     };
 
-
-
-    // AddEnergyPage.tsx
     const handleAddTag = (sectionIndex: number, label: string) => {
         setSections(prev => {
             const newSections = [...prev];
             const section = newSections[sectionIndex];
 
-            // 중복 방지
             if (!section.tags.some(t => t.label === label)) {
                 const tempId = `temp-${Date.now()}`;
-
                 section.tags.push({
                     label,
                     count: 0,
                     isSelected: true,
                     originalTag: {
-                        id: tempId, // string 타입 맞춤
+                        id: tempId,
                         tag_title: label,
                         tag_type: section.title.includes("신체") ? "body" : "mental"
                     },
                 });
             } else {
-                // 이미 있는 태그면 선택 상태만 체크
                 const tag = section.tags.find(t => t.label === label);
                 if (tag) tag.isSelected = true;
             }
@@ -148,9 +130,16 @@ const RecordBehavePage = () => {
         });
     };
 
-
     return (
-       <div style={{ display: 'flex', flexDirection: 'column', gap: 32, width: '100%', boxSizing: 'border-box'}}>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 32,
+            width: '100%',
+            boxSizing: 'border-box',
+            overflowX: 'hidden', // 페이지 전체 가로 스크롤 방지
+            padding: 12 // 필요하면 패딩 추가
+        }}>
             <GoToMainBtn />
             <div style={{ textAlign: 'center', color: 'black', fontSize: 18, fontFamily: 'Pretendard', fontWeight: '600', wordWrap: 'break-word' }}>
                 {title}
@@ -159,8 +148,8 @@ const RecordBehavePage = () => {
             <div>
                 <ConditionListSection
                     data={{ description: "", sections }}
-                    onAddTag={handleAddTag} // 🔹 새 태그 추가 콜백
-                    onTagToggle={handleTagToggle} // 🔹 토글 핸들러
+                    onAddTag={handleAddTag}
+                    onTagToggle={handleTagToggle}
                     countVisible={false}
                     withBackground={false}
                 />
@@ -172,25 +161,24 @@ const RecordBehavePage = () => {
                     type="text"
                 />
 
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        gap: 12,
-                        overflowX: "auto",
-                        padding: "12px",
-                        width: "100%",
-                        boxSizing: "border-box",
-                        scrollbarWidth: "none", // Firefox
-                    }}
-                >
+                {/* 버튼 리스트: 가로 스크롤만 적용 */}
+                <div style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 12,
+                    overflowX: "auto",
+                    width: "100%",
+                    boxSizing: "border-box",
+                    padding: "12px 0",
+                    scrollbarWidth: "none",
+                }}>
                     {Object.values(ENERGY_LEVELS).map((level) => (
                         <div key={level.title} style={{ flex: "0 0 auto" }}>
                             <EnergySelectorBtn
                                 data={level}
                                 mode="select"
-                                selected={selectedEnergy?.level === level.level} // 선택된 아이템 표시
-                                onSelect={setSelectedEnergy} // 클릭 시 부모로 전달
+                                selected={selectedEnergy?.level === level.level}
+                                onSelect={setSelectedEnergy}
                             />
                         </div>
                     ))}
