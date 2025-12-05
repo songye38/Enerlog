@@ -34,6 +34,7 @@ const BehaveResultModal = ({
                 justifyContent: "center",
                 alignItems: "center",
                 zIndex: 999,
+                color:'black'
             }}
             onClick={onClose}
         >
@@ -61,14 +62,14 @@ const BehaveResultModal = ({
                     }}>
                         정말 멋져!
                     </div>
-                    <div style={{ marginTop: 10, fontSize: 18, fontWeight: 700, textAlign: "center" }}>
+                    <div style={{ marginTop: 10, fontSize: 18, fontWeight: 700, textAlign: "center" ,color:'black'}}>
                         {title}
                     </div>
                 </div>
 
                 {/* 에너지 변화 */}
                 <div>
-                    <div style={{ fontSize: 15, fontWeight: 600 }}>나의 에너지 변화</div>
+                    <div style={{ fontSize: 15, fontWeight: 600,color:'black' }}>나의 에너지 변화</div>
 
                     <div style={{
                         marginTop: 8,
@@ -99,7 +100,7 @@ const BehaveResultModal = ({
 
                 {/* 신체 상태 변화 */}
                 <div>
-                    <div style={{ fontSize: 15, fontWeight: 600 }}>나의 신체상태 변화</div>
+                    <div style={{ fontSize: 15, fontWeight: 600,color:'black' }}>나의 신체상태 변화</div>
 
                     <div style={{ display: "flex", gap: 4, marginTop: 8 }}>
                         {/* Before */}
@@ -113,7 +114,7 @@ const BehaveResultModal = ({
                             gap: 6,
                         }}>
                             {bodyBefore.map((tag) => (
-                                <div key={tag} style={{ fontSize: 14, fontWeight: 600 }}>
+                                <div key={tag} style={{ fontSize: 14, fontWeight: 600 ,color:'black'}}>
                                     #{tag}
                                 </div>
                             ))}
@@ -160,7 +161,7 @@ const BehaveResultModal = ({
                             gap: 6,
                         }}>
                             {mentalBefore.map((tag) => (
-                                <div key={tag} style={{ fontSize: 14, fontWeight: 600 }}>
+                                <div key={tag} style={{ fontSize: 14, fontWeight: 600,color:'black' }}>
                                     #{tag}
                                 </div>
                             ))}

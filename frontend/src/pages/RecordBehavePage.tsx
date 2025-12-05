@@ -7,7 +7,7 @@ import type { ConditionListPayload } from "../types/ConditionTypes";
 import { fetchUserTags } from "../api/energy";
 import type { TagOut } from "../api/energy";
 import type { EnergyLevel } from "../types/EnergyLevel";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import { completeBehave } from "../api/behave";
 import type { BehaveCompletePayload, BehaveCompleteResponse } from "../api/behave";
 import axios from "axios";
@@ -34,7 +34,7 @@ function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["s
 
 const RecordBehavePage = () => {
     const [selectedEnergy, setSelectedEnergy] = useState<EnergyLevelInfo | null>(null);
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const [result, setResult] = useState<BehaveCompleteResponse | null>(null);
     const [open, setOpen] = useState(false);
     const [description, setDescription] = useState("");
@@ -201,7 +201,10 @@ const RecordBehavePage = () => {
             </MainBtn>
             <BehaveResultModal
                 open={open}
-                onClose={() => setOpen(false)}
+                onClose={() => {
+                    setOpen(false);
+                    navigate("/");
+                }}
                 title={result?.after_description || ""}
                 afterEnergyBefore={result?.before_energy ?? null}
                 afterEnergyAfter={result?.after_energy ?? null}
