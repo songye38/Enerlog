@@ -102,7 +102,8 @@ const RecordBehavePage = () => {
             const result = await completeBehave(behave_id, payload);
 
             // 결과 페이지로 이동 (원하는 경로로 수정 가능)
-            navigate(`/result/${result.id}`);
+            console.log("result",result);
+            // navigate(`/result/${result.id}`);
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 console.error("After 저장 실패(JSON):", JSON.stringify(err.response?.data, null, 2));
