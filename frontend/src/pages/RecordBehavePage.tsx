@@ -12,8 +12,10 @@ import { createBehave } from "../api/behave";
 import type { BehaveCreatePayload } from "../api/behave";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import TodayEnergySection from "../ccomponents/TodayEnergySection";
-import { useAuth } from "../hooks/useAuth";
+import EnergySelectorBtn from "../components/Button/EnergySelectorBtn";
+import { ENERGY_LEVELS } from "../types/EnergyLevel"; // Record<EnergyLevel, EnergyLevelInfo>
+import type { EnergyLevelInfo } from "../types/EnergyLevel";
+
 
 function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["sections"] {
 
@@ -33,7 +35,7 @@ function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["s
 }
 
 const RecordBehavePage = () => {
-    const { user } = useAuth();
+    const [selectedEnergy, setSelectedEnergy] = useState<EnergyLevelInfo | null>();
     const navigate = useNavigate();
     const [description, setDescription] = useState("");
     const [sections, setSections] = useState<ConditionListPayload["sections"]>([]);
@@ -170,10 +172,20 @@ const RecordBehavePage = () => {
                     type="text"
                 />
 
-                <TodayEnergySection
+                {/* <TodayEnergySection
                     dateTime={new Date().toLocaleString("ko-KR")} // "25.11.26 13:55:22" 같은 포맷
                     message={`${user || "사용자"}야, 지금 너의 에너지는 어때?`}
-                />
+                /> */}
+                {Object.values(ENERGY_LEVELS).map((level) => (
+                    <div key={level.title} style={{ flex: "0 0 auto" }}>
+                        <EnergySelectorBtn
+                            data={level}
+                            mode="select"
+                            selected={selectedEnergy?.level === level.level} // 선택된 아이템 표시
+                            onSelect={setSelectedEnergy} // 클릭 시 부모로 전달
+                        />
+                    </div>
+                ))}
             </div>
 
             <MainBtn onClick={handleSubmit}>기록 완료</MainBtn>
