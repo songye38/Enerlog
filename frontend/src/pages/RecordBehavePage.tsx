@@ -133,7 +133,7 @@ const RecordBehavePage = () => {
     };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 32 ,boxSizing: "border-box",}}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 32, boxSizing: "border-box", }}>
             <GoToMainBtn />
             <div style={{ textAlign: 'center', color: 'black', fontSize: 18, fontFamily: 'Pretendard', fontWeight: '600', wordWrap: 'break-word' }}>
                 {title}
@@ -157,26 +157,28 @@ const RecordBehavePage = () => {
             </div>
 
             {/* 버튼 리스트: 가로 스크롤만 적용 */}
-            <div style={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 12,
-                overflowX: "auto",
-                width: "100vw",
-                boxSizing: "border-box",
-                padding: "12px 0",
-                scrollbarWidth: "none",
-            }}>
-                {Object.values(ENERGY_LEVELS).map((level) => (
-                    <div key={level.title} style={{ flex: "0 0 auto" }}>
-                        <EnergySelectorBtn
-                            data={level}
-                            mode="select"
-                            selected={selectedEnergy?.level === level.level}
-                            onSelect={setSelectedEnergy}
-                        />
-                    </div>
-                ))}
+            <div style={{ width: '390px' }}>
+                <div style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 12,
+                    overflowX: "auto",
+                    width: "100vw",
+                    boxSizing: "border-box",
+                    padding: "12px 0",
+                    scrollbarWidth: "none",
+                }}>
+                    {Object.values(ENERGY_LEVELS).map((level) => (
+                        <div key={level.title} style={{ flex: "0 0 auto" }}>
+                            <EnergySelectorBtn
+                                data={level}
+                                mode="select"
+                                selected={selectedEnergy?.level === level.level}
+                                onSelect={setSelectedEnergy}
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
 
             <MainBtn onClick={handleSubmit}>기록 완료</MainBtn>
