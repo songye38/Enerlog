@@ -6,16 +6,51 @@ import type { RecentPendingBehaveResponse } from "../api/behave";
 export default function ActRecordSection() {
   const [activities, setActivities] = useState<RecentPendingBehaveResponse[]>([]);
   const [loading, setLoading] = useState(true);
+  const [remainingTimes, setRemainingTimes] = useState<{ [key: string]: number }>({}); // ms 단위
 
   useEffect(() => {
     async function load() {
       setLoading(true);
       const data = await fetchRecentPendingBehaves();
       setActivities(data);
+
+      // 초기 남은 시간 계산
+      const times: { [key: string]: number } = {};
+      data.forEach((activity) => {
+        const created = new Date(activity.created_at).getTime();
+        const now = Date.now();
+        const remaining = Math.max(0, 24 * 60 * 60 * 1000 - (now - created));
+        times[activity.behave_id] = remaining;
+      });
+      setRemainingTimes(times);
+
       setLoading(false);
     }
     load();
   }, []);
+
+  // 1초마다 남은 시간 업데이트
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRemainingTimes((prev) => {
+        const updated: { [key: string]: number } = {};
+        Object.entries(prev).forEach(([key, ms]) => {
+          updated[key] = Math.max(0, ms - 1000);
+        });
+        return updated;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatTime = (ms: number) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${hours}h ${minutes}m ${seconds}s`;
+  };
 
   if (loading) return <p>로딩 중...</p>;
   if (activities.length === 0) return <p>아직 기록할 행동이 없습니다.</p>;
@@ -31,13 +66,13 @@ export default function ActRecordSection() {
             key={activity.behave_id}
             activity={{
               id: activity.activity_id || activity.activity_template_id || "unknown",
-              energy_level: 0, // 필요하면 서버에서 전달받아 채워주기
+              energy_level: 0,
               title: activity.title,
-              description: "", // 필요하면 서버에서 description 포함
-              count: 0, // 필요하면 서버에서 수행횟수 가져오기
-              durationMinutes: "0", // 필요하면 서버에서 전달
+              description: "",
+              count: 0,
+              durationMinutes: "0",
             }}
-            serverTime={new Date(activity.created_at).toLocaleTimeString()}
+            serverTime={formatTime(remainingTimes[activity.behave_id] || 0)}
           />
         ))}
       </div>
