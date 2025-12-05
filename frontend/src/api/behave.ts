@@ -47,15 +47,21 @@ export async function createBehave(payload: BehaveCreatePayload): Promise<Behave
 
 
 /*----------------------------------------------
- * ✅ 선택한 activity_id로 Behave 업데이트
+ * ✅ 선택한 activity_id / activity_template_id로 Behave 업데이트
  ----------------------------------------------*/
 export async function updateBehaveWithActivity(
     behaveId: string,
-    activityId: string
+    activity: { id: string; type: "user" | "template" }
 ): Promise<BehaveResponse> {
     try {
-        const res = await Api.patch(`/behave/${behaveId}/select-activity`, 
-            { activity_id: activityId },
+        const payload =
+            activity.type === "user"
+                ? { activity_id: activity.id }
+                : { activity_template_id: activity.id };
+
+        const res = await Api.patch(
+            `/behave/${behaveId}/select-activity`,
+            payload,
             {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true,
@@ -68,3 +74,4 @@ export async function updateBehaveWithActivity(
         throw new Error(msg);
     }
 }
+

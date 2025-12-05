@@ -35,10 +35,13 @@ const RecordPage = () => {
   };
 
   const handleSubmit = async () => {
-    if (!selectedId || !behaveId) return;
+    if (!selectedActivity || !behaveId) return;
 
     try {
-      await updateBehaveWithActivity(behaveId, selectedId);
+      await updateBehaveWithActivity(behaveId, {
+        id: selectedActivity.id,
+        type: selectedActivity.type  // 이제 문제 없음
+      });
       navigate(`/next-page`);
     } catch (e) {
       console.error(e);
@@ -48,10 +51,6 @@ const RecordPage = () => {
   const handleToMain = () => {
     navigate('/')
   };
-
-
-
-
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
