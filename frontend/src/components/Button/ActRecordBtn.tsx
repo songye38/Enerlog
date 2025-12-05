@@ -26,7 +26,7 @@ export default function ActRecordBtn({ activity, serverTime, onClick }: ActRecor
         display: 'inline-flex',
         cursor: onClick ? 'pointer' : 'default'
       }}
-    //   onClick={onClick}
+       onClick={onClick}
     >
       {/* 서버 시간 표시 */}
       <div
