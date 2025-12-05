@@ -42,7 +42,7 @@ const RecordPage = () => {
         id: selectedActivity.id,
         type: selectedActivity.type  // 이제 문제 없음
       });
-      navigate(`/next-page`);
+      navigate(`/`);
     } catch (e) {
       console.error(e);
     }
