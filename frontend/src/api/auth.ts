@@ -16,7 +16,7 @@ export interface LoginPayload {
 
 export interface UserOut {
   id: number;
-  name: string;
+  nickname: string;
   email: string;
   created_at: string;
 }

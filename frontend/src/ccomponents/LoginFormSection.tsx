@@ -33,7 +33,7 @@ export default function LoginFormSection() {
         try {
             const res = await loginUser({ email, password });
             console.log("로그인하고 서버에서 넘어오는 값",res);
-            const userName = res.name; // 서버에서 받은 사용자 이름
+            const userName = res.nickname; // 서버에서 받은 사용자 이름
             login(userName); // AuthContext와 세션에 바로 저장
             toast.success("로그인 성공 🎉");
             navigate('/');
