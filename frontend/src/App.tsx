@@ -1,8 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
-import { ActivityPage, ArchivePage, DashboardPage, EnergyPage, HomePage, LogInPage, ProfilePage, ProgramPage, SignUpPage,AddEnergyPage,RecordPage,RecordBehavePage } from './pages';
+import { ActivityPage, ArchivePage, DashboardPage, EnergyPage, HomePage, LogInPage, ProfilePage, ProgramPage, SignUpPage, AddEnergyPage, RecordPage, RecordBehavePage } from './pages';
 import Header from "./components/Common/Header";
 import { AuthProvider } from "./context/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function AppContent() {
   return (
@@ -24,6 +26,14 @@ function AppContent() {
 }
 
 function App() {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleForceLogout = () => navigate("/login");
+    window.addEventListener("forceLogout", handleForceLogout);
+    return () => window.removeEventListener("forceLogout", handleForceLogout);
+  }, [navigate]);
   return (
     <AuthProvider>
       <Router>
