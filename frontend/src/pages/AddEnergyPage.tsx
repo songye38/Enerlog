@@ -77,12 +77,12 @@ const AddEnergyPage = () => {
 
         // user_tags / preset_tags 분리
         const userTags = selectedTags
-            .filter(tag => tag?.id?.startsWith("temp"))
+            .filter(tag => tag?.tag_id?.startsWith("temp"))
             .map(tag => ({ title: tag!.tag_title, type: tag!.tag_type }));
 
         const presetTags = selectedTags
-            .filter(tag => tag?.id && !tag.id.startsWith("temp"))
-            .map(tag => ({ id: tag!.id, title: tag!.tag_title, type: tag!.tag_type }));
+            .filter(tag => tag?.tag_id && !tag.tag_id.startsWith("temp"))
+            .map(tag => ({ id: tag!.tag_id, title: tag!.tag_title, type: tag!.tag_type }));
 
         // payload 구성
         const payload: BehaveCreatePayload = {
@@ -136,7 +136,7 @@ const AddEnergyPage = () => {
                     count: 0,
                     isSelected: true,
                     originalTag: {
-                        id: tempId, // string 타입 맞춤
+                        tag_id: tempId, // string 타입 맞춤
                         tag_title: label,
                         tag_type: section.title.includes("신체") ? "body" : "mental"
                     },

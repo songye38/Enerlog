@@ -32,7 +32,7 @@ function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["s
 }
 
 const RecordBehavePage = () => {
-    const [selectedEnergy, setSelectedEnergy] = useState<EnergyLevelInfo | null>();
+    const [selectedEnergy, setSelectedEnergy] = useState<EnergyLevelInfo | null>(null);
     // const navigate = useNavigate();
     const [description, setDescription] = useState("");
     const [sections, setSections] = useState<ConditionListPayload["sections"]>([]);
@@ -81,12 +81,12 @@ const RecordBehavePage = () => {
         );
 
         const userTags = selectedTags
-            .filter(tag => tag?.id?.startsWith("temp"))
+            .filter(tag => tag?.tag_id?.startsWith("temp"))
             .map(tag => ({ title: tag!.tag_title, type: tag!.tag_type }));
 
         const presetTags = selectedTags
-            .filter(tag => tag?.id && !tag.id.startsWith("temp"))
-            .map(tag => ({ id: tag!.id, title: tag!.tag_title, type: tag!.tag_type }));
+            .filter(tag => tag?.tag_id && !tag.tag_id.startsWith("temp"))
+            .map(tag => ({ id: tag!.tag_id, title: tag!.tag_title, type: tag!.tag_type }));
 
         const payload: BehaveCompletePayload = {
             after_energy: selectedEnergy.level,
@@ -127,7 +127,7 @@ const RecordBehavePage = () => {
                     count: 0,
                     isSelected: true,
                     originalTag: {
-                        id: tempId,
+                        tag_id: tempId,
                         tag_title: label,
                         tag_type: section.title.includes("신체") ? "body" : "mental"
                     },

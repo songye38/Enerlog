@@ -3,7 +3,7 @@ import type { AxiosError } from "axios";
 import type { EnergyLevel } from "../types/EnergyLevel";
 
 export interface TagOut {
-    id: string;
+    tag_id: string;
     tag_title: string;
     tag_type: "mental" | "body";
     created_at?: string;
