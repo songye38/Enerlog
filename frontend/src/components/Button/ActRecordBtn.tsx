@@ -8,10 +8,6 @@ type ActRecordBtnProps = {
 
 export default function ActRecordBtn({ activity, serverTime, onClick }: ActRecordBtnProps) {
   const description = "행동에 대한 기록 남기기";
-  // const navigate = useNavigate();
-  // const handleClick = () => {
-  //   navigate('/record');
-  // }
 
   return (
     <div
