@@ -139,7 +139,9 @@ def create_behave(
     return BehaveResponse.from_orm(behave)
 
 
-
+# --------------------------------------------
+# 사용자가 자신의 에너지 레벨을 초기에 저장하는 라우터
+# --------------------------------------------
 @router.patch("/{behave_id}/select-activity", response_model=BehaveResponse)
 def select_activity(
     behave_id: UUID,
@@ -175,6 +177,9 @@ def select_activity(
 
 
 
+# ---------------------------------------------------
+# 사용자의 최근 행동 중에서 activity_pending인것만 가져오기
+# ---------------------------------------------------
 @router.get("/recent-pending", response_model=List[RecentPendingBehaveResponse])
 def get_recent_pending_behaves(
     db: Session = Depends(get_db),
@@ -194,7 +199,6 @@ def get_recent_pending_behaves(
         .all()
     )
 
-    # activity / template에서 title 가져오기
     result = []
     for b in behaves:
         if b.activity:
@@ -211,7 +215,8 @@ def get_recent_pending_behaves(
                 activity_id=b.activity_id,
                 activity_template_id=b.activity_template_id,
                 title=title,
-                created_at=b.created_at
+                created_at=b.created_at,
+                before_energy=b.before_energy  # 여기 넣기
             )
         )
 

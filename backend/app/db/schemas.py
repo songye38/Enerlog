@@ -313,6 +313,7 @@ class RecentPendingBehaveResponse(BaseModel):
     activity_template_id: Optional[UUID] = None
     title: str
     created_at: datetime
+    before_energy: EnergyLevelEnum  # 여기 추가
 
     model_config = {
         "from_attributes": True  # ORM 변환용
