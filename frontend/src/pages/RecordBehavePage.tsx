@@ -176,16 +176,31 @@ const RecordBehavePage = () => {
                     dateTime={new Date().toLocaleString("ko-KR")} // "25.11.26 13:55:22" 같은 포맷
                     message={`${user || "사용자"}야, 지금 너의 에너지는 어때?`}
                 /> */}
-                {Object.values(ENERGY_LEVELS).map((level) => (
-                    <div key={level.title} style={{ flex: "0 0 auto" }}>
-                        <EnergySelectorBtn
-                            data={level}
-                            mode="select"
-                            selected={selectedEnergy?.level === level.level} // 선택된 아이템 표시
-                            onSelect={setSelectedEnergy} // 클릭 시 부모로 전달
-                        />
-                    </div>
-                ))}
+
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 12,
+                        overflowX: "auto",
+                        padding: "12px",
+                        width: "100%",
+                        boxSizing: "border-box",
+                        scrollbarWidth: "none", // Firefox
+                    }}
+                >
+                    {Object.values(ENERGY_LEVELS).map((level) => (
+                        <div key={level.title} style={{ flex: "0 0 auto" }}>
+                            <EnergySelectorBtn
+                                data={level}
+                                mode="select"
+                                selected={selectedEnergy?.level === level.level} // 선택된 아이템 표시
+                                onSelect={setSelectedEnergy} // 클릭 시 부모로 전달
+                            />
+                        </div>
+                    ))}
+                </div>
+
             </div>
 
             <MainBtn onClick={handleSubmit}>기록 완료</MainBtn>
