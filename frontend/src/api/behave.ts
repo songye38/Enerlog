@@ -35,6 +35,7 @@ export interface RecentPendingBehaveResponse {
   activity_template_id?: string;
   title: string;
   created_at: string; // ISO string
+  before_energy: EnergyLevel;
 }
 
 
