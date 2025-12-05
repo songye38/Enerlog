@@ -135,6 +135,10 @@ class ActivityTemplateOut(BaseModel):
         )
 
 
+class SelectActivityRequest(BaseModel):
+    activity_id: Optional[UUID] = None
+    activity_template_id: Optional[UUID] = None
+
 # -----------------------
 # EnergyLevel Schemas
 # -----------------------
@@ -242,8 +246,6 @@ class BehaveTagOut(BaseModel):
     class Config:
         orm_mode = True
 
-class SelectActivityRequest(BaseModel):
-    activity_id: UUID
 
 # -----------------------
 # BehavePhoto Schemas

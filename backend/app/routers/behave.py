@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends,HTTPException
+from fastapi import APIRouter, Depends,HTTPException,Body
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from uuid import UUID
@@ -142,7 +142,7 @@ def create_behave(
 @router.patch("/{behave_id}/select-activity", response_model=BehaveResponse)
 def select_activity(
     behave_id: UUID,
-    payload: SelectActivityRequest,
+    payload: SelectActivityRequest = Body(...),
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user),
 ):
@@ -154,7 +154,16 @@ def select_activity(
     if not behave:
         raise HTTPException(status_code=404, detail="Behave not found")
 
-    behave.activity_id = payload.activity_id
+    # 🟢 activity / template 구분해서 업데이트
+    if payload.activity_id:
+        behave.activity_id = payload.activity_id
+        behave.activity_template_id = None
+    elif payload.activity_template_id:
+        behave.activity_template_id = payload.activity_template_id
+        behave.activity_id = None
+    else:
+        raise HTTPException(status_code=400, detail="No activity provided")
+
     behave.status = BehaveStatusEnum.activity_pending
 
     db.commit()
