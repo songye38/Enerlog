@@ -25,17 +25,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    console.log("AuthProvider에서 useeffect로 초기화 할 때 함수 실행 전 user",user);
+    console.log("AuthProvider에서 useeffect로 초기화 할 때 함수 실행 전 user", user);
     const restoreUser = async () => {
       try {
         const res = await Api.get("/users/me");
-        console.log("AuthProvider에서 /users/me로 보낸 결과 res",res);
-        setUser(res.data.name);
-        sessionStorage.setItem("userName", res.data.name);
-        console.log("restoreUser를 통해서 /me에 요청보내고 세팅 완료 setUser 완료")
+        if (res.data?.name) { // 데이터가 있는 경우만 세팅
+          setUser(res.data.name);
+          sessionStorage.setItem("userName", res.data.name);
+        }
       } catch {
-        setUser(null);
-        sessionStorage.removeItem("userName");
+        console.warn("유저 정보 복원 실패, 로그인 필요");
+        // 강제 null 초기화는 로그인 페이지에서 처리
       }
     };
 
