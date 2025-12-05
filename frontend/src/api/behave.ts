@@ -2,6 +2,7 @@
 import Api from "./Api";
 import type { AxiosError } from "axios";
 import type { EnergyLevel } from "../types/EnergyLevel";
+import type { TagOut } from "./energy";
 
 
 export interface TagPayload {
@@ -35,6 +36,23 @@ export interface BehaveResponse {
     after_description?: string;
     status: string;
 }
+
+export interface BehaveCompleteResponse {
+    id: string;
+
+    before_energy: EnergyLevel | null;
+    after_energy: EnergyLevel | null;
+
+    before_description: string | null;
+    after_description: string | null;
+
+    mental_before: TagOut[];
+    mental_after: TagOut[];
+    body_before: TagOut[];
+    body_after: TagOut[];
+}
+
+
 
 export interface RecentPendingBehaveResponse {
   behave_id: string;
@@ -114,7 +132,7 @@ export async function fetchRecentPendingBehaves(): Promise<RecentPendingBehaveRe
 export async function completeBehave(
     behaveId: string,
     payload: BehaveCompletePayload
-): Promise<BehaveResponse> {
+): Promise<BehaveCompleteResponse> {
     try {
         const res = await Api.patch(`/behave/${behaveId}/complete`, payload, {
             headers: { "Content-Type": "application/json" },

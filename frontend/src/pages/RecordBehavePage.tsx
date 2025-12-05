@@ -9,11 +9,12 @@ import type { TagOut } from "../api/energy";
 import type { EnergyLevel } from "../types/EnergyLevel";
 import { useLocation } from "react-router-dom";
 import { completeBehave } from "../api/behave";
-import type { BehaveCompletePayload } from "../api/behave";
+import type { BehaveCompletePayload, BehaveCompleteResponse } from "../api/behave";
 import axios from "axios";
 import EnergySelectorBtn from "../components/Button/EnergySelectorBtn";
 import { ENERGY_LEVELS } from "../types/EnergyLevel";
 import type { EnergyLevelInfo } from "../types/EnergyLevel";
+import BehaveResultModal from "../components/Modal/BehaveResultModal";
 
 function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["sections"] {
     const mental = tags.filter(t => t.tag_type === "mental");
@@ -34,6 +35,8 @@ function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["s
 const RecordBehavePage = () => {
     const [selectedEnergy, setSelectedEnergy] = useState<EnergyLevelInfo | null>(null);
     // const navigate = useNavigate();
+    const [result, setResult] = useState<BehaveCompleteResponse | null>(null);
+    const [open, setOpen] = useState(false);
     const [description, setDescription] = useState("");
     const [sections, setSections] = useState<ConditionListPayload["sections"]>([]);
     const [loading, setLoading] = useState(false);
@@ -100,9 +103,11 @@ const RecordBehavePage = () => {
         setLoading(true);
         try {
             const result = await completeBehave(behave_id, payload);
+            setResult(result);
+            setOpen(true);
 
             // 결과 페이지로 이동 (원하는 경로로 수정 가능)
-            console.log("result",result);
+            console.log("result", result);
             // navigate(`/result/${result.id}`);
         } catch (err) {
             if (axios.isAxiosError(err)) {
@@ -193,7 +198,18 @@ const RecordBehavePage = () => {
             {/* <MainBtn onClick={handleSubmit}>기록 완료</MainBtn> */}
             <MainBtn onClick={handleSubmit} disabled={!selectedEnergy || loading}>
                 {loading ? "기록 중..." : "기록 완료"}
-            </MainBtn> 
+            </MainBtn>
+            <BehaveResultModal
+                open={open}
+                onClose={() => setOpen(false)}
+                title={result?.after_description || ""}
+                afterEnergyBefore={result?.before_energy ?? null}
+                afterEnergyAfter={result?.after_energy ?? null}
+                bodyBefore={result?.body_before.map(t => t.tag_title) || []}
+                bodyAfter={result?.body_after.map(t => t.tag_title) || []}
+                mentalBefore={result?.mental_before.map(t => t.tag_title) || []}
+                mentalAfter={result?.mental_after.map(t => t.tag_title) || []}
+            />
         </div >
     );
 };
