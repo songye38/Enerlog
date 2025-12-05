@@ -137,10 +137,9 @@ const RecordBehavePage = () => {
             display: 'flex',
             flexDirection: 'column',
             gap: 32,
-            width: '100%',
+            width: '100vw',
             boxSizing: 'border-box',
             overflowX: 'hidden', // 페이지 전체 가로 스크롤 방지
-            padding: 12 // 필요하면 패딩 추가
         }}>
             <GoToMainBtn />
             <div style={{ textAlign: 'center', color: 'black', fontSize: 18, fontFamily: 'Pretendard', fontWeight: '600', wordWrap: 'break-word' }}>
