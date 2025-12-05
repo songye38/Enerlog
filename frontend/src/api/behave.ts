@@ -28,6 +28,16 @@ export interface BehaveResponse {
     status: string;
 }
 
+export interface RecentPendingBehaveResponse {
+  behave_id: string;
+  user_id: string;
+  activity_id?: string;
+  activity_template_id?: string;
+  title: string;
+  created_at: string; // ISO string
+}
+
+
 /*----------------------------------------------
  * ✅ Behave 생성
  ----------------------------------------------*/
@@ -75,3 +85,15 @@ export async function updateBehaveWithActivity(
     }
 }
 
+/*-----------------------------------------------------------------
+ * ✅ 24시간 내 진행 대기 상태(activity_pending)인 behave들을 받아오는 함수
+ -----------------------------------------------------------------*/
+export async function fetchRecentPendingBehaves(): Promise<RecentPendingBehaveResponse[]> {
+  try {
+    const res = await Api.get("/behave/recent-pending", { withCredentials: true });
+    return res.data;
+  } catch (error) {
+    console.error("Failed to fetch recent pending behaves:", error);
+    return [];
+  }
+}

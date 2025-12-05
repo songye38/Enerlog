@@ -1,28 +1,46 @@
-import type { ActivityFeed } from "../types/ActivityFeed";
+import { useEffect, useState } from "react";
+import { fetchRecentPendingBehaves } from "../api/behave";
 import ActRecordBtn from "../components/Button/ActRecordBtn";
+import type { RecentPendingBehaveResponse } from "../api/behave";
 
-
-// 메인 화면에서 아직 기록으로남기지 않은 행동을 표시하는 섹션
 export default function ActRecordSection() {
+  const [activities, setActivities] = useState<RecentPendingBehaveResponse[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    const activity: ActivityFeed = {
-        id:'1',
-        energy_level: 3,
-        title: "가벼운 산책",
-        description: "짧은 산책으로 기분 전환",
-        count: 0,
-        durationMinutes: "20분"
-    };
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      const data = await fetchRecentPendingBehaves();
+      setActivities(data);
+      setLoading(false);
+    }
+    load();
+  }, []);
 
-    return (
-        <div style={{ display: 'flex', flexDirection: 'column', marginTop: 60,}}>
-            <div style={{ color: 'black', fontSize: 15, fontFamily: 'Pretendard', fontWeight: '600', wordWrap: 'break-word' }}>아직 기록하지 않은 행동이 있어</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 12 }}>
-                <ActRecordBtn activity={activity} serverTime="10:08:08" />
-                <ActRecordBtn activity={activity} serverTime="10:08:08" />
+  if (loading) return <p>로딩 중...</p>;
+  if (activities.length === 0) return <p>아직 기록할 행동이 없습니다.</p>;
 
-            </div>
-        </div>
-
-    );
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', marginTop: 60 }}>
+      <div style={{ color: 'black', fontSize: 15, fontFamily: 'Pretendard', fontWeight: 600, wordWrap: 'break-word' }}>
+        아직 기록하지 않은 행동이 있어
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 12 }}>
+        {activities.map((activity) => (
+          <ActRecordBtn
+            key={activity.behave_id}
+            activity={{
+              id: activity.activity_id || activity.activity_template_id || "unknown",
+              energy_level: 0, // 필요하면 서버에서 전달받아 채워주기
+              title: activity.title,
+              description: "", // 필요하면 서버에서 description 포함
+              count: 0, // 필요하면 서버에서 수행횟수 가져오기
+              durationMinutes: "0", // 필요하면 서버에서 전달
+            }}
+            serverTime={new Date(activity.created_at).toLocaleTimeString()}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
