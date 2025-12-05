@@ -150,7 +150,7 @@ const RecordBehavePage = () => {
 
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 32,width:'100vw'}}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 32,width: '100vw', maxWidth: '100%', overflowX: 'hidden'}}>
             <GoToMainBtn />
             <div style={{ textAlign: 'center', color: 'black', fontSize: 18, fontFamily: 'Pretendard', fontWeight: '600', wordWrap: 'break-word' }}>
                 {title}
