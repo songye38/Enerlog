@@ -186,7 +186,7 @@ def get_recent_pending_behaves(
     behaves = (
         db.query(Behave)
         .filter(
-            Behave.user_id == current_user.user_id,
+            Behave.user_id == current_user.id,
             Behave.status == BehaveStatusEnum.activity_pending,
             Behave.is_deleted == False,
             Behave.created_at >= since
