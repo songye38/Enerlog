@@ -4,6 +4,8 @@ import programIcon from "/icons/12X12/message-chat-circle.png";
 import profileIcon from "/icons/12X12/settings-01.png";
 import energyIcon from "/icons/12X12/folder-check.png";
 import actsIcon from "/icons/12X12/folder-check.png";
+import logoutIcon from "/icons/12X12/log-out.png";
+import loginIcon from "/icons/12X12/log-in.png";
 import { useAuth } from "../../hooks/useAuth";
 
 type HomeMenuProps = {
@@ -31,12 +33,12 @@ export default function HomeMenu({ onNavigate }: HomeMenuProps) {
         ? [
             {
                 label: "로그아웃",
-                icon: energyIcon,
+                icon: logoutIcon,
                 onClick: () => logout(), // path는 안 쓰고 onClick만
             },
         ]
         : [
-            { label: "로그인", path: "/login", icon: energyIcon },
+            { label: "로그인", path: "/login", icon: loginIcon },
             { label: "회원가입", path: "/signup", icon: actsIcon },
         ];
 
