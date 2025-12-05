@@ -13,7 +13,7 @@ import type { BehaveCreatePayload } from "../api/behave";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import EnergySelectorBtn from "../components/Button/EnergySelectorBtn";
-import { ENERGY_LEVELS } from "../types/EnergyLevel"; 
+import { ENERGY_LEVELS } from "../types/EnergyLevel";
 import type { EnergyLevelInfo } from "../types/EnergyLevel";
 
 function convertTagsToConditionSections(tags: TagOut[]): ConditionListPayload["sections"] {
@@ -44,7 +44,7 @@ const RecordBehavePage = () => {
         title: string;
     };
 
-    console.log("behave_id",behave_id)
+    console.log("behave_id", behave_id)
 
     // 서버에서 태그 가져오기
     useEffect(() => {
@@ -133,14 +133,7 @@ const RecordBehavePage = () => {
     };
 
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 32,
-            width: '100vw',
-            boxSizing: 'border-box',
-            overflowX: 'hidden', // 페이지 전체 가로 스크롤 방지
-        }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
             <GoToMainBtn />
             <div style={{ textAlign: 'center', color: 'black', fontSize: 18, fontFamily: 'Pretendard', fontWeight: '600', wordWrap: 'break-word' }}>
                 {title}
@@ -149,8 +142,8 @@ const RecordBehavePage = () => {
             <div>
                 <ConditionListSection
                     data={{ description: "", sections }}
-                    onAddTag={handleAddTag}
-                    onTagToggle={handleTagToggle}
+                    onAddTag={handleAddTag} // 🔹 새 태그 추가 콜백
+                    onTagToggle={handleTagToggle} // 🔹 토글 핸들러
                     countVisible={false}
                     withBackground={false}
                 />
@@ -161,34 +154,33 @@ const RecordBehavePage = () => {
                     onChange={setDescription}
                     type="text"
                 />
+            </div>
 
-                {/* 버튼 리스트: 가로 스크롤만 적용 */}
-                <div style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    gap: 12,
-                    overflowX: "auto",
-                    width: "100vw",
-                    boxSizing: "border-box",
-                    padding: "12px 0",
-                    scrollbarWidth: "none",
-                }}>
-                    {Object.values(ENERGY_LEVELS).map((level) => (
-                        <div key={level.title} style={{ flex: "0 0 auto" }}>
-                            <EnergySelectorBtn
-                                data={level}
-                                mode="select"
-                                selected={selectedEnergy?.level === level.level}
-                                onSelect={setSelectedEnergy}
-                            />
-                        </div>
-                    ))}
-                </div>
-
+            {/* 버튼 리스트: 가로 스크롤만 적용 */}
+            <div style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 12,
+                overflowX: "auto",
+                width: "100vw",
+                boxSizing: "border-box",
+                padding: "12px 0",
+                scrollbarWidth: "none",
+            }}>
+                {Object.values(ENERGY_LEVELS).map((level) => (
+                    <div key={level.title} style={{ flex: "0 0 auto" }}>
+                        <EnergySelectorBtn
+                            data={level}
+                            mode="select"
+                            selected={selectedEnergy?.level === level.level}
+                            onSelect={setSelectedEnergy}
+                        />
+                    </div>
+                ))}
             </div>
 
             <MainBtn onClick={handleSubmit}>기록 완료</MainBtn>
-        </div>
+        </div >
     );
 };
 
