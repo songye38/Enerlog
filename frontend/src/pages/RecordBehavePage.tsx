@@ -38,11 +38,13 @@ const RecordBehavePage = () => {
     const [description, setDescription] = useState("");
     const [sections, setSections] = useState<ConditionListPayload["sections"]>([]);
     const location = useLocation();
-    const { _behave_id, energy_level, title } = location.state as {
-        _behave_id: string;
+    const { behave_id, energy_level, title } = location.state as {
+        behave_id: string;
         energy_level: EnergyLevel;
         title: string;
     };
+
+    console.log("behave_id",behave_id)
 
     // 서버에서 태그 가져오기
     useEffect(() => {
