@@ -1,5 +1,4 @@
 import type { ActivityFeed } from "../../types/ActivityFeed";
-import { useNavigate } from "react-router-dom";
 
 type ActRecordBtnProps = {
   activity: ActivityFeed;
@@ -9,14 +8,13 @@ type ActRecordBtnProps = {
 
 export default function ActRecordBtn({ activity, serverTime, onClick }: ActRecordBtnProps) {
   const description = "행동에 대한 기록 남기기";
-  const navigate = useNavigate();
-  const handleClick = () => {
-    navigate('/record');
-  }
+  // const navigate = useNavigate();
+  // const handleClick = () => {
+  //   navigate('/record');
+  // }
 
   return (
     <div
-    onClick={handleClick}
       style={{
         width: 390,
         background: '#D2D8F1',
