@@ -7,11 +7,10 @@ import type { ConditionListPayload } from "../types/ConditionTypes";
 import { fetchUserTags } from "../api/energy";
 import type { TagOut } from "../api/energy";
 import type { EnergyLevel } from "../types/EnergyLevel";
-import { useLocation } from "react-router-dom";
-import { createBehave } from "../api/behave";
-import type { BehaveCreatePayload } from "../api/behave";
+import { useLocation,useNavigate } from "react-router-dom";
+import { completeBehave } from "../api/behave";
+import type { BehaveCompletePayload } from "../api/behave";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import EnergySelectorBtn from "../components/Button/EnergySelectorBtn";
 import { ENERGY_LEVELS } from "../types/EnergyLevel";
 import type { EnergyLevelInfo } from "../types/EnergyLevel";
@@ -37,6 +36,7 @@ const RecordBehavePage = () => {
     const navigate = useNavigate();
     const [description, setDescription] = useState("");
     const [sections, setSections] = useState<ConditionListPayload["sections"]>([]);
+    const [loading, setLoading] = useState(false);
     const location = useLocation();
     const { behave_id, energy_level, title } = location.state as {
         behave_id: string;
@@ -74,6 +74,8 @@ const RecordBehavePage = () => {
     };
 
     const handleSubmit = async () => {
+
+        if (!selectedEnergy) return; // safeguard (옵션)
         const selectedTags = sections.flatMap(section =>
             section.tags.filter(tag => tag.isSelected).map(tag => tag.originalTag)
         );
@@ -86,23 +88,29 @@ const RecordBehavePage = () => {
             .filter(tag => tag?.id && !tag.id.startsWith("temp"))
             .map(tag => ({ id: tag!.id, title: tag!.tag_title, type: tag!.tag_type }));
 
-        const payload: BehaveCreatePayload = {
-            before_energy: energy_level,
-            before_description: description,
-            status: "emotion_recorded",
+        const payload: BehaveCompletePayload = {
+            after_energy: selectedEnergy.level,
+            after_description: description,
+            status: "completed",
             user_tags: userTags,
             preset_tags: presetTags,
         };
 
+
+        setLoading(true);
         try {
-            const result = await createBehave(payload);
-            navigate(`/record?energy_level=${energy_level}&behave_id=${result.id}`);
+            const result = await completeBehave(behave_id, payload);
+
+            // 결과 페이지로 이동 (원하는 경로로 수정 가능)
+            navigate(`/result/${result.id}`);
         } catch (err) {
             if (axios.isAxiosError(err)) {
-                console.error("Behave 생성 실패(JSON):", JSON.stringify(err.response?.data, null, 2));
+                console.error("After 저장 실패(JSON):", JSON.stringify(err.response?.data, null, 2));
             } else {
                 console.error("알 수 없는 에러:", err);
             }
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -181,7 +189,10 @@ const RecordBehavePage = () => {
                 </div>
             </div>
 
-            <MainBtn onClick={handleSubmit}>기록 완료</MainBtn>
+            {/* <MainBtn onClick={handleSubmit}>기록 완료</MainBtn> */}
+            <MainBtn onClick={handleSubmit} disabled={!selectedEnergy || loading}>
+                {loading ? "기록 중..." : "기록 완료"}
+            </MainBtn> 
         </div >
     );
 };

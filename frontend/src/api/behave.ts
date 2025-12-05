@@ -18,6 +18,14 @@ export interface BehaveCreatePayload {
     preset_tags?: TagPayload[];
 }
 
+export interface BehaveCompletePayload {
+    after_energy: EnergyLevel;
+    after_description?: string;
+    status: "emotion_recorded" | "activity_pending" | "completed";
+    user_tags?: TagPayload[];
+    preset_tags?: TagPayload[];
+}
+
 export interface BehaveResponse {
     id: string;
     user_id: string;
@@ -97,4 +105,25 @@ export async function fetchRecentPendingBehaves(): Promise<RecentPendingBehaveRe
     console.error("Failed to fetch recent pending behaves:", error);
     return [];
   }
+}
+
+
+/*----------------------------------------------
+ * ✅ Behave 완료(After 단계 업데이트)
+ ----------------------------------------------*/
+export async function completeBehave(
+    behaveId: string,
+    payload: BehaveCompletePayload
+): Promise<BehaveResponse> {
+    try {
+        const res = await Api.patch(`/behave/${behaveId}/complete`, payload, {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+        });
+        return res.data;
+    } catch (error) {
+        const axiosError = error as AxiosError<{ detail?: string }>;
+        const msg = axiosError.response?.data?.detail || "Behave 업데이트 실패";
+        throw new Error(msg);
+    }
 }
