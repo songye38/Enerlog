@@ -112,6 +112,7 @@ class ActivityTemplate(Base):
     # 에너지 레벨 FK
     energy_level_id = Column(UUID(as_uuid=True), ForeignKey("energy_levels.id"), nullable=False)
     energy_level = relationship("EnergyLevel")  # 관계 연결
+    behaves = relationship("Behave", back_populates="activity_template")
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
@@ -224,6 +225,8 @@ class Behave(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"),nullable=False)
     activity_id = Column(UUID(as_uuid=True), ForeignKey("activities.id")) 
+    activity_template_id = Column(UUID(as_uuid=True), ForeignKey("activity_templates.id"), nullable=True)
+
     
     before_energy = Column(Enum(EnergyLevelEnum), nullable=False)
     after_energy = Column(Enum(EnergyLevelEnum), nullable=True)  # after는 선택적
@@ -239,6 +242,7 @@ class Behave(Base):
     activity = relationship("Activity", back_populates="behaves")
     behave_tags = relationship("BehaveTag", back_populates="behave")
     photos = relationship("BehavePhoto", back_populates="behave")
+    activity_template = relationship("ActivityTemplate")
 
         # -------------------------------
     # Helper properties
