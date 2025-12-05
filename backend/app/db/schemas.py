@@ -113,12 +113,13 @@ class ActivityTemplateOut(BaseModel):
     updated_at: datetime
     energy_level: int
     count: Optional[int] = 0  # 기본값 0
+    type: str
 
     class Config:
         orm_mode = True
 
     @classmethod
-    def from_orm_obj(cls, obj, count: Optional[int] = 0):
+    def from_orm_obj(cls, obj, count: Optional[int] = 0,type: str = "template"):
         return cls(
             id=obj.id,
             title=obj.title,
@@ -129,7 +130,8 @@ class ActivityTemplateOut(BaseModel):
             created_at=obj.created_at,
             updated_at=obj.updated_at,
             energy_level=obj.energy_level.value,  # Enum → int로 변환
-            count=count  # 여기서 count 추가
+            count=count,  # 여기서 count 추가
+            type=type
         )
 
 

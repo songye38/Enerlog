@@ -491,9 +491,6 @@ def recommend_activities(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    import random
-    from sqlalchemy import func
-
     # 1. 사용자 설정 조회
     settings = db.query(UserSettings).filter_by(user_id=current_user.id).first()
     max_count = settings.max_recommendations if settings else 5
@@ -531,15 +528,23 @@ def recommend_activities(
 
     random.shuffle(recommended)
 
-    # 5. Behave에서 수행 횟수(count) 조회 후 Pydantic 변환
+    # 5. Behave 수행 횟수 조회 및 type 필드 추가
     result = []
     for activity in recommended:
         count = db.query(func.count(Behave.id)).filter(
             Behave.user_id == current_user.id,
-            Behave.activity_id == activity.id,
+            Behave.activity_id == getattr(activity, "id"),
             Behave.is_deleted == False
         ).scalar()
 
-        result.append(ActivityTemplateOut.from_orm_obj(activity, count=count))
+        activity_type = "user" if isinstance(activity, Activity) else "template"
+
+        result.append(
+            ActivityTemplateOut.from_orm_obj(
+                activity,
+                count=count,
+                type=activity_type  # 새 필드
+            )
+        )
 
     return result
