@@ -30,52 +30,9 @@ cloudinary.config(
 )
 
 
-# -------------------------------
-# 사용자가 선택한 태그를 저장하는 라우터
-# -------------------------------
-# def save_tags(db: Session, behave: Behave, user_tags: List = None, preset_tags: List = None):
-#     # None-safe 처리
-#     user_tags = user_tags or []
-#     preset_tags = preset_tags or []
-
-#     # 1️⃣ user_tags 저장
-#     for tag_data in user_tags:
-#         new_tag = Tag(title=tag_data.title, type=TagTypeEnum(tag_data.type))
-#         db.add(new_tag)
-#         db.flush()
-
-#         user_tag = UserTag(
-#             user_id=behave.user_id,
-#             title=tag_data.title,
-#             type=new_tag.type
-#         )
-#         user_tag.tags.append(new_tag)
-#         db.add(user_tag)
-#         db.flush()
-
-#         behave_tag = BehaveTag(
-#             behave_id=behave.id,
-#             phase=PhaseEnum.before
-#         )
-#         db.add(behave_tag)
-#         db.flush()
-#         behave_tag.tags.append(new_tag)
-
-#     # 2️⃣ preset_tags 저장
-#     for tag_data in preset_tags:
-#         if tag_data.id:
-#             tag = db.query(Tag).filter(Tag.id == tag_data.id).first()
-#             if tag:
-#                 behave_tag = BehaveTag(
-#                     behave_id=behave.id,
-#                     phase=PhaseEnum.before
-#                 )
-#                 db.add(behave_tag)
-#                 db.flush()
-#                 behave_tag.tags.append(tag)
-
-#     db.commit()
-
+# --------------------------------------------
+# 태그들을 저장하는 함수
+# --------------------------------------------
 def save_tags(db: Session, behave: Behave, phase: PhaseEnum, user_tags: List = None, preset_tags: List = None):
     user_tags = user_tags or []
     preset_tags = preset_tags or []
@@ -117,7 +74,6 @@ def save_tags(db: Session, behave: Behave, phase: PhaseEnum, user_tags: List = N
                 behave_tag.tags.append(tag)
 
     db.commit()
-
 
 
 # --------------------------------------------
@@ -191,8 +147,6 @@ def select_activity(
     db.refresh(behave)
 
     return BehaveResponse.from_orm(behave)
-
-
 
 
 # ---------------------------------------------------
@@ -290,6 +244,9 @@ def update_behave_after(
     return BehaveCompleteResponse.from_orm(behave)
 
 
+# ---------------------------------------------------
+# behave_id를 기반으로 사진 저장
+# ---------------------------------------------------
 @router.post("/behave/upload-photo/{behave_id}")
 async def upload_photo(behave_id: str, file: UploadFile = File(...)):
     # Cloudinary 업로드

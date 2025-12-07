@@ -35,7 +35,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
 
 
 # -----------------------
-# 로그인 왜
+# 로그인
 # -----------------------
 @router.post("/login", response_model=UserOut)
 async def login(user: UserLogin, response: Response, db: Session = Depends(get_db)):
@@ -67,6 +67,7 @@ async def login(user: UserLogin, response: Response, db: Session = Depends(get_d
     )
 
     return db_user  # UserOut로 직렬화됨
+
 
 # -----------------------
 # 리프레시
@@ -103,7 +104,6 @@ def refresh_token(request: Request, response: Response, db: Session = Depends(ge
     return {"message": "Access token refreshed"}
 
 
-
 # -----------------------
 # 로그아웃
 # -----------------------
@@ -137,8 +137,6 @@ def read_users_me(
         "email": current_user.email,
         "name": current_user.nickname,
     }
-
-
 
 
 @router.get("/protected")

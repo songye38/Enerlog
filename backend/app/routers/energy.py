@@ -80,11 +80,8 @@ def get_user_tags(
     return UserTagsResponse(tags=tags)
 
 
-
-
 # -----------------------
-# 사용자가 실제로 선택한 태그들만 가져오는 함수 
-# 프리셋까지 모두 가져오는 건 아님
+# 사용자가 실제로 선택한 태그들만 가져오는 함수 프리셋까지 모두 가져오는 건 아님
 # -----------------------
 @router.get("/user_tags_recorded", response_model=List[UserTagStatResponse])
 def get_user_tags_recorded(
