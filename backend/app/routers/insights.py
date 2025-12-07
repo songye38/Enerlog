@@ -344,7 +344,7 @@ def get_execute_to_record_ratio_last_3days(
         db.query(
             Behave.id,
             case(
-                [(Behave.status == BehaveStatusEnum.completed, 1)],
+                (Behave.status == BehaveStatusEnum.completed, 1),
                 else_=0
             ).label("completed_flag")
         )
@@ -353,8 +353,8 @@ def get_execute_to_record_ratio_last_3days(
             Behave.created_at >= three_days_ago,
             Behave.status.in_([BehaveStatusEnum.activity_pending, BehaveStatusEnum.completed])
         )
-        .all()
-    )
+    .all()
+)
 
     if not behaves_with_completion:
         return {"ratio": None}
