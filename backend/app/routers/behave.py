@@ -1,16 +1,33 @@
-from fastapi import APIRouter, Depends,HTTPException,Body
+from fastapi import APIRouter, Depends,HTTPException,Body,UploadFile,File
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from uuid import UUID
 from datetime import datetime, timedelta,timezone
 
+from cloudinary.uploader import upload
+from cloudinary.utils import cloudinary_url
+import cloudinary
+
+import os
+from dotenv import load_dotenv
+
+
+
+
 from app.db.database import get_db
-from app.db.models import Behave, TagTypeEnum, UserTag, Tag, PhaseEnum, BehaveTag, EnergyLevelEnum, BehaveStatusEnum
+from app.db.models import Behave, TagTypeEnum, UserTag, Tag, PhaseEnum, BehaveTag, EnergyLevelEnum, BehaveStatusEnum,BehavePhoto
 from app.db.schemas import BehaveResponse, BehaveCreateRequest,SelectActivityRequest,RecentPendingBehaveResponse,BehaveUpdateRequest,BehaveCompleteResponse
 from app.auth.dependencies import get_current_user
 from app.services.user_energy_tag_stats import update_before_stats,update_after_stats
 
 router = APIRouter(prefix="/behave", tags=["Behave"])
+
+load_dotenv()
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET")
+)
 
 
 # -------------------------------
@@ -271,3 +288,19 @@ def update_behave_after(
     update_after_stats(db,behave)
 
     return BehaveCompleteResponse.from_orm(behave)
+
+
+@router.post("/behave/upload-photo/{behave_id}")
+async def upload_photo(behave_id: str, file: UploadFile = File(...)):
+    # Cloudinary 업로드
+    result = upload(file.file, folder=f"enerlog/{behave_id}")
+    photo_url = result.get("secure_url")
+    
+    # DB 저장 로직 예시 (SQLAlchemy)
+    db: Session = Depends(get_db),
+    new_photo = BehavePhoto(behave_id=behave_id, photo_url=photo_url)
+    db.add(new_photo)
+    db.commit()
+    db.refresh(new_photo)
+
+    return {"photo_url": photo_url, "id": new_photo.id}
