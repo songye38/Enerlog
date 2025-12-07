@@ -1,5 +1,5 @@
 # routers/insights.py
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, date,timezone
 from typing import List, Optional, Dict, Any
 from uuid import UUID
 
@@ -33,7 +33,7 @@ def monthly_energy(
     user의 해당 월에 대해 날짜별 평균 에너지 반환.
     평균 에너지는 (before + after)/2 (after가 없으면 before로 계산)
     """
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     year = year or now.year
     month = month or now.month
 
@@ -72,7 +72,7 @@ def weekly_energy(
     current_user = Depends(get_current_user),
     days: int = Query(7, ge=1, le=90, description="몇 일 전부터 (default 7)")
 ) -> Dict[str, Any]:
-    end = datetime.utcnow()
+    end = datetime.now(timezone.utc)
     start = end - timedelta(days=days - 1)  # 포함
     q = (
         db.query(
@@ -281,7 +281,7 @@ def top_activities(
 # -----------------------
 @router.get("/stats/energy/average-3days")
 def get_average_energy_last_3days(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
-    three_days_ago = datetime.utcnow() - timedelta(days=3)
+    three_days_ago = datetime.now(timezone.utc) - timedelta(days=3)
 
     energy_values = (
         db.query(Behave.before_energy)
@@ -307,7 +307,7 @@ def get_average_energy_last_3days(db: Session = Depends(get_db), user: User = De
 # -----------------------
 @router.get("/stats/energy/change-3days")
 def get_energy_change_last_3days(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
-    three_days_ago = datetime.utcnow() - timedelta(days=3)
+    three_days_ago = datetime.now(timezone.utc) - timedelta(days=3)
 
     records = (
         db.query(Behave.before_energy, Behave.created_at)
@@ -337,7 +337,7 @@ def get_execute_to_record_ratio_last_3days(
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user)
 ):
-    three_days_ago = datetime.utcnow() - timedelta(days=3)
+    three_days_ago = datetime.now(timezone.utc) - timedelta(days=3)
 
     # 실행된 행동: activity_pending
     pending_count = (
