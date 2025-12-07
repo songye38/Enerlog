@@ -13,7 +13,7 @@ export interface EnergyStatsResponse {
  ----------------------------------------------*/
 export async function fetchAverageEnergyLast3Days(): Promise<number | null> {
   try {
-    const res = await Api.get<EnergyStatsResponse>("/stats/energy/average-3days",{
+    const res = await Api.get<EnergyStatsResponse>("/insights/stats/energy/average-3days",{
       withCredentials: true,
     });
     return res.data.average_energy ?? null;
@@ -29,7 +29,7 @@ export async function fetchAverageEnergyLast3Days(): Promise<number | null> {
  ----------------------------------------------*/
 export async function fetchEnergyChangeLast3Days(): Promise<number | null> {
   try {
-    const res = await Api.get<EnergyStatsResponse>("/stats/energy/change-3days",{
+    const res = await Api.get<EnergyStatsResponse>("/insights/stats/energy/change-3days",{
       withCredentials: true,
     });
     return res.data.change ?? null;
@@ -45,7 +45,7 @@ export async function fetchEnergyChangeLast3Days(): Promise<number | null> {
  ----------------------------------------------*/
 export async function fetchExecuteToRecordRatioLast3Days(): Promise<number | null> {
   try {
-    const res = await Api.get<EnergyStatsResponse>("/stats/execute-to-record-ratio-3days",{
+    const res = await Api.get<EnergyStatsResponse>("/insights/stats/execute-to-record-ratio-3days",{
       withCredentials: true,
     });
     return res.data.ratio ?? null;
