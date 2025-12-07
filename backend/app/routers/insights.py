@@ -339,31 +339,30 @@ def get_execute_to_record_ratio_last_3days(
 ):
     three_days_ago = datetime.now(timezone.utc) - timedelta(days=3)
 
-    # 실행된 행동: activity_pending
-    pending_count = (
-        db.query(Behave)
+    # 지난 3일간의 행동 중 pending이었던 것들을 가져오면서 completed 여부 계산
+    behaves_with_completion = (
+        db.query(
+            Behave.id,
+            case(
+                [(Behave.status == BehaveStatusEnum.completed, 1)],
+                else_=0
+            ).label("completed_flag")
+        )
         .filter(
             Behave.user_id == user.id,
             Behave.created_at >= three_days_ago,
-            Behave.status == BehaveStatusEnum.activity_pending
+            Behave.status.in_([BehaveStatusEnum.activity_pending, BehaveStatusEnum.completed])
         )
-        .count()
+        .all()
     )
 
-    # 기록 완료된 행동: completed
-    completed_count = (
-        db.query(Behave)
-        .filter(
-            Behave.user_id == user.id,
-            Behave.created_at >= three_days_ago,
-            Behave.status == BehaveStatusEnum.completed
-        )
-        .count()
-    )
-
-    if pending_count == 0:
+    if not behaves_with_completion:
         return {"ratio": None}
 
-    ratio = completed_count / pending_count
+    # 동일 행동 기준으로 completed 여부 평균 계산
+    total_count = len(behaves_with_completion)
+    completed_count = sum(b.completed_flag for b in behaves_with_completion)
+
+    ratio = completed_count / total_count
 
     return {"ratio": ratio}
